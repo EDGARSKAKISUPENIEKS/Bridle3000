@@ -1,6 +1,6 @@
 package config
 
-object Config {
+object AppConfig {
 
     const val DEFAULT_WORLD_WIDTH = 8f
     const val DEFAULT_WORLD_HEIGHT = 20f

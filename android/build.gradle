@@ -22,7 +22,7 @@ android {
 	}
 	defaultConfig {
 		applicationId 'com.verticali.Bridle3000'
-		minSdkVersion 19
+		minSdkVersion 25
 		targetSdkVersion 32
 		versionCode 1
 		versionName "1.0"

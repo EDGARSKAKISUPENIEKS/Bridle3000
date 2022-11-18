@@ -19,8 +19,8 @@ object DesktopLauncher {
         private get() {
             val configuration = LwjglApplicationConfiguration()
             configuration.title = "Bridle3000"
-            configuration.width = 640
-            configuration.height = 480
+            configuration.width = 720
+            configuration.height = 1024
             //// This prevents a confusing error that would appear after exiting normally.
             configuration.forceExit = false
             for (size in intArrayOf(128, 64, 32, 16)) {
