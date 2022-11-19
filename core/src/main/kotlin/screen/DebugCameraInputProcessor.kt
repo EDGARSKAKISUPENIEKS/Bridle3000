@@ -27,11 +27,11 @@ class DebugCameraInputProcessor : InputAdapter() {
 
 
     override fun keyDown(keycode: Int): Boolean {
-        val delta = Gdx.graphics.deltaTime
-
-        when (keycode) {
-            MOVE_CAMERA_LEFT_KEY -> moveCameraLeft(delta)
-        }
+//        val delta = Gdx.graphics.deltaTime
+//
+//        when (keycode) {
+//            MOVE_CAMERA_LEFT_KEY -> moveCameraLeft(delta)
+//        }
 
         return false
     }
