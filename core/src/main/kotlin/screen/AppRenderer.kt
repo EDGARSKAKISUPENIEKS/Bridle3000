@@ -1,5 +1,8 @@
 package screen
 
+
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
@@ -9,10 +12,16 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import config.AppConfig
+import config.AppConfig.DEFAULT_WORLD_HEIGHT
 import utils.clearScreen
 import utils.drawDebugGrid
+import utils.logger
 
-class AppRenderer : Disposable {
+class AppRenderer : Disposable, InputAdapter() {
+
+    companion object {
+        private val log = logger(AppRenderer::class.java)
+    }
 
     //    PROPERTIES
     private val camera: OrthographicCamera = OrthographicCamera()
@@ -24,9 +33,12 @@ class AppRenderer : Disposable {
     private val image: Texture = Texture("libgdx.png")
 
 
-
+    init {
+        camera.zoom = 1f
+    }
 
     fun render() {
+
         clearScreen(Color.GRAY)
 
         renderDebug()
@@ -38,7 +50,6 @@ class AppRenderer : Disposable {
         batch.begin()
         batch.draw(image, 140f, 210f)
         batch.end()
-
 //        render current viewport world lines
         viewport.drawDebugGrid(renderer)
     }
@@ -53,4 +64,11 @@ class AppRenderer : Disposable {
         batch.dispose()
         image.dispose()
     }
+
+
+    override fun keyDown(keycode: Int): Boolean {
+        log.debug("keyDown strādā $keycode")
+        return true
+    }
+
 }
