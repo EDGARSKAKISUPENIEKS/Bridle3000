@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import config.AppConfig
+import utils.CameraController
 import utils.clearScreen
 import utils.drawDebugGrid
 import utils.logger
@@ -23,7 +24,7 @@ class AppRenderer : Disposable {
     }
 
     //    PROPERTIES
-    private val camera: OrthographicCamera = OrthographicCamera()
+    val camera: OrthographicCamera = OrthographicCamera()
     private val viewport: Viewport =
         FitViewport(AppConfig.DEFAULT_WORLD_WIDTH, AppConfig.DEFAULT_WORLD_HEIGHT, camera)
     private val renderer: ShapeRenderer = ShapeRenderer()
@@ -31,14 +32,17 @@ class AppRenderer : Disposable {
     private val batch: SpriteBatch = SpriteBatch()
     private val image: Texture = Texture("libgdx.png")
 
+    private val cameraController: CameraController = CameraController()
+
 
     init {
-        camera.zoom = 1f
         Gdx.app.logLevel = Application.LOG_DEBUG
+        camera.zoom = 1f
+
     }
 
     fun render() {
-
+        cameraController.applyTo(camera)
         clearScreen(Color.GRAY)
 
         renderDebug()
@@ -64,6 +68,5 @@ class AppRenderer : Disposable {
         batch.dispose()
         image.dispose()
     }
-
 
 }

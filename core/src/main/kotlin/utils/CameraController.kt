@@ -1,15 +1,15 @@
 package utils
-
+// Izmaina vērtības saglabātas šīs klases laukos un tad nepieciešamos laukus ar applyTo funkciju nodod izvēlētajai kamerai
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputAdapter
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
-import utils.logger
 
 //  CONSTANTS
-private const val CAMERA_ZOOM_SPEED = 2f
+private const val CAMERA_ZOOM_SPEED = 0.5f
 private const val CAMERA_MOVE_SPEED = 5f
 private const val CAMERA_MAX_ZOOM_OUT = 5f
 private const val CAMERA_MAX_ZOOM_IN = 0.25f
@@ -23,18 +23,16 @@ private var zoom = 1f
     }
 
 //  DEBUG CAMERA CONTROLS AND SETTINGS
-const val MOVE_CAMERA_LEFT_KEY = Input.Keys.LEFT
-private const val MOVE_CAMERA_RIGHT_KEY = Input.Keys.RIGHT
-private const val MOVE_CAMERA_UP_KEY = Input.Keys.UP
-private const val MOVE_CAMERA_DOWN_KEY = Input.Keys.DOWN
-private const val ZOOM_CAMERA_IN_KEY = Input.Keys.NUMPAD_ADD
-private const val ZOOM_CAMERA_OUT_KEY = Input.Keys.NUMPAD_SUBTRACT
+private const val MOVE_CAMERA_LEFT_KEY = Input.Keys.A
+private const val MOVE_CAMERA_RIGHT_KEY = Input.Keys.D
+private const val MOVE_CAMERA_UP_KEY = Input.Keys.W
+private const val MOVE_CAMERA_DOWN_KEY = Input.Keys.S
+private const val ZOOM_CAMERA_IN_KEY = Input.Keys.Q
+private const val ZOOM_CAMERA_OUT_KEY = Input.Keys.E
+private const val CAMERA_POS_MAIN_SCREEN = Input.Keys.NUMPAD_1
+private const val CAMERA_POS_SECOND_SCREEN = Input.Keys.NUMPAD_2
+private const val CAMERA_POS_THIRD_SCREEN = Input.Keys.NUMPAD_3
 
-
-//  extension function (method)
-//  paplašina (extends) Int klasi ar sekojošo metodi
-fun Int.isKeyPressed() = Gdx.input.isKeyPressed(this)
-fun Int.isKeyJustPressed() = Gdx.input.isKeyJustPressed(this)
 
 class CameraController : InputAdapter() {
 
@@ -44,6 +42,13 @@ class CameraController : InputAdapter() {
 
 //  PUBLIC FUNCTIONS
 
+    fun applyTo(camera: OrthographicCamera) {
+        camera.position.set(position, 0f)
+//        camera ir zoom lauks un tam tiek iestatīta vērtība no DebugCameraController zoom lauka
+        camera.zoom = zoom
+        camera.update()
+    }
+
 
     //  KEY DOWN FUNCTIONS
     override fun keyDown(keycode: Int): Boolean {
@@ -51,8 +56,14 @@ class CameraController : InputAdapter() {
 
         when (keycode) {
             MOVE_CAMERA_LEFT_KEY -> moveCameraLeft(delta)
+            MOVE_CAMERA_RIGHT_KEY -> moveCameraRight(delta)
+            MOVE_CAMERA_UP_KEY -> moveCameraUp(delta)
+            MOVE_CAMERA_DOWN_KEY -> moveCameraDown(delta)
+            ZOOM_CAMERA_IN_KEY -> zoomCameraIn(delta)
+            ZOOM_CAMERA_OUT_KEY -> zoomCameraOut(delta)
+
         }
-        log.debug("CameraController $keycode ${Input.Keys.toString(keycode)}")
+        log.debug("mans debug CameraController $keycode ${Input.Keys.toString(keycode)}")
         return false
     }
 
@@ -66,18 +77,27 @@ class CameraController : InputAdapter() {
     }
 
     fun moveCameraLeft(delta: Float) {
-//    setPosition(camera.position.x - (CAMERA_MOVE_SPEED * delta), camera.position.y)
+        setPosition(position.x - (CAMERA_MOVE_SPEED * delta), position.y)
     }
 
-
-    //    KEY UP FUNCTIONS
-    override fun keyUp(keycode: Int): Boolean {
-        return false
+    fun moveCameraRight(delta: Float) {
+        setPosition(position.x + (CAMERA_MOVE_SPEED * delta), position.y)
     }
 
-    //      KEY TYPED FUNCTIONS
-    override fun keyTyped(character: Char): Boolean {
-        return false
+    fun moveCameraUp(delta: Float) {
+        setPosition(position.x, position.y + (CAMERA_MOVE_SPEED * delta))
+    }
+
+    fun moveCameraDown(delta: Float) {
+        setPosition(position.x, position.y - (CAMERA_MOVE_SPEED * delta))
+    }
+
+    fun zoomCameraIn(delta: Float) {
+        zoom -= CAMERA_ZOOM_SPEED * delta
+    }
+
+    fun zoomCameraOut(delta: Float) {
+        zoom += CAMERA_ZOOM_SPEED * delta
     }
 
     //      TOUCH DOWN FUNCTIONS
@@ -85,23 +105,8 @@ class CameraController : InputAdapter() {
         return false
     }
 
-    // TOUCH UP FUNCTIONS
-    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        return false
-    }
-
     // TOUCH DRAGGED FUNCTIONS
     override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
-        return false
-    }
-
-    //  MOUSE MOVED FUNCTIONS
-    override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
-        return false
-    }
-
-    //  SCROLLED FUNCTIONS
-    override fun scrolled(amountX: Float, amountY: Float): Boolean {
         return false
     }
 }

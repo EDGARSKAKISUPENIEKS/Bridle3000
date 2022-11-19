@@ -2,7 +2,6 @@ import com.badlogic.gdx.Application
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
-import screen.AppRenderer
 import screen.AppScreen
 import utils.CameraController
 

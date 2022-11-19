@@ -1,18 +1,16 @@
 package screen
 
 import Bridle3000Main
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.Screen
 
 class AppScreen(val application: Bridle3000Main) : Screen, InputMultiplexer() {
 
-    private lateinit var renderer: AppRenderer
+    private  var renderer: AppRenderer = AppRenderer()
 
 
     override fun show() {
 
-        renderer = AppRenderer()
     }
 
     override fun render(delta: Float) {
