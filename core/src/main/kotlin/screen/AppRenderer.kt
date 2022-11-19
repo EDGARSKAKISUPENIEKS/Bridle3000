@@ -42,7 +42,7 @@ class AppRenderer : Disposable {
     }
 
     fun render() {
-        cameraController.applyTo(camera)
+        cameraController.updateCameraPosition(camera)
         clearScreen(Color.GRAY)
 
         renderDebug()

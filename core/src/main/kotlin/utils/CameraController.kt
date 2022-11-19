@@ -42,7 +42,7 @@ class CameraController : InputAdapter() {
 
 //  PUBLIC FUNCTIONS
 
-    fun applyTo(camera: OrthographicCamera) {
+    fun updateCameraPosition(camera: OrthographicCamera) {
         camera.position.set(position, 0f)
 //        camera ir zoom lauks un tam tiek iestatīta vērtība no DebugCameraController zoom lauka
         camera.zoom = zoom
