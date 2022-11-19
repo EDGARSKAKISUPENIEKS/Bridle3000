@@ -9,14 +9,10 @@ class AppScreen(val application: Bridle3000Main) : Screen, InputMultiplexer() {
 
     private lateinit var renderer: AppRenderer
 
+
     override fun show() {
 
         renderer = AppRenderer()
-
-        Gdx.input.inputProcessor = this
-        val inputPlexer = InputMultiplexer()
-        inputPlexer.addProcessor(renderer)
-
     }
 
     override fun render(delta: Float) {
