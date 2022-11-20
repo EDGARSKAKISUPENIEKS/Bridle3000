@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 
@@ -34,10 +35,14 @@ private const val CAMERA_POS_SECOND_SCREEN = Input.Keys.NUMPAD_2
 private const val CAMERA_POS_THIRD_SCREEN = Input.Keys.NUMPAD_3
 
 
-class CameraController : InputAdapter() {
+class CameraController : InputAdapter(), GestureDetector.GestureListener {
 
     companion object {
         private val log = logger(CameraController::class.java)
+    }
+
+    init {
+
     }
 
 //  PUBLIC FUNCTIONS
@@ -99,14 +104,53 @@ class CameraController : InputAdapter() {
     fun zoomCameraOut(delta: Float) {
         zoom += CAMERA_ZOOM_SPEED * delta
     }
+    // GESTURE LISTENER FUNCTIONS
 
-    //      TOUCH DOWN FUNCTIONS
-    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+
+    override fun touchDown(x: Float, y: Float, pointer: Int, button: Int): Boolean {
+        log.debug("mans debug touchDown x - $x 7 $y pointer - $pointer button $button")
+        return true
+    }
+
+    override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
+        log.debug("mans debug tap x - $x 7 $y pointer - $count button $button")
+        return true
+    }
+
+    override fun longPress(x: Float, y: Float): Boolean {
+        log.debug("mans debug longPress x - $x 7 $y")
+
+        return true
+    }
+
+    override fun fling(velocityX: Float, velocityY: Float, button: Int): Boolean {
+        log.debug("fling velocityX $velocityX, velocityY $velocityY , button $button")
+        return true
+    }
+
+    override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
+        log.debug("pan x $x y $y deltaX $deltaX deltaY $deltaY")
+        return true
+    }
+
+    override fun panStop(x: Float, y: Float, pointer: Int, button: Int): Boolean {
         return false
     }
 
-    // TOUCH DRAGGED FUNCTIONS
-    override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
+    override fun zoom(initialDistance: Float, distance: Float): Boolean {
+        log.debug("$this")
         return false
+    }
+
+    override fun pinch(
+        initialPointer1: Vector2?,
+        initialPointer2: Vector2?,
+        pointer1: Vector2?,
+        pointer2: Vector2?
+    ): Boolean {
+        return false
+    }
+
+    override fun pinchStop() {
     }
 }

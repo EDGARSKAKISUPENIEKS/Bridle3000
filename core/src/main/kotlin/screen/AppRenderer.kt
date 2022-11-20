@@ -43,7 +43,7 @@ class AppRenderer : Disposable {
 
     fun render() {
         cameraController.updateCameraPosition(camera)
-        clearScreen(Color.GRAY)
+        clearScreen(Color.BLACK)
 
         renderDebug()
     }
@@ -56,6 +56,7 @@ class AppRenderer : Disposable {
         batch.end()
 //        render current viewport world lines
         viewport.drawDebugGrid(renderer)
+
     }
 
 
