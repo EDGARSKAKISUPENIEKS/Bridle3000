@@ -10,16 +10,17 @@ class Bridle3000Main : Game() {
 
     private val cameraController = CameraController()
     private val inputPlexer = InputMultiplexer()
+    private val gestureDetector = GestureDetector(cameraController)
+
 
     override fun create() {
         Gdx.app.logLevel = Application.LOG_DEBUG
 
         setScreen(AppScreen(this))
-        val gestureDetector = GestureDetector(cameraController)
+
+
         inputPlexer.addProcessor(cameraController)
         inputPlexer.addProcessor(gestureDetector)
-
-
         Gdx.input.inputProcessor = inputPlexer
     }
 
