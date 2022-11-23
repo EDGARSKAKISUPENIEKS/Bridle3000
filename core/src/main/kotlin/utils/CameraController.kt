@@ -88,17 +88,16 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     override fun fling(velocityX: Float, velocityY: Float, button: Int): Boolean {
-        log.debug("mans debug fling velocityX $velocityX, velocityY $velocityY , button $button")
+        log.debug("fling velocityX $velocityX, velocityY $velocityY , button $button")
         return true
     }
 
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
-        log.debug("mans debug pan x $x y $y deltaX $deltaX deltaY $deltaY")
+        log.debug("pan x $x y $y deltaX $deltaX deltaY $deltaY")
         return true
     }
 
     override fun panStop(x: Float, y: Float, pointer: Int, button: Int): Boolean {
-        log.debug("mans debug panStop x $x y $y pointer $pointer button $button")
         return false
     }
 
@@ -119,37 +118,38 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     override fun pinchStop() {
     }
 
-    //      PRIVATE FUNCTIONS
-    private fun setStartPosition(x: Float, y: Float) {
+//    PRIVATE FUNCTIONS
+
+    fun setStartPosition(x: Float, y: Float) {
         startPosition.set(x, y)
         position.set(x, y)
     }
 
-    private fun setPosition(x: Float, y: Float) {
+    fun setPosition(x: Float, y: Float) {
         position.set(x, y)
     }
 
-    private fun moveCameraLeft(delta: Float) {
+    fun moveCameraLeft(delta: Float) {
         setPosition(position.x - (CAMERA_MOVE_SPEED * delta), position.y)
     }
 
-    private fun moveCameraRight(delta: Float) {
+    fun moveCameraRight(delta: Float) {
         setPosition(position.x + (CAMERA_MOVE_SPEED * delta), position.y)
     }
 
-    private fun moveCameraUp(delta: Float) {
+    fun moveCameraUp(delta: Float) {
         setPosition(position.x, position.y + (CAMERA_MOVE_SPEED * delta))
     }
 
-    private fun moveCameraDown(delta: Float) {
+    fun moveCameraDown(delta: Float) {
         setPosition(position.x, position.y - (CAMERA_MOVE_SPEED * delta))
     }
 
-    private fun zoomCameraIn(delta: Float) {
+    fun zoomCameraIn(delta: Float) {
         zoom -= CAMERA_ZOOM_SPEED * delta
     }
 
-    private fun zoomCameraOut(delta: Float) {
+    fun zoomCameraOut(delta: Float) {
         zoom += CAMERA_ZOOM_SPEED * delta
     }
 }
