@@ -51,8 +51,6 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
         camera.update()
     }
 
-
-    //  KEY DOWN FUNCTIONS
     override fun keyDown(keycode: Int): Boolean {
         val delta = Gdx.graphics.deltaTime
 
