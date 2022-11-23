@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.input.GestureDetector
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
+import screen.AppRenderer
 
 //  CONSTANTS
 private const val CAMERA_ZOOM_SPEED = 0.5f
@@ -21,6 +22,11 @@ private val startPosition = Vector2()
 private var zoom = 1f
     set(value) {
         field = MathUtils.clamp(value, CAMERA_MAX_ZOOM_IN, CAMERA_MAX_ZOOM_OUT)
+    }
+private var dummyCamera = OrthographicCamera()
+    get() {
+        field = AppRenderer.camera
+        return field
     }
 
 //  DEBUG CAMERA CONTROLS AND SETTINGS

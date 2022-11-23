@@ -21,10 +21,11 @@ class AppRenderer : Disposable {
 
     companion object {
         private val log = logger(AppRenderer::class.java)
+        val camera: OrthographicCamera = OrthographicCamera()
     }
 
     //    PROPERTIES
-    val camera: OrthographicCamera = OrthographicCamera()
+
     private val viewport: Viewport =
         FitViewport(AppConfig.DEFAULT_WORLD_WIDTH, AppConfig.DEFAULT_WORLD_HEIGHT, camera)
     private val renderer: ShapeRenderer = ShapeRenderer()
