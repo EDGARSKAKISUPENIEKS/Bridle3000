@@ -32,21 +32,23 @@ class AppRenderer : Disposable {
 
     private val batch: SpriteBatch = SpriteBatch()
     private val image: Texture = Texture("libgdx.png")
-
     private val cameraController: CameraController = CameraController()
 
 
     init {
         Gdx.app.logLevel = Application.LOG_DEBUG
         camera.zoom = 1f
-
+//        pagaidu. Vajag globālu pasaules platumu un ekrānu pozīcijas izritēs no tā
+        cameraController.setCameraToStartPosition()
     }
 
     fun render() {
         cameraController.updateCameraPosition(camera)
         clearScreen(Color.BLACK)
 
-        renderDebug()
+        if (AppConfig.DEBUG_MODE) {
+            renderDebug()
+        }
     }
 
     private fun renderDebug() {
@@ -55,6 +57,8 @@ class AppRenderer : Disposable {
         batch.begin()
         batch.draw(image, 140f, 210f)
         batch.end()
+
+
 //        render current viewport world lines
         viewport.drawDebugGrid(renderer)
 
