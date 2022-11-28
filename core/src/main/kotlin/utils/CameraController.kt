@@ -26,9 +26,16 @@ private val startPosition = Vector2(
     AppConfig.DEFAULT_WORLD_HEIGHT / 2
 )
 
+private val zoomInCenterX: Float = 0f
+private val zoomInCenterY: Float = 0f
+private val zoomOutCenterX: Float = 0f
+private val zoomOutCenterY: Float = 0f
+
 
 private var delta = Gdx.graphics.deltaTime
 private var touchPosition = Vector3()
+private var panPositionStart = Vector3()
+private var panPositionEnd = Vector3()
 private var zoom = 1f
     set(value) {
         field = MathUtils.clamp(value, CAMERA_MAX_ZOOM_IN, CAMERA_MAX_ZOOM_OUT)
@@ -96,10 +103,9 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
-        log.debug("mans debug tap x - $x y $y count - $count button $button")
         touchPosition.set(x, y, 0f)
         dummyCamera.unproject(touchPosition)
-
+        log.debug("mans debug tap $touchPosition")
         return true
     }
 
@@ -110,7 +116,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     override fun fling(velocityX: Float, velocityY: Float, button: Int): Boolean {
-        log.debug("fling velocityX $velocityX, velocityY $velocityY , button $button")
+//        log.debug("fling velocityX $velocityX, velocityY $velocityY , button $button")
 //          sistēmas appišana, neder
 //        if (velocityX == 0f && velocityY == 0f) {
 //            AppConfig.DEBUG_MODE = !AppConfig.DEBUG_MODE
@@ -120,7 +126,29 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
-        log.debug("pan x $x y $y deltaX $deltaX deltaY $deltaY")
+//        paņem skāriena sākuma koordinātes un nobīdes lielumus
+        panPositionStart.set(x, y, 0f)
+        panPositionEnd.set(x + deltaX, y + deltaY, 0f)
+
+//        log.debug("mans debug pirms $position $touchPosition")
+
+//        projecē tos no pikseļiem uz pasaules vienībām
+        AppRenderer.camera.unproject(panPositionStart)
+        AppRenderer.camera.unproject(panPositionEnd)
+
+//        paņem esošo kameras pozīciju un iestata to pagaidu kamerai
+        position.set(AppRenderer.camera.position.x, AppRenderer.camera.position.y)
+        dummyCamera.position.set(position, 0f)
+//        aprēķina jauno pozīciju
+        dummyCamera.translate(
+            panPositionStart.x - panPositionEnd.x,
+            panPositionStart.y - panPositionEnd.y
+        )
+//          iestata jauno pozīciju
+        position.set(dummyCamera.position.x, dummyCamera.position.y)
+
+//        log.debug("mans debug pēc    $position $touchPosition")
+
         return false
     }
 
@@ -129,6 +157,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     override fun zoom(initialDistance: Float, distance: Float): Boolean {
+//        teorētiski būtu labāk izmantot to pašu pieeju, kas pan metodē un izveidot tam funkciju
         delta = Gdx.graphics.deltaTime
         when {
             initialDistance > distance -> zoomCameraOut(
@@ -144,12 +173,14 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
         return false
     }
 
+
     override fun pinch(
-        initialPointer1: Vector2?,
-        initialPointer2: Vector2?,
-        pointer1: Vector2?,
-        pointer2: Vector2?
+        initialPointer1: Vector2,
+        initialPointer2: Vector2,
+        pointer1: Vector2,
+        pointer2: Vector2
     ): Boolean {
+// lai paliek parastais zoom, tas ir priekš debug šā vai tā
         return false
     }
 
