@@ -48,15 +48,16 @@ private var dummyCamera = OrthographicCamera()
 
 
 //  DEBUG CAMERA CONTROLS AND SETTINGS
-private const val MOVE_CAMERA_LEFT_KEY = Input.Keys.A
-private const val MOVE_CAMERA_RIGHT_KEY = Input.Keys.D
-private const val MOVE_CAMERA_UP_KEY = Input.Keys.W
-private const val MOVE_CAMERA_DOWN_KEY = Input.Keys.S
-private const val ZOOM_CAMERA_IN_KEY = Input.Keys.Q
-private const val ZOOM_CAMERA_OUT_KEY = Input.Keys.E
-private const val CAMERA_POS_MAIN_SCREEN = Input.Keys.NUMPAD_1
-private const val CAMERA_POS_SECOND_SCREEN = Input.Keys.NUMPAD_2
-private const val CAMERA_POS_THIRD_SCREEN = Input.Keys.NUMPAD_3
+private const val MOVE_CAMERA_LEFT_KEY: Int = Input.Keys.A
+private const val MOVE_CAMERA_RIGHT_KEY: Int = Input.Keys.D
+private const val MOVE_CAMERA_UP_KEY: Int = Input.Keys.W
+private const val MOVE_CAMERA_DOWN_KEY: Int = Input.Keys.S
+private const val ZOOM_CAMERA_IN_KEY: Int = Input.Keys.Q
+private const val ZOOM_CAMERA_OUT_KEY: Int = Input.Keys.E
+private const val DEBUG_MODE_KEY: Int = Input.Keys.M
+private const val CAMERA_POS_MAIN_SCREEN: Int = Input.Keys.NUMPAD_1
+private const val CAMERA_POS_SECOND_SCREEN: Int = Input.Keys.NUMPAD_2
+private const val CAMERA_POS_THIRD_SCREEN: Int = Input.Keys.NUMPAD_3
 
 
 class CameraController : InputAdapter(), GestureDetector.GestureListener {
@@ -80,6 +81,13 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
 
     override fun keyDown(keycode: Int): Boolean {
         delta = Gdx.graphics.deltaTime
+//          GENERAL CONTROLS
+        when (keycode) {
+            DEBUG_MODE_KEY -> AppConfig.DEBUG_MODE = !AppConfig.DEBUG_MODE
+        }
+
+
+//        DEBUG CONTROLS/
         if (AppConfig.DEBUG_MODE) {
             when (keycode) {
                 MOVE_CAMERA_LEFT_KEY -> moveCameraLeft(delta)
@@ -88,7 +96,6 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
                 MOVE_CAMERA_DOWN_KEY -> moveCameraDown(delta)
                 ZOOM_CAMERA_IN_KEY -> zoomCameraIn(delta)
                 ZOOM_CAMERA_OUT_KEY -> zoomCameraOut(delta)
-
             }
             log.debug("mans debug CameraController $keycode ${Input.Keys.toString(keycode)}")
         }
@@ -112,6 +119,8 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     override fun longPress(x: Float, y: Float): Boolean {
+        AppConfig.DEBUG_MODE = !AppConfig.DEBUG_MODE
+
         if (AppConfig.DEBUG_MODE) {
             log.debug("mans debug longPress x - $x 7 $y")
         }
