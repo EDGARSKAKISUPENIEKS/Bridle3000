@@ -51,6 +51,17 @@ class AppRenderer : Disposable {
         }
     }
 
+    fun resize(width: Int, height: Int) {
+        viewport.update(width, height, true)
+    }
+
+
+    override fun dispose() {
+        renderer.dispose()
+        batch.dispose()
+        image.dispose()
+    }
+
     private fun renderDebug() {
         renderer.projectionMatrix = camera.combined
 
@@ -62,17 +73,6 @@ class AppRenderer : Disposable {
 //        render current viewport world lines
         viewport.drawDebugGrid(renderer)
 
-    }
-
-
-    fun resize(width: Int, height: Int) {
-        viewport.update(width, height, true)
-    }
-
-    override fun dispose() {
-        renderer.dispose()
-        batch.dispose()
-        image.dispose()
     }
 
 }

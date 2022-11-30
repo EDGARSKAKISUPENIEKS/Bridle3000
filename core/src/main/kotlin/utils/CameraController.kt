@@ -80,16 +80,18 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
 
     override fun keyDown(keycode: Int): Boolean {
         delta = Gdx.graphics.deltaTime
-        when (keycode) {
-            MOVE_CAMERA_LEFT_KEY -> moveCameraLeft(delta)
-            MOVE_CAMERA_RIGHT_KEY -> moveCameraRight(delta)
-            MOVE_CAMERA_UP_KEY -> moveCameraUp(delta)
-            MOVE_CAMERA_DOWN_KEY -> moveCameraDown(delta)
-            ZOOM_CAMERA_IN_KEY -> zoomCameraIn(delta)
-            ZOOM_CAMERA_OUT_KEY -> zoomCameraOut(delta)
+        if (AppConfig.DEBUG_MODE) {
+            when (keycode) {
+                MOVE_CAMERA_LEFT_KEY -> moveCameraLeft(delta)
+                MOVE_CAMERA_RIGHT_KEY -> moveCameraRight(delta)
+                MOVE_CAMERA_UP_KEY -> moveCameraUp(delta)
+                MOVE_CAMERA_DOWN_KEY -> moveCameraDown(delta)
+                ZOOM_CAMERA_IN_KEY -> zoomCameraIn(delta)
+                ZOOM_CAMERA_OUT_KEY -> zoomCameraOut(delta)
 
+            }
+            log.debug("mans debug CameraController $keycode ${Input.Keys.toString(keycode)}")
         }
-        log.debug("mans debug CameraController $keycode ${Input.Keys.toString(keycode)}")
         return false
     }
 
@@ -103,15 +105,16 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
-        touchPosition.set(x, y, 0f)
-        dummyCamera.unproject(touchPosition)
-        log.debug("mans debug tap $touchPosition")
+//        touchPosition.set(x, y, 0f)
+//        dummyCamera.unproject(touchPosition)
+//        log.debug("mans debug tap $touchPosition")
         return true
     }
 
     override fun longPress(x: Float, y: Float): Boolean {
-        log.debug("mans debug longPress x - $x 7 $y")
-
+        if (AppConfig.DEBUG_MODE) {
+            log.debug("mans debug longPress x - $x 7 $y")
+        }
         return false
     }
 
@@ -126,28 +129,27 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
-//        paņem skāriena sākuma koordinātes un nobīdes lielumus
-        panPositionStart.set(x, y, 0f)
-        panPositionEnd.set(x + deltaX, y + deltaY, 0f)
 
-//        log.debug("mans debug pirms $position $touchPosition")
+        if (AppConfig.DEBUG_MODE) {
+//        paņem skāriena sākuma koordinātes un nobīdes lielumus
+            panPositionStart.set(x, y, 0f)
+            panPositionEnd.set(x + deltaX, y + deltaY, 0f)
 
 //        projecē tos no pikseļiem uz pasaules vienībām
-        AppRenderer.camera.unproject(panPositionStart)
-        AppRenderer.camera.unproject(panPositionEnd)
+            AppRenderer.camera.unproject(panPositionStart)
+            AppRenderer.camera.unproject(panPositionEnd)
 
 //        paņem esošo kameras pozīciju un iestata to pagaidu kamerai
-        position.set(AppRenderer.camera.position.x, AppRenderer.camera.position.y)
-        dummyCamera.position.set(position, 0f)
+            position.set(AppRenderer.camera.position.x, AppRenderer.camera.position.y)
+            dummyCamera.position.set(position, 0f)
 //        aprēķina jauno pozīciju
-        dummyCamera.translate(
-            panPositionStart.x - panPositionEnd.x,
-            panPositionStart.y - panPositionEnd.y
-        )
+            dummyCamera.translate(
+                panPositionStart.x - panPositionEnd.x,
+                panPositionStart.y - panPositionEnd.y
+            )
 //          iestata jauno pozīciju
-        position.set(dummyCamera.position.x, dummyCamera.position.y)
-
-//        log.debug("mans debug pēc    $position $touchPosition")
+            position.set(dummyCamera.position.x, dummyCamera.position.y)
+        }
 
         return false
     }
@@ -157,17 +159,19 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     override fun zoom(initialDistance: Float, distance: Float): Boolean {
+        if (AppConfig.DEBUG_MODE) {
 //        teorētiski būtu labāk izmantot to pašu pieeju, kas pan metodē un izveidot tam funkciju
-        delta = Gdx.graphics.deltaTime
-        when {
-            initialDistance > distance -> zoomCameraOut(
-                delta,
-                abs((initialDistance - distance) / 1000)
-            )
-            initialDistance < distance -> zoomCameraIn(
-                delta,
-                abs((initialDistance - distance) / 1000)
-            )
+            delta = Gdx.graphics.deltaTime
+            when {
+                initialDistance > distance -> zoomCameraOut(
+                    delta,
+                    abs((initialDistance - distance) / 1000)
+                )
+                initialDistance < distance -> zoomCameraIn(
+                    delta,
+                    abs((initialDistance - distance) / 1000)
+                )
+            }
         }
 
         return false
