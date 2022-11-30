@@ -10,8 +10,10 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import config.AppConfig
+import ktx.math.div
 import screen.AppRenderer
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 
 //  CONSTANTS
 private const val CAMERA_ZOOM_SPEED = 0.5f
@@ -25,12 +27,6 @@ private val startPosition = Vector2(
     AppConfig.DEFAULT_WORLD_WIDTH / 2,
     AppConfig.DEFAULT_WORLD_HEIGHT / 2
 )
-
-private val zoomInCenterX: Float = 0f
-private val zoomInCenterY: Float = 0f
-private val zoomOutCenterX: Float = 0f
-private val zoomOutCenterY: Float = 0f
-
 
 private var delta = Gdx.graphics.deltaTime
 private var touchPosition = Vector3()
@@ -128,14 +124,16 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     override fun fling(velocityX: Float, velocityY: Float, button: Int): Boolean {
-//        log.debug("fling velocityX $velocityX, velocityY $velocityY , button $button")
+        log.debug("mans debug fling velocityX $velocityX, velocityY $velocityY , button $button")
 //          sistēmas appišana, neder
-//        if (velocityX == 0f && velocityY == 0f) {
-//            AppConfig.DEBUG_MODE = !AppConfig.DEBUG_MODE
-//        }
+        when {
+            movePageUpConditions(velocityX, velocityY) -> movePageUp()
+            movePageDownConditions(velocityX, velocityY) -> movePageDown()
+        }
 
         return false
     }
+
 
     override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
 
@@ -200,7 +198,25 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     override fun pinchStop() {
     }
 
-//    PRIVATE FUNCTIONS
+    //    PRIVATE FUNCTIONS
+
+    private fun movePageUpConditions(velocityX: Float, velocityY: Float): Boolean {
+        return abs(velocityX) < abs(velocityY) && velocityY > 0
+    }
+
+    private fun movePageUp() {
+        position.y = AppConfig.DEFAULT_WORLD_HEIGHT + (AppConfig.DEFAULT_WORLD_HEIGHT / 2)
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug moved up y=${position.y} ${AppRenderer.camera.position.y} x=${AppRenderer.camera.position.x}")
+    }
+
+    private fun movePageDownConditions(velocityX: Float, velocityY: Float): Boolean {
+        return abs(velocityX) < abs(velocityY) && velocityY < 0
+    }
+
+    private fun movePageDown() {
+        position.y = startPosition.y
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug moved down y=${position.y} ${AppRenderer.camera.position.y} x=${AppRenderer.camera.position.x}")
+    }
 
     private fun setPosition(x: Float, y: Float) {
         position.set(x, y)

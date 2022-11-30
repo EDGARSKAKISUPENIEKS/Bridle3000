@@ -18,6 +18,7 @@ class Bridle3000Main : Game() {
         setScreen(AppScreen(this))
 //        man neizportamu iemeslu dēļ šo var inicializēt tikai metodē
         val gestureDetector = GestureDetector(cameraController)
+        gestureDetector.setMaxFlingDelay((0.2 * 1000000000).toLong()) //nav ne mazākās jausmas kāpēc nanosekundēs
 
 
         inputPlexer.addProcessor(cameraController)
