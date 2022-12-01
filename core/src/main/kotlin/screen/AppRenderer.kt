@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import config.AppConfig
+import screen.pages.MainPage
 import utils.CameraController
 import utils.clearScreen
 import utils.drawDebugGrid
@@ -22,14 +23,14 @@ class AppRenderer : Disposable {
     companion object {
         private val log = logger(AppRenderer::class.java)
         val camera: OrthographicCamera = OrthographicCamera()
+        val mainPage: MainPage = MainPage()
     }
 
-    //    PROPERTIES
+    //    PRIVATE PROPERTIES
 
     private val viewport: Viewport =
         FitViewport(AppConfig.DEFAULT_WORLD_WIDTH, AppConfig.DEFAULT_WORLD_HEIGHT, camera)
     private val renderer: ShapeRenderer = ShapeRenderer()
-
     private val batch: SpriteBatch = SpriteBatch()
     private val image: Texture = Texture("libgdx.png")
     private val cameraController: CameraController = CameraController()
@@ -46,9 +47,9 @@ class AppRenderer : Disposable {
         cameraController.updateCameraPosition(camera)
         clearScreen(Color.BLACK)
 
-        if (AppConfig.DEBUG_MODE) {
-            renderDebug()
-        }
+        mainPage.render(renderer)
+        renderDebug()
+
     }
 
     fun resize(width: Int, height: Int) {
@@ -63,16 +64,17 @@ class AppRenderer : Disposable {
     }
 
     private fun renderDebug() {
-        renderer.projectionMatrix = camera.combined
+        if (AppConfig.DEBUG_MODE) {
+            renderer.projectionMatrix = camera.combined
 
-        batch.begin()
-        batch.draw(image, 140f, 210f)
-        batch.end()
+            batch.begin()
+            batch.draw(image, 140f, 210f)
+            batch.end()
 
 
 //        render current viewport world lines
-        viewport.drawDebugGrid(renderer)
-
+            viewport.drawDebugGrid(renderer)
+        }
     }
 
 }

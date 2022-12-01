@@ -10,10 +10,8 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import config.AppConfig
-import ktx.math.div
 import screen.AppRenderer
 import kotlin.math.abs
-import kotlin.math.absoluteValue
 
 //  CONSTANTS
 private const val CAMERA_ZOOM_SPEED = 0.5f
@@ -24,12 +22,10 @@ private const val CAMERA_MAX_ZOOM_IN = 0.25f
 //  PRIVATE PROPERTIES
 private val position = Vector2()
 private val startPosition = Vector2(
-    AppConfig.DEFAULT_WORLD_WIDTH / 2,
-    AppConfig.DEFAULT_WORLD_HEIGHT / 2
+
 )
 
 private var delta = Gdx.graphics.deltaTime
-private var touchPosition = Vector3()
 private var panPositionStart = Vector3()
 private var panPositionEnd = Vector3()
 private var zoom = 1f
@@ -201,7 +197,10 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     //    PRIVATE FUNCTIONS
 
     private fun movePageUpConditions(velocityX: Float, velocityY: Float): Boolean {
-        return abs(velocityX) < abs(velocityY) && velocityY > 0
+        return (
+                abs(velocityX) < abs(velocityY)
+                        && velocityY > 0
+                )
     }
 
     private fun movePageUp() {
@@ -210,7 +209,10 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     private fun movePageDownConditions(velocityX: Float, velocityY: Float): Boolean {
-        return abs(velocityX) < abs(velocityY) && velocityY < 0
+        return (
+                abs(velocityX) < abs(velocityY)
+                        && velocityY < 0
+                )
     }
 
     private fun movePageDown() {
