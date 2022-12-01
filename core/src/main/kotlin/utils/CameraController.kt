@@ -20,6 +20,7 @@ private const val CAMERA_MAX_ZOOM_OUT = 5f
 private const val CAMERA_MAX_ZOOM_IN = 0.25f
 
 //  PRIVATE PROPERTIES
+
 private val position = Vector2()
 private val startPosition = Vector2(
 
@@ -56,6 +57,11 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
 
     companion object {
         private val log = logger(CameraController::class.java)
+        private var pages: MutableMap<Int, Vector2> = mutableMapOf()
+    }
+
+    init {
+        pages[AppRenderer.mainPage.id] = AppRenderer.mainPage.position
     }
 
     //  PUBLIC FUNCTIONS
