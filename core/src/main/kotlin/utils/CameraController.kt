@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import config.AppConfig
 import screen.AppRenderer
+import utils.CameraController.Companion.pages
 import kotlin.math.abs
 
 //  CONSTANTS
@@ -22,9 +23,7 @@ private const val CAMERA_MAX_ZOOM_IN = 0.25f
 //  PRIVATE PROPERTIES
 
 private val position = Vector2()
-private val startPosition = Vector2(
-
-)
+private val startPosition = Vector2()
 
 private var delta = Gdx.graphics.deltaTime
 private var panPositionStart = Vector3()
@@ -63,6 +62,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     //  PUBLIC FUNCTIONS
 
     fun setCameraToStartPosition() {
+        startPosition.set(pages[AppRenderer.mainPage.id])
         position.set(startPosition)
     }
 

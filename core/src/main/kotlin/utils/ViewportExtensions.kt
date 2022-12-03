@@ -3,13 +3,13 @@ package utils
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.viewport.Viewport
-import screen.AppController
 
-var oldColor = Color.BLACK
-var currentWorldWidth: Float = 0f
-var currentWorldHeight: Float = 0f
-var currentXLine: Float = 0f
-var currentYLine: Float = 0f
+private var oldColor = Color.BLACK
+private var totalWorldWidth: Float = 0f
+private var totalWorldHeight: Float = 0f
+private var currentXLine: Float = 0f
+private var currentYLine: Float = 0f
+private var pageBoundAdjustment = 0.04f
 
 
 fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
@@ -19,8 +19,8 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
 
 
     //    get world height and with from Viewport class
-    currentWorldWidth = worldWidth * 4 // četras lapas horizontāli
-    currentWorldHeight = worldHeight * 2 // divas lapas vertikāli
+    totalWorldWidth = worldWidth * 4 // četras lapas horizontāli
+    totalWorldHeight = worldHeight * 2 // divas lapas vertikāli
 
 //    viwport apply gadījumā, ja tiks izmantoti vairāki viewport
     apply()
@@ -30,32 +30,100 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
 
 //    draw Y axis lines
     currentXLine = 0f
-    while (currentXLine <= currentWorldWidth) {
-        renderer.line(currentXLine, 0f, currentXLine, currentWorldHeight)
+    while (currentXLine <= totalWorldWidth) {
+        renderer.line(currentXLine, 0f, currentXLine, totalWorldHeight)
         currentXLine += cellSize
     }
 
 //    draw X axis lines
     currentYLine = 0f
-    while (currentYLine <= currentWorldHeight) {
-        renderer.line(0f, currentYLine, currentWorldWidth, currentYLine)
+    while (currentYLine <= totalWorldHeight) {
+        renderer.line(0f, currentYLine, totalWorldWidth, currentYLine)
         currentYLine += cellSize
     }
 
 //    x axis
     renderer.color = Color.RED
-    renderer.line(-currentWorldHeight, 0f, currentWorldWidth, 0f)
+    renderer.line(0f, 0f, totalWorldWidth, 0f)
 //    y axis
     renderer.color = Color.GREEN
-    renderer.line(0f, -currentWorldWidth, 0f, currentWorldWidth)
+    renderer.line(0f, 0f, 0f, totalWorldHeight)
 
-//    draw world bounds
+//    draw contours of pages
     renderer.color = Color.YELLOW
-    renderer.line(0f, worldHeight, worldWidth, worldHeight)
-    renderer.line(worldWidth, worldHeight, worldWidth, 0f)
+//    renderer.line(0f, worldHeight, worldWidth, worldHeight)
+//    renderer.line(worldWidth, worldHeight, worldWidth, 0f)
 
+//    PIRMĀ LAPA
+//    augšmala
+    renderer.line(
+        0f + pageBoundAdjustment,
+        worldHeight - pageBoundAdjustment,
+        worldWidth - pageBoundAdjustment,
+        worldHeight - pageBoundAdjustment
+    )
+//    labā mala
+    renderer.line(
+        worldWidth - pageBoundAdjustment,
+        worldHeight - pageBoundAdjustment,
+        worldWidth - pageBoundAdjustment,
+        0f + pageBoundAdjustment
+    )
+//    apakšmala
+    renderer.line(
+        worldWidth - pageBoundAdjustment,
+        0f + pageBoundAdjustment,
+        0f + pageBoundAdjustment,
+        0f + pageBoundAdjustment
+    )
+//    kreisā mala
+    renderer.line(
+        0f + pageBoundAdjustment,
+        0f + pageBoundAdjustment,
+        0f + pageBoundAdjustment,
+        worldHeight - pageBoundAdjustment
+    )
+
+
+//    OTRĀ LAPA
+//    augšmala
+    renderer.line(
+        worldWidth + pageBoundAdjustment,
+        worldHeight - pageBoundAdjustment,
+        worldWidth * 2 - pageBoundAdjustment,
+        worldHeight - pageBoundAdjustment
+    )
+
+//    labā lapa
+    renderer.line(
+        worldWidth * 2 - pageBoundAdjustment,
+        worldHeight - pageBoundAdjustment,
+        worldWidth * 2 - pageBoundAdjustment,
+        0f + pageBoundAdjustment
+    )
+//    apakšmala
+    renderer.line(
+        worldWidth * 2 - pageBoundAdjustment,
+        0f + pageBoundAdjustment,
+        worldWidth + pageBoundAdjustment,
+        0f + pageBoundAdjustment
+    )
+//    kreisā mala
+    renderer.line(
+        worldWidth + pageBoundAdjustment,
+        0f + pageBoundAdjustment,
+        worldWidth + pageBoundAdjustment,
+        worldHeight - pageBoundAdjustment
+    )
+
+//    TREŠĀ LAPA
+//    augšmala
+
+
+
+//    CETURTĀ LAPA
 // otrā stāva augša četras lapas horizontāli, bet otrajā stāvā tikai viena lapa (ceturtās lapas augša)
-//    renderer.line(0f, currentWorldHeight, currentWorldWidth, currentWorldHeight / 4)
+    renderer.line(0f, totalWorldHeight, totalWorldWidth / 4, totalWorldHeight)
 
     renderer.end()
 }
