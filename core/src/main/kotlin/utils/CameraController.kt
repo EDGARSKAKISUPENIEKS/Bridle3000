@@ -57,11 +57,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
 
     companion object {
         private val log = logger(CameraController::class.java)
-        private var pages: MutableMap<Int, Vector2> = mutableMapOf()
-    }
-
-    init {
-        pages[AppRenderer.mainPage.id] = AppRenderer.mainPage.position
+        var pages: MutableMap<Int, Vector2> = mutableMapOf()
     }
 
     //  PUBLIC FUNCTIONS

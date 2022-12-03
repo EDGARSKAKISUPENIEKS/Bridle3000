@@ -12,7 +12,10 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import config.AppConfig
+import screen.pages.FourthPage
 import screen.pages.MainPage
+import screen.pages.SecondPage
+import screen.pages.ThirdPage
 import utils.CameraController
 import utils.clearScreen
 import utils.drawDebugGrid
@@ -24,6 +27,9 @@ class AppRenderer : Disposable {
         private val log = logger(AppRenderer::class.java)
         val camera: OrthographicCamera = OrthographicCamera()
         val mainPage: MainPage = MainPage()
+        val secondPage: SecondPage = SecondPage()
+        val thirdPage: ThirdPage = ThirdPage()
+        val fourthPage: FourthPage = FourthPage()
     }
 
     //    PRIVATE PROPERTIES
@@ -48,6 +54,9 @@ class AppRenderer : Disposable {
         clearScreen(Color.BLACK)
 
         mainPage.render(renderer)
+        secondPage.render(renderer)
+        thirdPage.render(renderer)
+        fourthPage.render(renderer)
         renderDebug()
 
     }
