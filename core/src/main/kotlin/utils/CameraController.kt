@@ -50,6 +50,7 @@ private const val DEBUG_MODE_KEY: Int = Input.Keys.M
 private const val CAMERA_POS_MAIN_SCREEN: Int = Input.Keys.NUMPAD_1
 private const val CAMERA_POS_SECOND_SCREEN: Int = Input.Keys.NUMPAD_2
 private const val CAMERA_POS_THIRD_SCREEN: Int = Input.Keys.NUMPAD_3
+private const val CAMERA_POS_FOURTH_SCREEN: Int = Input.Keys.NUMPAD_4
 
 
 class CameraController : InputAdapter(), GestureDetector.GestureListener {
