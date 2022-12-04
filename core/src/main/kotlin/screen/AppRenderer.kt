@@ -35,7 +35,7 @@ class AppRenderer : Disposable {
     //    PRIVATE PROPERTIES
 
     private val viewport: Viewport =
-        FitViewport(AppConfig.DEFAULT_WORLD_WIDTH, AppConfig.DEFAULT_WORLD_HEIGHT, camera)
+        FitViewport(AppController.worldWidth, AppController.worldHeight, camera)
     private val renderer: ShapeRenderer = ShapeRenderer()
     private val batch: SpriteBatch = SpriteBatch()
     private val image: Texture = Texture("libgdx.png")

@@ -3,8 +3,12 @@ package utils
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.viewport.Viewport
+import screen.AppScreen
 
 private var oldColor = Color.BLACK
+
+private var currentWorldWidth = 0f
+private var currentWorldHeight = 0f
 private var totalWorldWidth: Float = 0f
 private var totalWorldHeight: Float = 0f
 private var currentXLine: Float = 0f
@@ -17,10 +21,11 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
 //    copy old renderer color
     oldColor = renderer.color.cpy()
 
+    currentWorldWidth = AppScreen.controller.worldWidth
+    currentWorldHeight = AppScreen.controller.worldHeight
+    totalWorldWidth = currentWorldWidth * 3 // trīs lapas horizontāli
+    totalWorldHeight = currentWorldHeight * 2 // divas lapas vertikāli
 
-    //    get world height and with from Viewport class
-    totalWorldWidth = worldWidth * 3 // trīs lapas horizontāli
-    totalWorldHeight = worldHeight * 2 // divas lapas vertikāli
 
 //    viwport apply gadījumā, ja tiks izmantoti vairāki viewport
     apply()
@@ -33,18 +38,18 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
     while (currentXLine <= totalWorldWidth) {
         when {
 
-            currentXLine <= worldWidth -> renderer.line(
+            currentXLine <= currentWorldWidth -> renderer.line(
                 currentXLine,
                 0f,
                 currentXLine,
                 totalWorldHeight
             )
 
-            currentXLine >= worldWidth -> renderer.line(
+            currentXLine >= currentWorldWidth -> renderer.line(
                 currentXLine,
                 0f,
                 currentXLine,
-                worldHeight
+                currentWorldHeight
             )
         }
         currentXLine += cellSize
@@ -55,17 +60,17 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
     while (currentYLine <= totalWorldHeight) {
         when {
 
-            currentYLine <= worldHeight -> renderer.line(
+            currentYLine <= currentWorldHeight -> renderer.line(
                 0f,
                 currentYLine,
                 totalWorldWidth,
                 currentYLine
             )
 
-            currentYLine >= worldHeight -> renderer.line(
+            currentYLine >= currentWorldHeight -> renderer.line(
                 0f,
                 currentYLine,
-                worldWidth,
+                currentWorldWidth,
                 currentYLine
             )
         }
@@ -88,20 +93,20 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
 //    augšmala
     renderer.line(
         0f + pageBoundAdjustment,
-        worldHeight - pageBoundAdjustment,
-        worldWidth - pageBoundAdjustment,
-        worldHeight - pageBoundAdjustment
+        currentWorldHeight - pageBoundAdjustment,
+        currentWorldWidth - pageBoundAdjustment,
+        currentWorldHeight - pageBoundAdjustment
     )
 //    labā mala
     renderer.line(
-        worldWidth - pageBoundAdjustment,
-        worldHeight - pageBoundAdjustment,
-        worldWidth - pageBoundAdjustment,
+        currentWorldWidth - pageBoundAdjustment,
+        currentWorldHeight - pageBoundAdjustment,
+        currentWorldWidth - pageBoundAdjustment,
         0f + pageBoundAdjustment
     )
 //    apakšmala
     renderer.line(
-        worldWidth - pageBoundAdjustment,
+        currentWorldWidth - pageBoundAdjustment,
         0f + pageBoundAdjustment,
         0f + pageBoundAdjustment,
         0f + pageBoundAdjustment
@@ -111,72 +116,72 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
         0f + pageBoundAdjustment,
         0f + pageBoundAdjustment,
         0f + pageBoundAdjustment,
-        worldHeight - pageBoundAdjustment
+        currentWorldHeight - pageBoundAdjustment
     )
 
 
 //    OTRĀ LAPA
 //    augšmala
     renderer.line(
-        worldWidth + pageBoundAdjustment,
-        worldHeight - pageBoundAdjustment,
-        worldWidth * 2 - pageBoundAdjustment,
-        worldHeight - pageBoundAdjustment
+        currentWorldWidth + pageBoundAdjustment,
+        currentWorldHeight - pageBoundAdjustment,
+        currentWorldWidth * 2 - pageBoundAdjustment,
+        currentWorldHeight - pageBoundAdjustment
     )
 
 //    labā lapa
     renderer.line(
-        worldWidth * 2 - pageBoundAdjustment,
-        worldHeight - pageBoundAdjustment,
-        worldWidth * 2 - pageBoundAdjustment,
+        currentWorldWidth * 2 - pageBoundAdjustment,
+        currentWorldHeight - pageBoundAdjustment,
+        currentWorldWidth * 2 - pageBoundAdjustment,
         0f + pageBoundAdjustment
     )
 //    apakšmala
     renderer.line(
-        worldWidth * 2 - pageBoundAdjustment,
+        currentWorldWidth * 2 - pageBoundAdjustment,
         0f + pageBoundAdjustment,
-        worldWidth + pageBoundAdjustment,
+        currentWorldWidth + pageBoundAdjustment,
         0f + pageBoundAdjustment
     )
 //    kreisā mala
     renderer.line(
-        worldWidth + pageBoundAdjustment,
+        currentWorldWidth + pageBoundAdjustment,
         0f + pageBoundAdjustment,
-        worldWidth + pageBoundAdjustment,
-        worldHeight - pageBoundAdjustment
+        currentWorldWidth + pageBoundAdjustment,
+        currentWorldHeight - pageBoundAdjustment
     )
 
 //    TREŠĀ LAPA
 //    augšmala
     renderer.line(
-        worldWidth * 2 + pageBoundAdjustment,
-        worldHeight - pageBoundAdjustment,
-        worldWidth * 3 - pageBoundAdjustment,
-        worldHeight - pageBoundAdjustment
+        currentWorldWidth * 2 + pageBoundAdjustment,
+        currentWorldHeight - pageBoundAdjustment,
+        currentWorldWidth * 3 - pageBoundAdjustment,
+        currentWorldHeight - pageBoundAdjustment
     )
 
 //    labā mala
     renderer.line(
-        worldWidth * 3 - pageBoundAdjustment,
-        worldHeight - pageBoundAdjustment,
-        worldWidth * 3 - pageBoundAdjustment,
+        currentWorldWidth * 3 - pageBoundAdjustment,
+        currentWorldHeight - pageBoundAdjustment,
+        currentWorldWidth * 3 - pageBoundAdjustment,
         0f + pageBoundAdjustment
     )
 
 //    apakšmala
     renderer.line(
-        worldWidth * 3 - pageBoundAdjustment,
+        currentWorldWidth * 3 - pageBoundAdjustment,
         0f + pageBoundAdjustment,
-        worldWidth * 2 + pageBoundAdjustment,
+        currentWorldWidth * 2 + pageBoundAdjustment,
         0f + pageBoundAdjustment
     )
 
 //    kreisā mala
     renderer.line(
-        worldWidth * 2 + pageBoundAdjustment,
+        currentWorldWidth * 2 + pageBoundAdjustment,
         0f + pageBoundAdjustment,
-        worldWidth * 2 + pageBoundAdjustment,
-        worldHeight - pageBoundAdjustment
+        currentWorldWidth * 2 + pageBoundAdjustment,
+        currentWorldHeight - pageBoundAdjustment
     )
 
 //    CETURTĀ LAPA
@@ -184,33 +189,33 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
 //    augšmala
     renderer.line(
         0f + pageBoundAdjustment,
-        worldHeight * 2 - pageBoundAdjustment,
-        worldWidth - pageBoundAdjustment,
-        worldHeight * 2 - pageBoundAdjustment
+        currentWorldHeight * 2 - pageBoundAdjustment,
+        currentWorldWidth - pageBoundAdjustment,
+        currentWorldHeight * 2 - pageBoundAdjustment
     )
 
 //    labā mala
     renderer.line(
-        worldWidth - pageBoundAdjustment,
-        worldHeight * 2 - pageBoundAdjustment,
-        worldWidth - pageBoundAdjustment,
-        worldHeight + pageBoundAdjustment
+        currentWorldWidth - pageBoundAdjustment,
+        currentWorldHeight * 2 - pageBoundAdjustment,
+        currentWorldWidth - pageBoundAdjustment,
+        currentWorldHeight + pageBoundAdjustment
     )
 
 //    apakšmala
     renderer.line(
-        worldWidth - pageBoundAdjustment,
-        worldHeight + pageBoundAdjustment,
+        currentWorldWidth - pageBoundAdjustment,
+        currentWorldHeight + pageBoundAdjustment,
         0f + pageBoundAdjustment,
-        worldHeight + pageBoundAdjustment
+        currentWorldHeight + pageBoundAdjustment
     )
 
 //    kreisā mala
     renderer.line(
         0f + pageBoundAdjustment,
-        worldHeight + pageBoundAdjustment,
+        currentWorldHeight + pageBoundAdjustment,
         0f + pageBoundAdjustment,
-        worldHeight * 2 - pageBoundAdjustment
+        currentWorldHeight * 2 - pageBoundAdjustment
     )
 
     renderer.end()

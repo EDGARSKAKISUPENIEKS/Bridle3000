@@ -6,7 +6,7 @@ import screen.AppController
 import utils.CameraController
 
 // virs MainPage
-private var vectorX: Float = AppController.worldWith / 2
+private var vectorX: Float = AppController.worldWidth / 2
 private var vectorY: Float = (AppController.worldHeight / 2) + AppController.worldHeight
 
 class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
@@ -20,7 +20,7 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
     }
 
     override fun updateSize() {
-        this.position.x = AppController.worldWith / 2
+        this.position.x = AppController.worldWidth / 2
         this.position.y = (AppController.worldHeight / 2) + (AppController.worldHeight)
         CameraController.pages[this.id] = this.position
     }

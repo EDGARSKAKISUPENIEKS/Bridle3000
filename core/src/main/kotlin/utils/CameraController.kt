@@ -10,8 +10,9 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import config.AppConfig
+import screen.AppScreen.Companion.controller
 import screen.AppRenderer
-import utils.CameraController.Companion.pages
+import screen.AppScreen
 import kotlin.math.abs
 
 //  CONSTANTS
@@ -24,7 +25,7 @@ private const val CAMERA_MAX_ZOOM_IN = 0.25f
 
 private val position = Vector2()
 private val startPosition = Vector2()
-
+private var touchPosition = Vector3()
 private var delta = Gdx.graphics.deltaTime
 private var panPositionStart = Vector3()
 private var panPositionEnd = Vector3()
@@ -37,6 +38,15 @@ private var dummyCamera = OrthographicCamera()
         field = AppRenderer.camera
         return field
     }
+
+private val innerUp: Float
+    get() = (controller.worldHeight / 3) * 2
+private val innerRight: Float
+    get() = (controller.worldWidth / 3) * 2
+private val innerDown: Float
+    get() = controller.worldHeight / 3
+private val innerLeft: Float
+    get() = controller.worldWidth / 3
 
 
 //  DEBUG CAMERA CONTROLS AND SETTINGS
@@ -51,6 +61,11 @@ private const val CAMERA_POS_MAIN_SCREEN: Int = Input.Keys.NUMPAD_1
 private const val CAMERA_POS_SECOND_SCREEN: Int = Input.Keys.NUMPAD_2
 private const val CAMERA_POS_THIRD_SCREEN: Int = Input.Keys.NUMPAD_3
 private const val CAMERA_POS_FOURTH_SCREEN: Int = Input.Keys.NUMPAD_4
+
+private const val WORLD_HEIGHT_PLUS: Int = Input.Keys.UP
+private const val WORLD_HEIGHT_MINUS: Int = Input.Keys.DOWN
+private const val WORLD_WIDTH_PLUS: Int = Input.Keys.RIGHT
+private const val WORLD_WIDTH_MINUS: Int = Input.Keys.LEFT
 
 
 class CameraController : InputAdapter(), GestureDetector.GestureListener {
@@ -82,7 +97,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
         }
 
 
-//        DEBUG CONTROLS/
+//        DEBUG KEYBOARD CONTROLS
         if (AppConfig.DEBUG_MODE) {
             when (keycode) {
                 MOVE_CAMERA_LEFT_KEY -> moveCameraLeft(delta)
@@ -91,12 +106,17 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
                 MOVE_CAMERA_DOWN_KEY -> moveCameraDown(delta)
                 ZOOM_CAMERA_IN_KEY -> zoomCameraIn(delta)
                 ZOOM_CAMERA_OUT_KEY -> zoomCameraOut(delta)
+
+                WORLD_HEIGHT_PLUS -> controller.incrementWorldHeight("up")
+                WORLD_HEIGHT_MINUS -> controller.incrementWorldHeight("down")
+                WORLD_WIDTH_PLUS -> controller.incrementWorldWidth("up")
+                WORLD_WIDTH_MINUS -> controller.incrementWorldWidth("down")
             }
             log.debug("mans debug CameraController $keycode ${Input.Keys.toString(keycode)}")
+            log.debug("mans debug CameraController ${AppScreen.controller.worldHeight}")
         }
         return false
     }
-
 
 
     // GESTURE LISTENER FUNCTIONS
@@ -108,10 +128,19 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     override fun tap(x: Float, y: Float, count: Int, button: Int): Boolean {
-//        touchPosition.set(x, y, 0f)
-//        dummyCamera.unproject(touchPosition)
-//        log.debug("mans debug tap $touchPosition")
-        return true
+        touchPosition.set(x, y, 0f)
+        AppRenderer.camera.unproject(touchPosition)
+
+        when {
+            touchPosition.x in innerRight..controller.worldWidth -> controller.incrementWorldWidth("up")
+            touchPosition.x in 0f..innerLeft -> controller.incrementWorldWidth("down")
+            touchPosition.y in innerUp..controller.worldHeight -> controller.incrementWorldHeight("up")
+            touchPosition.y in 0f..innerDown -> controller.incrementWorldHeight("down")
+        }
+
+        log.debug("mans debug tap $touchPosition")
+        log.debug("mans debug ${controller.worldWidth} ${controller.worldHeight}")
+        return false
     }
 
     override fun longPress(x: Float, y: Float): Boolean {

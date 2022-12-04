@@ -6,7 +6,7 @@ import screen.AppController
 import utils.CameraController
 
 // pa labi no galvenās, tanī pašā augstumā
-private var vectorX: Float = (AppController.worldWith / 2) + AppController.worldWith
+private var vectorX: Float = (AppController.worldWidth / 2) + AppController.worldWidth
 private var vectorY: Float = AppController.worldHeight / 2
 
 class SecondPage : Page(2, Vector2(vectorX, vectorY)) {
@@ -22,7 +22,7 @@ class SecondPage : Page(2, Vector2(vectorX, vectorY)) {
     }
 
     override fun updateSize() {
-        this.position.x = (AppController.worldWith / 2) + AppController.worldWith
+        this.position.x = (AppController.worldWidth / 2) + AppController.worldWidth
         this.position.y = AppController.worldHeight / 2
         CameraController.pages[this.id] = this.position
     }

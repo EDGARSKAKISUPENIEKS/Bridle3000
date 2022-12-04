@@ -6,8 +6,12 @@ import com.badlogic.gdx.Screen
 
 class AppScreen(val application: Bridle3000Main) : Screen, InputMultiplexer() {
 
-    private var renderer: AppRenderer = AppRenderer()
-    private var controler: AppController = AppController
+
+
+    companion object {
+        var renderer: AppRenderer = AppRenderer()
+        var controller: AppController = AppController
+    }
 
 
     override fun show() {
@@ -15,7 +19,7 @@ class AppScreen(val application: Bridle3000Main) : Screen, InputMultiplexer() {
     }
 
     override fun render(delta: Float) {
-//        controler.uptade()
+//        controler.update()
 //        Appscreen izsauc renderer un controler, kur katrs ir InputProcessor un screen ir multiplexer
 //        jāizdomā tikai kā implementēt procesoru neaizdirošot renderer ujn controler klases
 
