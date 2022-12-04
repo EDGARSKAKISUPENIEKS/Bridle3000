@@ -19,7 +19,7 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
 
 
     //    get world height and with from Viewport class
-    totalWorldWidth = worldWidth * 4 // četras lapas horizontāli
+    totalWorldWidth = worldWidth * 3 // trīs lapas horizontāli
     totalWorldHeight = worldHeight * 2 // divas lapas vertikāli
 
 //    viwport apply gadījumā, ja tiks izmantoti vairāki viewport
@@ -31,14 +31,44 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
 //    draw Y axis lines
     currentXLine = 0f
     while (currentXLine <= totalWorldWidth) {
-        renderer.line(currentXLine, 0f, currentXLine, totalWorldHeight)
+        when {
+
+            currentXLine <= worldWidth -> renderer.line(
+                currentXLine,
+                0f,
+                currentXLine,
+                totalWorldHeight
+            )
+
+            currentXLine >= worldWidth -> renderer.line(
+                currentXLine,
+                0f,
+                currentXLine,
+                worldHeight
+            )
+        }
         currentXLine += cellSize
     }
 
 //    draw X axis lines
     currentYLine = 0f
     while (currentYLine <= totalWorldHeight) {
-        renderer.line(0f, currentYLine, totalWorldWidth, currentYLine)
+        when {
+
+            currentYLine <= worldHeight -> renderer.line(
+                0f,
+                currentYLine,
+                totalWorldWidth,
+                currentYLine
+            )
+
+            currentYLine >= worldHeight -> renderer.line(
+                0f,
+                currentYLine,
+                worldWidth,
+                currentYLine
+            )
+        }
         currentYLine += cellSize
     }
 
@@ -118,12 +148,70 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
 
 //    TREŠĀ LAPA
 //    augšmala
+    renderer.line(
+        worldWidth * 2 + pageBoundAdjustment,
+        worldHeight - pageBoundAdjustment,
+        worldWidth * 3 - pageBoundAdjustment,
+        worldHeight - pageBoundAdjustment
+    )
 
+//    labā mala
+    renderer.line(
+        worldWidth * 3 - pageBoundAdjustment,
+        worldHeight - pageBoundAdjustment,
+        worldWidth * 3 - pageBoundAdjustment,
+        0f + pageBoundAdjustment
+    )
 
+//    apakšmala
+    renderer.line(
+        worldWidth * 3 - pageBoundAdjustment,
+        0f + pageBoundAdjustment,
+        worldWidth * 2 + pageBoundAdjustment,
+        0f + pageBoundAdjustment
+    )
+
+//    kreisā mala
+    renderer.line(
+        worldWidth * 2 + pageBoundAdjustment,
+        0f + pageBoundAdjustment,
+        worldWidth * 2 + pageBoundAdjustment,
+        worldHeight - pageBoundAdjustment
+    )
 
 //    CETURTĀ LAPA
 // otrā stāva augša četras lapas horizontāli, bet otrajā stāvā tikai viena lapa (ceturtās lapas augša)
-    renderer.line(0f, totalWorldHeight, totalWorldWidth / 4, totalWorldHeight)
+//    augšmala
+    renderer.line(
+        0f + pageBoundAdjustment,
+        worldHeight * 2 - pageBoundAdjustment,
+        worldWidth - pageBoundAdjustment,
+        worldHeight * 2 - pageBoundAdjustment
+    )
+
+//    labā mala
+    renderer.line(
+        worldWidth - pageBoundAdjustment,
+        worldHeight * 2 - pageBoundAdjustment,
+        worldWidth - pageBoundAdjustment,
+        worldHeight + pageBoundAdjustment
+    )
+
+//    apakšmala
+    renderer.line(
+        worldWidth - pageBoundAdjustment,
+        worldHeight + pageBoundAdjustment,
+        0f + pageBoundAdjustment,
+        worldHeight + pageBoundAdjustment
+    )
+
+//    kreisā mala
+    renderer.line(
+        0f + pageBoundAdjustment,
+        worldHeight + pageBoundAdjustment,
+        0f + pageBoundAdjustment,
+        worldHeight * 2 - pageBoundAdjustment
+    )
 
     renderer.end()
 }

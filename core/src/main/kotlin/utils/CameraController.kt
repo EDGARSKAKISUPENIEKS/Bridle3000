@@ -97,6 +97,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
 
+
     // GESTURE LISTENER FUNCTIONS
 
 
