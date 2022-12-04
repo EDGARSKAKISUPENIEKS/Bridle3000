@@ -7,8 +7,9 @@ import utils.CameraController
 /** [com.badlogic.gdx.ApplicationListener] implementation shared by all platforms.  */
 class Bridle3000Main : Game() {
 
-
-    private val cameraController = CameraController()
+    companion object{
+        val cameraController = CameraController()
+    }
     private val inputPlexer = InputMultiplexer()
 
 

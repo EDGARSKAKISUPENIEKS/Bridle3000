@@ -1,6 +1,7 @@
 package screen
 
 
+import Bridle3000Main.Companion.cameraController
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
@@ -16,7 +17,6 @@ import screen.pages.FourthPage
 import screen.pages.MainPage
 import screen.pages.SecondPage
 import screen.pages.ThirdPage
-import utils.CameraController
 import utils.clearScreen
 import utils.drawDebugGrid
 import utils.logger
@@ -39,7 +39,7 @@ class AppRenderer : Disposable {
     private val renderer: ShapeRenderer = ShapeRenderer()
     private val batch: SpriteBatch = SpriteBatch()
     private val image: Texture = Texture("libgdx.png")
-    private val cameraController: CameraController = CameraController()
+//    private val cameraController: CameraController = CameraController()
 
 
     init {
