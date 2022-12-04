@@ -237,7 +237,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     private fun movePageUp() {
-        position.y = AppConfig.DEFAULT_WORLD_HEIGHT + (AppConfig.DEFAULT_WORLD_HEIGHT / 2)
+        position.y = controller.worldHeight + (controller.worldHeight / 2)
         if (AppConfig.DEBUG_MODE) log.debug("mans debug moved up y=${position.y} ${AppRenderer.camera.position.y} x=${AppRenderer.camera.position.x}")
     }
 
