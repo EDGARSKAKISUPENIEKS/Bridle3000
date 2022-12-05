@@ -3,7 +3,7 @@ package utils
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.viewport.Viewport
-import screen.AppScreen
+import screen.AppScreen.Companion.controller
 
 private var oldColor = Color.BLACK
 
@@ -21,8 +21,8 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
 //    copy old renderer color
     oldColor = renderer.color.cpy()
 
-    currentWorldWidth = AppScreen.controller.worldWidth
-    currentWorldHeight = AppScreen.controller.worldHeight
+    currentWorldWidth = controller.worldWidth
+    currentWorldHeight = controller.worldHeight
     totalWorldWidth = currentWorldWidth * 3 // trīs lapas horizontāli
     totalWorldHeight = currentWorldHeight * 2 // divas lapas vertikāli
 
