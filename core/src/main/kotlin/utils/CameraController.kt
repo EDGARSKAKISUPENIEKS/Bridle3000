@@ -268,8 +268,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
 
     private fun movePageUpConditions(velocityX: Float, velocityY: Float): Boolean {
         return (
-                abs(velocityX) < abs(velocityY)
-                        && velocityY > 0
+                abs(velocityX) < abs(velocityY) && velocityY > 0
                 )
     }
 
@@ -282,14 +281,14 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
 
     private fun movePageDownConditions(velocityX: Float, velocityY: Float): Boolean {
         return (
-                abs(velocityX) < abs(velocityY)
-                        && velocityY < 0
+                abs(velocityX) < abs(velocityY) && velocityY < 0
                 )
     }
 
     private fun movePageDown() {
-        position.y = startPosition.y
-        if (AppConfig.DEBUG_MODE) log.debug("mans debug moved down y=${position.y} ${AppRenderer.camera.position.y} x=${AppRenderer.camera.position.x}")
+        targetPosition = pages[AppRenderer.mainPage.id]!!
+        AppController.activePage = AppRenderer.mainPage.id
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug moved down $position x=$targetPosition")
     }
 
     private fun setPosition(x: Float, y: Float) {
