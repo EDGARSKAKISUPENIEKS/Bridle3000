@@ -1,20 +1,16 @@
 package screen
 
 import config.AppConfig
+import utils.CameraController.Companion.pages
 
 object AppController {
     var worldWidth: Float = AppConfig.DEFAULT_WORLD_WIDTH
         private set
     var worldHeight: Float = AppConfig.DEFAULT_WORLD_HEIGHT
         private set
-    var activePage: Int = 0
+    var activePage: Int = 1
         set(value) {
-//            field = value.coerceIn(1, 3)  //  variants, ja galos apstājas
-            if (value < 1) {
-                field = 3
-            } else if (value > 3) {
-                field = 1
-            }
+            field = value.coerceIn(1, pages.size)  //  variants, ja galos apstājas
         }
 
     fun incrementWorldWidth(string: String) {

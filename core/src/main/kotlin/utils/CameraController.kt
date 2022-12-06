@@ -82,6 +82,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     fun setCameraToStartPosition() {
         targetPosition.set(pages[AppRenderer.mainPage.id])
         position.set(targetPosition)
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug start $position x=$targetPosition ${controller.activePage}")
     }
 
     fun updateCameraPosition(camera: OrthographicCamera) {
@@ -196,6 +197,8 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
         when {
             movePageUpConditions(velocityX, velocityY) -> movePageUp()
             movePageDownConditions(velocityX, velocityY) -> movePageDown()
+            movePageRightConditions(velocityX, velocityY) -> movePageRight()
+            movePageLeftConditions(velocityX, velocityY) -> movePageLeft()
         }
 
         return false
@@ -267,28 +270,48 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     //    PRIVATE FUNCTIONS
 
     private fun movePageUpConditions(velocityX: Float, velocityY: Float): Boolean {
-        return (
-                abs(velocityX) < abs(velocityY) && velocityY > 0
-                )
+        return (abs(velocityX) < abs(velocityY) && velocityY > 0)
     }
 
     private fun movePageUp() {
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug before moved up  $position x=$targetPosition ${controller.activePage}")
         targetPosition = pages[AppRenderer.fourthPage.id]!!
-        AppController.activePage = AppRenderer.fourthPage.id
+        controller.activePage = 4
         //TODO(padomāt vai nevajag te lietot activate() no klases funkcijām)
-        if (AppConfig.DEBUG_MODE) log.debug("mans debug moved up  $position x=$targetPosition")
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug moved up  $position x=$targetPosition ${controller.activePage}")
     }
 
     private fun movePageDownConditions(velocityX: Float, velocityY: Float): Boolean {
-        return (
-                abs(velocityX) < abs(velocityY) && velocityY < 0
-                )
+        return (abs(velocityX) < abs(velocityY) && velocityY < 0)
     }
 
     private fun movePageDown() {
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug before moved down $position x=$targetPosition ${controller.activePage}")
         targetPosition = pages[AppRenderer.mainPage.id]!!
-        AppController.activePage = AppRenderer.mainPage.id
-        if (AppConfig.DEBUG_MODE) log.debug("mans debug moved down $position x=$targetPosition")
+        controller.activePage = 1
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug moved down $position x=$targetPosition ${controller.activePage}")
+    }
+
+    private fun movePageRightConditions(velocityX: Float, velocityY: Float): Boolean {
+        return (abs(velocityX) > abs(velocityY) && velocityX < 0 && controller.activePage in 1..2)
+    }
+
+    private fun movePageRight() {
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug before moved right $position x=$targetPosition ${controller.activePage}")
+        controller.activePage++
+        targetPosition = pages[controller.activePage]!!
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug moved right $position x=$targetPosition ${controller.activePage}")
+    }
+
+    private fun movePageLeftConditions(velocityX: Float, velocityY: Float): Boolean {
+        return (abs(velocityX) > abs(velocityY) && velocityX > 0 && controller.activePage in 1..3)
+    }
+
+    private fun movePageLeft() {
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug before moved left $position x=$targetPosition ${controller.activePage}")
+        controller.activePage--
+        targetPosition = pages[controller.activePage]!!
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug moved left $position x=$targetPosition ${controller.activePage}")
     }
 
     private fun setPosition(x: Float, y: Float) {
