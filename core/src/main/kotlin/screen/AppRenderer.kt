@@ -39,7 +39,6 @@ class AppRenderer : Disposable {
     private val renderer: ShapeRenderer = ShapeRenderer()
     private val batch: SpriteBatch = SpriteBatch()
     private val image: Texture = Texture("libgdx.png")
-//    private val cameraController: CameraController = CameraController()
 
 
     init {

@@ -2,21 +2,20 @@ package screen.pages
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
-import screen.AppController
-import utils.CameraController
 import screen.AppScreen.Companion.controller
+import utils.CameraController
 
 // virs MainPage
-private var vectorX: Float = AppController.worldWidth / 2
-private var vectorY: Float = (AppController.worldHeight / 2) + AppController.worldHeight
+private var vectorX: Float = controller.worldWidth / 2
+private var vectorY: Float = (controller.worldHeight / 2) + controller.worldHeight
 
 class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
+
     override fun render(renderer: ShapeRenderer) {
         if (this.isActive) {
             updateSize()
-            renderer.begin()
 
-            renderer.end()
+
         }
     }
 

@@ -9,8 +9,8 @@ class AppScreen(val application: Bridle3000Main) : Screen, InputMultiplexer() {
 
 
     companion object {
-        var renderer: AppRenderer = AppRenderer()
         var controller: AppController = AppController
+        var renderer: AppRenderer = AppRenderer()
     }
 
 

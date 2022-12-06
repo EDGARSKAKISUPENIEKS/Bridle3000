@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import config.AppConfig
+import screen.AppController
 import screen.AppScreen.Companion.controller
 import screen.AppRenderer
 import screen.AppScreen
@@ -26,6 +27,7 @@ private const val CAMERA_MAX_ZOOM_IN = 0.25f
 private val position = Vector2()
 private val startPosition = Vector2()
 private var touchPosition = Vector3()
+private var targetPosition = Vector2()
 private var delta = Gdx.graphics.deltaTime
 private var panPositionStart = Vector3()
 private var panPositionEnd = Vector3()
@@ -78,11 +80,48 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     //  PUBLIC FUNCTIONS
 
     fun setCameraToStartPosition() {
-        startPosition.set(pages[AppRenderer.mainPage.id])
-        position.set(startPosition)
+        targetPosition.set(pages[AppRenderer.mainPage.id])
+        position.set(targetPosition)
     }
 
     fun updateCameraPosition(camera: OrthographicCamera) {
+        when {
+            position.y > targetPosition.y -> {
+                if (position.y - targetPosition.y < 0.1f) {
+                    position.y = targetPosition.y
+                } else if (position.y - targetPosition.y > 0.1f) {
+                    moveCameraDown(getDelta())
+                }
+            }
+        }
+        when {
+            position.y < targetPosition.y -> {
+                if (targetPosition.y - position.y < 0.1f) {
+                    position.y = targetPosition.y
+                } else if (targetPosition.y - position.y > 0.1f) {
+                    moveCameraUp(getDelta())
+                }
+            }
+        }
+        when {
+            position.x > targetPosition.x -> {
+                if (position.x - targetPosition.x < 0.1f) {
+                    position.x = targetPosition.x
+                } else if (position.x - targetPosition.x > 0.1f) {
+                    moveCameraLeft(getDelta())
+                }
+            }
+        }
+        when {
+            position.x < targetPosition.x -> {
+                if (targetPosition.x - position.x < 0.1f) {
+                    position.x = targetPosition.x
+                } else if (targetPosition.x - position.x > 0.1f) {
+                    moveCameraRight(getDelta())
+                }
+            }
+        }
+
         camera.position.set(position, 0f)
 //        camera ir zoom lauks un tam tiek iestatīta vērtība no DebugCameraController zoom lauka
         camera.zoom = zoom
@@ -90,7 +129,6 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     override fun keyDown(keycode: Int): Boolean {
-        delta = Gdx.graphics.deltaTime
 //          GENERAL CONTROLS
         when (keycode) {
             DEBUG_MODE_KEY -> AppConfig.DEBUG_MODE = !AppConfig.DEBUG_MODE
@@ -100,12 +138,12 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
 //        DEBUG KEYBOARD CONTROLS
         if (AppConfig.DEBUG_MODE) {
             when (keycode) {
-                MOVE_CAMERA_LEFT_KEY -> moveCameraLeft(delta)
-                MOVE_CAMERA_RIGHT_KEY -> moveCameraRight(delta)
-                MOVE_CAMERA_UP_KEY -> moveCameraUp(delta)
-                MOVE_CAMERA_DOWN_KEY -> moveCameraDown(delta)
-                ZOOM_CAMERA_IN_KEY -> zoomCameraIn(delta)
-                ZOOM_CAMERA_OUT_KEY -> zoomCameraOut(delta)
+                MOVE_CAMERA_LEFT_KEY -> moveCameraLeft(getDelta())
+                MOVE_CAMERA_RIGHT_KEY -> moveCameraRight(getDelta())
+                MOVE_CAMERA_UP_KEY -> moveCameraUp(getDelta())
+                MOVE_CAMERA_DOWN_KEY -> moveCameraDown(getDelta())
+                ZOOM_CAMERA_IN_KEY -> zoomCameraIn(getDelta())
+                ZOOM_CAMERA_OUT_KEY -> zoomCameraOut(getDelta())
 
                 WORLD_HEIGHT_PLUS -> controller.incrementWorldHeight("up")
                 WORLD_HEIGHT_MINUS -> controller.incrementWorldHeight("down")
@@ -113,7 +151,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
                 WORLD_WIDTH_MINUS -> controller.incrementWorldWidth("down")
             }
             log.debug("mans debug CameraController $keycode ${Input.Keys.toString(keycode)}")
-            log.debug("mans debug CameraController ${AppScreen.controller.worldHeight}")
+            log.debug("mans debug CameraController ${controller.worldHeight}")
         }
         return false
     }
@@ -197,14 +235,13 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     override fun zoom(initialDistance: Float, distance: Float): Boolean {
         if (AppConfig.DEBUG_MODE) {
 //        teorētiski būtu labāk izmantot to pašu pieeju, kas pan metodē un izveidot tam funkciju
-            delta = Gdx.graphics.deltaTime
             when {
                 initialDistance > distance -> zoomCameraOut(
-                    delta,
+                    getDelta(),
                     abs((initialDistance - distance) / 1000)
                 )
                 initialDistance < distance -> zoomCameraIn(
-                    delta,
+                    getDelta(),
                     abs((initialDistance - distance) / 1000)
                 )
             }
@@ -237,8 +274,10 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     private fun movePageUp() {
-        position.y = controller.worldHeight + (controller.worldHeight / 2)
-        if (AppConfig.DEBUG_MODE) log.debug("mans debug moved up y=${position.y} ${AppRenderer.camera.position.y} x=${AppRenderer.camera.position.x}")
+        targetPosition = pages[AppRenderer.fourthPage.id]!!
+        AppController.activePage = AppRenderer.fourthPage.id
+        //TODO(padomāt vai nevajag te lietot activate() no klases funkcijām)
+        if (AppConfig.DEBUG_MODE) log.debug("mans debug moved up  $position x=$targetPosition")
     }
 
     private fun movePageDownConditions(velocityX: Float, velocityY: Float): Boolean {
@@ -287,5 +326,10 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
 
     private fun zoomCameraOut(delta: Float, speed: Float) {
         zoom += speed * delta
+    }
+
+    private fun getDelta(): Float {
+        delta = Gdx.graphics.deltaTime
+        return delta
     }
 }
