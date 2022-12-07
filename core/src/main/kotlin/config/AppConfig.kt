@@ -4,7 +4,7 @@ object AppConfig {
 
     var DEBUG_MODE = true
 
-    const val DEFAULT_WORLD_WIDTH = 8f
+    const val DEFAULT_WORLD_WIDTH = 10f
     const val DEFAULT_WORLD_HEIGHT = 20f
     const val DEFAULT_BEAM_WIDTH = 0.5f
     const val DEFAULT_BEAM_HEIGHT = 0.5f

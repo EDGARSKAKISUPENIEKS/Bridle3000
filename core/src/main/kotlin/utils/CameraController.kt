@@ -10,10 +10,8 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import config.AppConfig
-import screen.AppController.activePage
-import screen.AppScreen.Companion.controller
 import screen.AppRenderer
-import screen.AppRenderer.Companion
+import screen.AppScreen.Companion.controller
 import kotlin.math.abs
 
 //  CONSTANTS
