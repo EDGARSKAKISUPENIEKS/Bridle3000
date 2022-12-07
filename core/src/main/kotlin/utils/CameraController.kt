@@ -10,22 +10,20 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import config.AppConfig
-import screen.AppController
 import screen.AppScreen.Companion.controller
 import screen.AppRenderer
-import screen.AppScreen
+import screen.AppRenderer.Companion
 import kotlin.math.abs
 
 //  CONSTANTS
 private const val CAMERA_ZOOM_SPEED = 0.5f
-private const val CAMERA_MOVE_SPEED = 5f
 private const val CAMERA_MAX_ZOOM_OUT = 5f
 private const val CAMERA_MAX_ZOOM_IN = 0.25f
+private val cameraMoveSpeed = if (!AppConfig.DEBUG_MODE) 15f else 5f
 
 //  PRIVATE PROPERTIES
 
 private val position = Vector2()
-private val startPosition = Vector2()
 private var touchPosition = Vector3()
 private var targetPosition = Vector2()
 private var delta = Gdx.graphics.deltaTime
@@ -80,7 +78,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     //  PUBLIC FUNCTIONS
 
     fun setCameraToStartPosition() {
-        targetPosition.set(pages[AppRenderer.mainPage.id])
+        targetPosition.set(AppRenderer.mainPage.position)
         position.set(targetPosition)
         if (AppConfig.DEBUG_MODE) log.debug("mans debug start $position x=$targetPosition ${controller.activePage}")
     }
@@ -145,6 +143,8 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
                 MOVE_CAMERA_DOWN_KEY -> moveCameraDown(getDelta())
                 ZOOM_CAMERA_IN_KEY -> zoomCameraIn(getDelta())
                 ZOOM_CAMERA_OUT_KEY -> zoomCameraOut(getDelta())
+                CAMERA_POS_MAIN_SCREEN -> targetPosition.set(AppRenderer.mainPage.position)
+                CAMERA_POS_SECOND_SCREEN -> targetPosition.set(AppRenderer.secondPage.position)
 
                 WORLD_HEIGHT_PLUS -> controller.incrementWorldHeight("up")
                 WORLD_HEIGHT_MINUS -> controller.incrementWorldHeight("down")
@@ -275,7 +275,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
 
     private fun movePageUp() {
         if (AppConfig.DEBUG_MODE) log.debug("mans debug before moved up  $position x=$targetPosition ${controller.activePage}")
-        targetPosition = pages[AppRenderer.fourthPage.id]!!
+        targetPosition = AppRenderer.fourthPage.position
         controller.activePage = 4
         //TODO(padomāt vai nevajag te lietot activate() no klases funkcijām)
         if (AppConfig.DEBUG_MODE) log.debug("mans debug moved up  $position x=$targetPosition ${controller.activePage}")
@@ -287,7 +287,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
 
     private fun movePageDown() {
         if (AppConfig.DEBUG_MODE) log.debug("mans debug before moved down $position x=$targetPosition ${controller.activePage}")
-        targetPosition = pages[AppRenderer.mainPage.id]!!
+        targetPosition = AppRenderer.mainPage.position
         controller.activePage = 1
         if (AppConfig.DEBUG_MODE) log.debug("mans debug moved down $position x=$targetPosition ${controller.activePage}")
     }
@@ -319,19 +319,19 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     private fun moveCameraLeft(delta: Float) {
-        setPosition(position.x - (CAMERA_MOVE_SPEED * delta), position.y)
+        setPosition(position.x - (cameraMoveSpeed * delta), position.y)
     }
 
     private fun moveCameraRight(delta: Float) {
-        setPosition(position.x + (CAMERA_MOVE_SPEED * delta), position.y)
+        setPosition(position.x + (cameraMoveSpeed * delta), position.y)
     }
 
     private fun moveCameraUp(delta: Float) {
-        setPosition(position.x, position.y + (CAMERA_MOVE_SPEED * delta))
+        setPosition(position.x, position.y + (cameraMoveSpeed * delta))
     }
 
     private fun moveCameraDown(delta: Float) {
-        setPosition(position.x, position.y - (CAMERA_MOVE_SPEED * delta))
+        setPosition(position.x, position.y - (cameraMoveSpeed * delta))
     }
 
     private fun zoomCameraIn(delta: Float) {
