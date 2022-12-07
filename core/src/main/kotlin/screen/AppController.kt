@@ -10,7 +10,7 @@ object AppController {
         private set
     var activePage: Int = 1
         set(value) {
-            field = value.coerceIn(1, pages.size)  //  variants, ja galos apstājas
+            field = value.coerceIn(1, pages.size)
         }
 
     fun incrementWorldWidth(string: String) {

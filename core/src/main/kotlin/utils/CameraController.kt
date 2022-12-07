@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import config.AppConfig
+import screen.AppController.activePage
 import screen.AppScreen.Companion.controller
 import screen.AppRenderer
 import screen.AppRenderer.Companion
@@ -293,12 +294,16 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
     }
 
     private fun movePageRightConditions(velocityX: Float, velocityY: Float): Boolean {
-        return (abs(velocityX) > abs(velocityY) && velocityX < 0 && controller.activePage in 1..2)
+        return (abs(velocityX) > abs(velocityY) && velocityX < 0 && controller.activePage in 1..3)
     }
 
     private fun movePageRight() {
         if (AppConfig.DEBUG_MODE) log.debug("mans debug before moved right $position x=$targetPosition ${controller.activePage}")
-        controller.activePage++
+        if (controller.activePage == AppRenderer.thirdPage.id) {
+            controller.activePage = AppRenderer.mainPage.id
+        } else {
+            controller.activePage++
+        }
         targetPosition = pages[controller.activePage]!!
         if (AppConfig.DEBUG_MODE) log.debug("mans debug moved right $position x=$targetPosition ${controller.activePage}")
     }
@@ -309,7 +314,11 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
 
     private fun movePageLeft() {
         if (AppConfig.DEBUG_MODE) log.debug("mans debug before moved left $position x=$targetPosition ${controller.activePage}")
-        controller.activePage--
+        if (controller.activePage == AppRenderer.mainPage.id) {
+            controller.activePage = AppRenderer.thirdPage.id
+        } else {
+            controller.activePage--
+        }
         targetPosition = pages[controller.activePage]!!
         if (AppConfig.DEBUG_MODE) log.debug("mans debug moved left $position x=$targetPosition ${controller.activePage}")
     }
