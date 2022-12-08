@@ -1,7 +1,7 @@
 package screen
 
 import config.AppConfig
-import utils.CameraController.Companion.pages
+import utils.AppInputHandler.Companion.pages
 
 object AppController {
     var worldWidth: Float = 0f

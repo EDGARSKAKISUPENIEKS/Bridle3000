@@ -67,10 +67,10 @@ private const val WORLD_WIDTH_PLUS: Int = Input.Keys.RIGHT
 private const val WORLD_WIDTH_MINUS: Int = Input.Keys.LEFT
 
 
-class CameraController : InputAdapter(), GestureDetector.GestureListener {
+class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
 
     companion object {
-        private val log = logger(CameraController::class.java)
+        private val log = logger(AppInputHandler::class.java)
         var pages: MutableMap<Int, Vector2> = mutableMapOf()
     }
 
@@ -169,6 +169,7 @@ class CameraController : InputAdapter(), GestureDetector.GestureListener {
         touchPosition.set(x, y, 0f)
         AppRenderer.camera.unproject(touchPosition)
 
+//      TODO(izmainīt lai izmanto aktīvās lapas vērtības)
         when {
             touchPosition.x in innerRight..controller.worldWidth -> controller.incrementWorldWidth("up")
             touchPosition.x in 0f..innerLeft -> controller.incrementWorldWidth("down")

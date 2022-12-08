@@ -1,14 +1,14 @@
 import com.badlogic.gdx.*
 import com.badlogic.gdx.input.GestureDetector
 import screen.AppScreen
-import utils.CameraController
+import utils.AppInputHandler
 
 
 /** [com.badlogic.gdx.ApplicationListener] implementation shared by all platforms.  */
 class Bridle3000Main : Game() {
 
     companion object{
-        val cameraController = CameraController()
+        val appInputHandler = AppInputHandler()
     }
     private val inputPlexer = InputMultiplexer()
 
@@ -18,11 +18,11 @@ class Bridle3000Main : Game() {
 
         setScreen(AppScreen(this))
 //        man neizportamu iemeslu dēļ šo var inicializēt tikai metodē
-        val gestureDetector = GestureDetector(cameraController)
+        val gestureDetector = GestureDetector(appInputHandler)
         gestureDetector.setMaxFlingDelay((0.2 * 1000000000).toLong()) //nav ne mazākās jausmas kāpēc nanosekundēs
 
 
-        inputPlexer.addProcessor(cameraController)
+        inputPlexer.addProcessor(appInputHandler)
         inputPlexer.addProcessor(gestureDetector)
         Gdx.input.inputProcessor = inputPlexer
     }

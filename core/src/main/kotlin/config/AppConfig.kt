@@ -17,4 +17,6 @@ object AppConfig {
     const val DEFAULT_LOAD_POS_X = 0f
     const val DEFAULT_LOAD_POS_Y = 12f
 
+    const val PAGE_BOUND_ADJUSTMENT = 0.04f
+
 }

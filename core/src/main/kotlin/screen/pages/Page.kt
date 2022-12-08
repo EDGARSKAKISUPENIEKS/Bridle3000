@@ -3,13 +3,22 @@ package screen.pages
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import screen.AppController
-import utils.CameraController
+import utils.AppInputHandler
 
 
 abstract class Page(val id: Int, val position: Vector2) {
 
+    abstract var innerTopLeft: Vector2
+    abstract var outerTopLeft: Vector2
+    abstract var innerTopRight: Vector2
+    abstract var outerTopRight: Vector2
+    abstract var innerBottomLeft: Vector2
+    abstract var outerBottomLeft: Vector2
+    abstract var innerBottomRight: Vector2
+    abstract var outerBottomRight: Vector2
+
     init {
-        CameraController.pages[this.id] = this.position
+        AppInputHandler.pages[this.id] = this.position
     }
 
     var isActive: Boolean = false

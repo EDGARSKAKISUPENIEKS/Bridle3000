@@ -3,6 +3,7 @@ package utils
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.viewport.Viewport
+import config.AppConfig.PAGE_BOUND_ADJUSTMENT
 import screen.AppScreen.Companion.controller
 
 private var oldColor = Color.BLACK
@@ -13,7 +14,6 @@ private var totalWorldWidth: Float = 0f
 private var totalWorldHeight: Float = 0f
 private var currentXLine: Float = 0f
 private var currentYLine: Float = 0f
-private var pageBoundAdjustment = 0.04f
 
 
 fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
@@ -89,133 +89,135 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
 //    renderer.line(0f, worldHeight, worldWidth, worldHeight)
 //    renderer.line(worldWidth, worldHeight, worldWidth, 0f)
 
+
+//    TODO(izveidot funkciju lapā un izmantot punktus no lapas klases)
 //    PIRMĀ LAPA
 //    augšmala
     renderer.line(
-        0f + pageBoundAdjustment,
-        currentWorldHeight - pageBoundAdjustment,
-        currentWorldWidth - pageBoundAdjustment,
-        currentWorldHeight - pageBoundAdjustment
+        0f + PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight - PAGE_BOUND_ADJUSTMENT,
+        currentWorldWidth - PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight - PAGE_BOUND_ADJUSTMENT
     )
 //    labā mala
     renderer.line(
-        currentWorldWidth - pageBoundAdjustment,
-        currentWorldHeight - pageBoundAdjustment,
-        currentWorldWidth - pageBoundAdjustment,
-        0f + pageBoundAdjustment
+        currentWorldWidth - PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight - PAGE_BOUND_ADJUSTMENT,
+        currentWorldWidth - PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT
     )
 //    apakšmala
     renderer.line(
-        currentWorldWidth - pageBoundAdjustment,
-        0f + pageBoundAdjustment,
-        0f + pageBoundAdjustment,
-        0f + pageBoundAdjustment
+        currentWorldWidth - PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT
     )
 //    kreisā mala
     renderer.line(
-        0f + pageBoundAdjustment,
-        0f + pageBoundAdjustment,
-        0f + pageBoundAdjustment,
-        currentWorldHeight - pageBoundAdjustment
+        0f + PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight - PAGE_BOUND_ADJUSTMENT
     )
 
 
 //    OTRĀ LAPA
 //    augšmala
     renderer.line(
-        currentWorldWidth + pageBoundAdjustment,
-        currentWorldHeight - pageBoundAdjustment,
-        currentWorldWidth * 2 - pageBoundAdjustment,
-        currentWorldHeight - pageBoundAdjustment
+        currentWorldWidth + PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight - PAGE_BOUND_ADJUSTMENT,
+        currentWorldWidth * 2 - PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight - PAGE_BOUND_ADJUSTMENT
     )
 
 //    labā lapa
     renderer.line(
-        currentWorldWidth * 2 - pageBoundAdjustment,
-        currentWorldHeight - pageBoundAdjustment,
-        currentWorldWidth * 2 - pageBoundAdjustment,
-        0f + pageBoundAdjustment
+        currentWorldWidth * 2 - PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight - PAGE_BOUND_ADJUSTMENT,
+        currentWorldWidth * 2 - PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT
     )
 //    apakšmala
     renderer.line(
-        currentWorldWidth * 2 - pageBoundAdjustment,
-        0f + pageBoundAdjustment,
-        currentWorldWidth + pageBoundAdjustment,
-        0f + pageBoundAdjustment
+        currentWorldWidth * 2 - PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT,
+        currentWorldWidth + PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT
     )
 //    kreisā mala
     renderer.line(
-        currentWorldWidth + pageBoundAdjustment,
-        0f + pageBoundAdjustment,
-        currentWorldWidth + pageBoundAdjustment,
-        currentWorldHeight - pageBoundAdjustment
+        currentWorldWidth + PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT,
+        currentWorldWidth + PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight - PAGE_BOUND_ADJUSTMENT
     )
 
 //    TREŠĀ LAPA
 //    augšmala
     renderer.line(
-        currentWorldWidth * 2 + pageBoundAdjustment,
-        currentWorldHeight - pageBoundAdjustment,
-        currentWorldWidth * 3 - pageBoundAdjustment,
-        currentWorldHeight - pageBoundAdjustment
+        currentWorldWidth * 2 + PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight - PAGE_BOUND_ADJUSTMENT,
+        currentWorldWidth * 3 - PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight - PAGE_BOUND_ADJUSTMENT
     )
 
 //    labā mala
     renderer.line(
-        currentWorldWidth * 3 - pageBoundAdjustment,
-        currentWorldHeight - pageBoundAdjustment,
-        currentWorldWidth * 3 - pageBoundAdjustment,
-        0f + pageBoundAdjustment
+        currentWorldWidth * 3 - PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight - PAGE_BOUND_ADJUSTMENT,
+        currentWorldWidth * 3 - PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT
     )
 
 //    apakšmala
     renderer.line(
-        currentWorldWidth * 3 - pageBoundAdjustment,
-        0f + pageBoundAdjustment,
-        currentWorldWidth * 2 + pageBoundAdjustment,
-        0f + pageBoundAdjustment
+        currentWorldWidth * 3 - PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT,
+        currentWorldWidth * 2 + PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT
     )
 
 //    kreisā mala
     renderer.line(
-        currentWorldWidth * 2 + pageBoundAdjustment,
-        0f + pageBoundAdjustment,
-        currentWorldWidth * 2 + pageBoundAdjustment,
-        currentWorldHeight - pageBoundAdjustment
+        currentWorldWidth * 2 + PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT,
+        currentWorldWidth * 2 + PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight - PAGE_BOUND_ADJUSTMENT
     )
 
 //    CETURTĀ LAPA
 // otrā stāva augša četras lapas horizontāli, bet otrajā stāvā tikai viena lapa (ceturtās lapas augša)
 //    augšmala
     renderer.line(
-        0f + pageBoundAdjustment,
-        currentWorldHeight * 2 - pageBoundAdjustment,
-        currentWorldWidth - pageBoundAdjustment,
-        currentWorldHeight * 2 - pageBoundAdjustment
+        0f + PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight * 2 - PAGE_BOUND_ADJUSTMENT,
+        currentWorldWidth - PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight * 2 - PAGE_BOUND_ADJUSTMENT
     )
 
 //    labā mala
     renderer.line(
-        currentWorldWidth - pageBoundAdjustment,
-        currentWorldHeight * 2 - pageBoundAdjustment,
-        currentWorldWidth - pageBoundAdjustment,
-        currentWorldHeight + pageBoundAdjustment
+        currentWorldWidth - PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight * 2 - PAGE_BOUND_ADJUSTMENT,
+        currentWorldWidth - PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight + PAGE_BOUND_ADJUSTMENT
     )
 
 //    apakšmala
     renderer.line(
-        currentWorldWidth - pageBoundAdjustment,
-        currentWorldHeight + pageBoundAdjustment,
-        0f + pageBoundAdjustment,
-        currentWorldHeight + pageBoundAdjustment
+        currentWorldWidth - PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight + PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight + PAGE_BOUND_ADJUSTMENT
     )
 
 //    kreisā mala
     renderer.line(
-        0f + pageBoundAdjustment,
-        currentWorldHeight + pageBoundAdjustment,
-        0f + pageBoundAdjustment,
-        currentWorldHeight * 2 - pageBoundAdjustment
+        0f + PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight + PAGE_BOUND_ADJUSTMENT,
+        0f + PAGE_BOUND_ADJUSTMENT,
+        currentWorldHeight * 2 - PAGE_BOUND_ADJUSTMENT
     )
 
     renderer.end()

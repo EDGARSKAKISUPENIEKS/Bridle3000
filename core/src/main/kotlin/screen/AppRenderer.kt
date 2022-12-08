@@ -1,7 +1,7 @@
 package screen
 
 
-import Bridle3000Main.Companion.cameraController
+import Bridle3000Main.Companion.appInputHandler
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
@@ -45,11 +45,11 @@ class AppRenderer : Disposable {
         Gdx.app.logLevel = Application.LOG_DEBUG
         camera.zoom = 1f
 //        pagaidu. Vajag globālu pasaules platumu un ekrānu pozīcijas izritēs no tā
-        cameraController.setCameraToStartPosition()
+        appInputHandler.setCameraToStartPosition()
     }
 
     fun render() {
-        cameraController.updateCameraPosition(camera)
+        appInputHandler.updateCameraPosition(camera)
         clearScreen(Color.BLACK)
 
         mainPage.render(renderer)
