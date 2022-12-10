@@ -15,8 +15,8 @@ class SecondPage : Page(2, Vector2(vectorX, vectorY)) {
 
     override var innerTopLeft: Vector2 = Vector2()
         get() {
-            field.x = controller.worldWidth + PAGE_BOUND_ADJUSTMENT
-            field.y = controller.worldHeight - PAGE_BOUND_ADJUSTMENT
+            field.x = controller.worldWidth + horizontalInnerSideAdjustment
+            field.y = controller.worldHeight - verticalInnerSideAdjustment
             return field
         }
     override var outerTopLeft: Vector2 = Vector2()
@@ -27,8 +27,8 @@ class SecondPage : Page(2, Vector2(vectorX, vectorY)) {
         }
     override var innerTopRight: Vector2 = Vector2()
         get() {
-            field.x = controller.worldWidth * 2 - PAGE_BOUND_ADJUSTMENT
-            field.y = controller.worldHeight - PAGE_BOUND_ADJUSTMENT
+            field.x = controller.worldWidth * 2 - horizontalInnerSideAdjustment
+            field.y = controller.worldHeight - verticalInnerSideAdjustment
             return field
         }
     override var outerTopRight: Vector2 = Vector2()
@@ -39,7 +39,7 @@ class SecondPage : Page(2, Vector2(vectorX, vectorY)) {
         }
     override var innerBottomLeft: Vector2 = Vector2()
         get() {
-            field.x = controller.worldWidth + PAGE_BOUND_ADJUSTMENT
+            field.x = controller.worldWidth + horizontalInnerSideAdjustment
             field.y = 0f + PAGE_BOUND_ADJUSTMENT
             return field
         }
@@ -51,8 +51,8 @@ class SecondPage : Page(2, Vector2(vectorX, vectorY)) {
         }
     override var innerBottomRight: Vector2 = Vector2()
         get() {
-            field.x = controller.worldWidth * 2 + PAGE_BOUND_ADJUSTMENT
-            field.y = 0f + PAGE_BOUND_ADJUSTMENT
+            field.x = controller.worldWidth * 2 + horizontalInnerSideAdjustment
+            field.y = 0f + verticalInnerSideAdjustment
             return field
         }
     override var outerBottomRight: Vector2 = Vector2()

@@ -14,8 +14,8 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
 
     override var innerTopLeft: Vector2 = Vector2()
         get() {
-            field.x = 0f + PAGE_BOUND_ADJUSTMENT
-            field.y = controller.worldHeight * 2 - PAGE_BOUND_ADJUSTMENT
+            field.x = 0f + horizontalInnerSideAdjustment
+            field.y = controller.worldHeight * 2 - verticalInnerSideAdjustment
             return field
         }
     override var outerTopLeft: Vector2 = Vector2()
@@ -26,8 +26,8 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
         }
     override var innerTopRight: Vector2 = Vector2()
         get() {
-            field.x = controller.worldWidth - PAGE_BOUND_ADJUSTMENT
-            field.y = controller.worldHeight + PAGE_BOUND_ADJUSTMENT
+            field.x = controller.worldWidth - horizontalInnerSideAdjustment
+            field.y = controller.worldHeight + verticalInnerSideAdjustment
             return field
         }
     override var outerTopRight: Vector2 = Vector2()
@@ -38,8 +38,8 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
         }
     override var innerBottomRight: Vector2 = Vector2()
         get() {
-            field.x = controller.worldWidth - PAGE_BOUND_ADJUSTMENT
-            field.y = controller.worldHeight + PAGE_BOUND_ADJUSTMENT
+            field.x = controller.worldWidth - horizontalInnerSideAdjustment
+            field.y = controller.worldHeight + verticalInnerSideAdjustment
             return field
         }
     override var outerBottomRight: Vector2 = Vector2()
@@ -51,7 +51,7 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
     override var innerBottomLeft: Vector2 = Vector2()
         get() {
             field.x = 0f + PAGE_BOUND_ADJUSTMENT
-            field.y = controller.worldHeight + PAGE_BOUND_ADJUSTMENT
+            field.y = controller.worldHeight + verticalInnerSideAdjustment
             return field
         }
     override var outerBottomLeft: Vector2 = Vector2()

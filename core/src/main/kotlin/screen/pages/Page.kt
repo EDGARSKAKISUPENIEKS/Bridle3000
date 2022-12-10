@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import screen.AppController
 import utils.AppInputHandler
+import screen.AppScreen.Companion.controller
 
 
 abstract class Page(val id: Int, val position: Vector2) {
@@ -16,6 +17,14 @@ abstract class Page(val id: Int, val position: Vector2) {
     abstract var outerBottomLeft: Vector2
     abstract var innerBottomRight: Vector2
     abstract var outerBottomRight: Vector2
+    val horizontalInnerSideAdjustment: Float
+        get() {
+            return controller.worldWidth / 3
+        }
+    val verticalInnerSideAdjustment: Float
+        get() {
+            return controller.worldHeight / 3
+        }
 
     init {
         AppInputHandler.pages[this.id] = this.position
