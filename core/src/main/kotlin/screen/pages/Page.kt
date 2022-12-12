@@ -2,6 +2,8 @@ package screen.pages
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
+import config.AppConfig
+import config.AppConfig.PAGE_BOUND_ADJUSTMENT
 import screen.AppController
 import utils.AppInputHandler
 import screen.AppScreen.Companion.controller
@@ -19,11 +21,11 @@ abstract class Page(val id: Int, val position: Vector2) {
     abstract var outerBottomRight: Vector2
     val horizontalInnerSideAdjustment: Float
         get() {
-            return controller.worldWidth / 3
+            return controller.worldWidth / 6
         }
     val verticalInnerSideAdjustment: Float
         get() {
-            return controller.worldHeight / 3
+            return controller.worldHeight / 6
         }
 
     init {
@@ -41,9 +43,58 @@ abstract class Page(val id: Int, val position: Vector2) {
         updateSize()
     }
 
-    abstract fun render(renderer: ShapeRenderer)
     abstract fun updateSize()
+    abstract fun render(renderer: ShapeRenderer)
+    fun renderDebug(renderer: ShapeRenderer) {
+        if (AppConfig.DEBUG_MODE) {
+            renderer.begin(ShapeRenderer.ShapeType.Line)
+            renderOuterPerimeter(renderer)
+            renderInnerPerimeter(renderer)
+            renderer.end()
+        }
+    }
 
+    private fun renderOuterPerimeter(renderer: ShapeRenderer) {
+        //    augšmala
+        renderer.line(
+            outerTopLeft.x + PAGE_BOUND_ADJUSTMENT,
+            outerTopLeft.y - PAGE_BOUND_ADJUSTMENT,
+            outerTopRight.x - PAGE_BOUND_ADJUSTMENT,
+            outerTopRight.y - PAGE_BOUND_ADJUSTMENT
+        )
+        //    labā mala
+        renderer.line(
+            outerTopRight.x - PAGE_BOUND_ADJUSTMENT,
+            outerTopRight.y - PAGE_BOUND_ADJUSTMENT,
+            outerBottomRight.x - PAGE_BOUND_ADJUSTMENT,
+            outerBottomRight.y + PAGE_BOUND_ADJUSTMENT
+        )
+        //    apakšmala
+        renderer.line(
+            outerBottomRight.x - PAGE_BOUND_ADJUSTMENT,
+            outerBottomRight.y + PAGE_BOUND_ADJUSTMENT,
+            outerBottomLeft.x + PAGE_BOUND_ADJUSTMENT,
+            outerBottomLeft.y + PAGE_BOUND_ADJUSTMENT
+        )
+        //    kreisā mala
+        renderer.line(
+            outerBottomLeft.x + PAGE_BOUND_ADJUSTMENT,
+            outerBottomLeft.y + PAGE_BOUND_ADJUSTMENT,
+            outerTopLeft.x + PAGE_BOUND_ADJUSTMENT,
+            outerTopLeft.y - PAGE_BOUND_ADJUSTMENT
+        )
+    }
+
+    private fun renderInnerPerimeter(renderer: ShapeRenderer) {
+//        augšmala
+        renderer.line(innerTopLeft, innerTopRight)
+//        labā mala
+        renderer.line(innerTopRight, innerBottomRight)
+//        apakšmala
+        renderer.line(innerBottomRight, innerBottomLeft)
+//        labā mala
+        renderer.line(innerBottomLeft, innerTopLeft)
+    }
 
 }
 

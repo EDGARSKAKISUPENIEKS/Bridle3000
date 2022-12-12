@@ -21,13 +21,13 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
     override var outerTopLeft: Vector2 = Vector2()
         get() {
             field.x = 0f
-            field.y = controller.worldWidth * 2
+            field.y = controller.worldHeight * 2
             return field
         }
     override var innerTopRight: Vector2 = Vector2()
         get() {
             field.x = controller.worldWidth - horizontalInnerSideAdjustment
-            field.y = controller.worldHeight + verticalInnerSideAdjustment
+            field.y = controller.worldHeight * 2 - verticalInnerSideAdjustment
             return field
         }
     override var outerTopRight: Vector2 = Vector2()
@@ -50,7 +50,7 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
         }
     override var innerBottomLeft: Vector2 = Vector2()
         get() {
-            field.x = 0f + PAGE_BOUND_ADJUSTMENT
+            field.x = 0f + horizontalInnerSideAdjustment
             field.y = controller.worldHeight + verticalInnerSideAdjustment
             return field
         }
@@ -70,11 +70,12 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
     }
 
     override fun render(renderer: ShapeRenderer) {
+        updateSize()
         if (this.isActive) {
-            updateSize()
 
 
         }
+        renderDebug(renderer)
     }
 
     override fun updateSize() {

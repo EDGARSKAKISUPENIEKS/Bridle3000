@@ -52,11 +52,12 @@ class AppRenderer : Disposable {
         appInputHandler.updateCameraPosition(camera)
         clearScreen(Color.BLACK)
 
+//  renderDebug() ir augšā jo savādāk zīmē pa virsu lapu perimetriem
+        renderDebug()
         mainPage.render(renderer)
         secondPage.render(renderer)
         thirdPage.render(renderer)
         fourthPage.render(renderer)
-        renderDebug()
 
     }
 

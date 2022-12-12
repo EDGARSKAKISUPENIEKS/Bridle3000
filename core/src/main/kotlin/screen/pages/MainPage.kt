@@ -2,7 +2,6 @@ package screen.pages
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
-import config.AppConfig.PAGE_BOUND_ADJUSTMENT
 import screen.AppScreen.Companion.controller
 import utils.AppInputHandler
 
@@ -14,7 +13,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
 
     override var innerTopLeft: Vector2 = Vector2()
         get() {
-            field.x = 0f + PAGE_BOUND_ADJUSTMENT
+            field.x = 0f + horizontalInnerSideAdjustment
             field.y = controller.worldHeight - verticalInnerSideAdjustment
             return field
         }
@@ -69,10 +68,12 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
     }
 
     override fun render(renderer: ShapeRenderer) {
+        updateSize()
         if (this.isActive) {
-            updateSize()
 
         }
+        renderDebug(renderer)
+
     }
 
     override fun updateSize() {
@@ -80,6 +81,8 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         this.position.y = controller.worldHeight / 2
         AppInputHandler.pages[this.id] = this.position
     }
+
+
 }
 
 

@@ -2,6 +2,7 @@ package screen.pages
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
+import config.AppConfig
 import config.AppConfig.PAGE_BOUND_ADJUSTMENT
 import screen.AppScreen.Companion.controller
 import utils.AppInputHandler
@@ -40,7 +41,7 @@ class SecondPage : Page(2, Vector2(vectorX, vectorY)) {
     override var innerBottomLeft: Vector2 = Vector2()
         get() {
             field.x = controller.worldWidth + horizontalInnerSideAdjustment
-            field.y = 0f + PAGE_BOUND_ADJUSTMENT
+            field.y = 0f + verticalInnerSideAdjustment
             return field
         }
     override var outerBottomLeft: Vector2 = Vector2()
@@ -51,7 +52,7 @@ class SecondPage : Page(2, Vector2(vectorX, vectorY)) {
         }
     override var innerBottomRight: Vector2 = Vector2()
         get() {
-            field.x = controller.worldWidth * 2 + horizontalInnerSideAdjustment
+            field.x = controller.worldWidth * 2 - horizontalInnerSideAdjustment
             field.y = 0f + verticalInnerSideAdjustment
             return field
         }
@@ -72,10 +73,11 @@ class SecondPage : Page(2, Vector2(vectorX, vectorY)) {
 
 
     override fun render(renderer: ShapeRenderer) {
+        updateSize()
         if (this.isActive) {
-            updateSize()
 
         }
+        renderDebug(renderer)
     }
 
     override fun updateSize() {
