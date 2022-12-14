@@ -79,6 +79,6 @@ class ThirdPage : Page(3, Vector2(vectorX, vectorY)) {
     override fun updateSize() {
         this.position.x = (controller.worldWidth / 2) + (controller.worldWidth * 2)
         this.position.y = controller.worldHeight / 2
-        AppInputHandler.pages[this.id] = this.position
+        AppInputHandler.pages[this.id] = this
     }
 }

@@ -81,6 +81,6 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
     override fun updateSize() {
         this.position.x = controller.worldWidth / 2
         this.position.y = (controller.worldHeight / 2) + (controller.worldHeight)
-        AppInputHandler.pages[this.id] = this.position
+        AppInputHandler.pages[this.id] = this
     }
 }

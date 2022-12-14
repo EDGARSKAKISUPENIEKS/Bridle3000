@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3
 import config.AppConfig
 import screen.AppRenderer
 import screen.AppScreen.Companion.controller
+import screen.pages.Page
 import kotlin.math.abs
 
 //  CONSTANTS
@@ -71,7 +72,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
 
     companion object {
         private val log = logger(AppInputHandler::class.java)
-        var pages: MutableMap<Int, Vector2> = mutableMapOf()
+        var pages: MutableMap<Int, Page> = mutableMapOf()
     }
 
     //  PUBLIC FUNCTIONS
@@ -144,6 +145,8 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
                 ZOOM_CAMERA_OUT_KEY -> zoomCameraOut(getDelta())
                 CAMERA_POS_MAIN_SCREEN -> targetPosition.set(AppRenderer.mainPage.position)
                 CAMERA_POS_SECOND_SCREEN -> targetPosition.set(AppRenderer.secondPage.position)
+                CAMERA_POS_THIRD_SCREEN -> targetPosition.set(AppRenderer.thirdPage.position)
+                CAMERA_POS_FOURTH_SCREEN -> targetPosition.set(AppRenderer.fourthPage.position)
 
                 WORLD_HEIGHT_PLUS -> controller.incrementWorldHeight("up")
                 WORLD_HEIGHT_MINUS -> controller.incrementWorldHeight("down")
@@ -169,18 +172,18 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
         touchPosition.set(x, y, 0f)
         AppRenderer.camera.unproject(touchPosition)
 
-//      TODO(izmainīt lai izmanto aktīvās lapas vērtības)
         when {
-            touchPosition.x in innerRight..controller.worldWidth -> controller.incrementWorldWidth("up")
-            touchPosition.x in 0f..innerLeft -> controller.incrementWorldWidth("down")
-            touchPosition.y in innerUp..controller.worldHeight -> controller.incrementWorldHeight("up")
-            touchPosition.y in 0f..innerDown -> controller.incrementWorldHeight("down")
+            tappedOnPageRightSide() -> controller.incrementWorldWidth("up")
+            tappedOndPageLeftSide() -> controller.incrementWorldWidth("down")
+            tappedOnPageTopSide() -> controller.incrementWorldHeight("up")
+            tappedOnPageBottomSide() -> controller.incrementWorldHeight("down")
         }
 
         log.debug("mans debug tap $touchPosition")
         log.debug("mans debug ${controller.worldWidth} ${controller.worldHeight}")
         return false
     }
+
 
     override fun longPress(x: Float, y: Float): Boolean {
         AppConfig.DEBUG_MODE = !AppConfig.DEBUG_MODE
@@ -269,6 +272,23 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
 
     //    PRIVATE FUNCTIONS
 
+    private fun tappedOnPageBottomSide(): Boolean {
+        return touchPosition.y in pages[controller.activePage]!!.outerBottom..pages[controller.activePage]!!.innerBottom
+    }
+
+    private fun tappedOnPageTopSide(): Boolean {
+        return touchPosition.y in pages[controller.activePage]!!.innerTop..pages[controller.activePage]!!.outerTop
+    }
+
+    private fun tappedOndPageLeftSide(): Boolean {
+        return touchPosition.x in pages[controller.activePage]!!.outerLeft..pages[controller.activePage]!!.innerLeft
+    }
+
+    private fun tappedOnPageRightSide(): Boolean {
+        return touchPosition.x in pages[controller.activePage]!!.innerRight..pages[controller.activePage]!!.outerRight
+    }
+
+
     private fun movePageUpConditions(velocityX: Float, velocityY: Float): Boolean {
         return (abs(velocityX) < abs(velocityY) && velocityY > 0)
     }
@@ -303,7 +323,8 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
         } else {
             controller.activePage++
         }
-        targetPosition = pages[controller.activePage]!!
+//        no pages MutableMap paņem lapu, kurai ir id, kas paņemts no activePage un izvelk pozīciju
+        targetPosition = pages[controller.activePage]!!.position
         if (AppConfig.DEBUG_MODE) log.debug("mans debug moved right $position x=$targetPosition ${controller.activePage}")
     }
 
@@ -318,7 +339,8 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
         } else {
             controller.activePage--
         }
-        targetPosition = pages[controller.activePage]!!
+        //        no pages MutableMap paņem lapu, kurai ir id, kas paņemts no activePage un izvelk pozīciju
+        targetPosition = pages[controller.activePage]!!.position
         if (AppConfig.DEBUG_MODE) log.debug("mans debug moved left $position x=$targetPosition ${controller.activePage}")
     }
 

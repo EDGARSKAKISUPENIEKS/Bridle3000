@@ -27,9 +27,44 @@ abstract class Page(val id: Int, val position: Vector2) {
         get() {
             return controller.worldHeight / 6
         }
+    val innerLeft: Float
+        get() {
+            return innerTopLeft.x
+        }
+    val innerRight: Float
+        get() {
+            return innerTopRight.x
+        }
+    val innerTop: Float
+        get() {
+            return innerTopLeft.y
+        }
+    val innerBottom: Float
+        get() {
+            return innerBottomLeft.y
+        }
+    val outerLeft: Float
+        get() {
+            return outerTopLeft.x
+        }
+    val outerRight: Float
+        get() {
+            return outerTopRight.x
+        }
+    val outerTop: Float
+        get() {
+            return outerTopLeft.y
+        }
+    val outerBottom: Float
+        get() {
+            return outerBottomLeft.y
+        }
+
 
     init {
-        AppInputHandler.pages[this.id] = this.position
+//        šādi darot multithread gadījumā var sanākt sūdi, privātā metodē esot ok
+//        AppInputHandler.pages[this.id] = this
+        selfRegister()
     }
 
     var isActive: Boolean = false
@@ -94,6 +129,10 @@ abstract class Page(val id: Int, val position: Vector2) {
         renderer.line(innerBottomRight, innerBottomLeft)
 //        labā mala
         renderer.line(innerBottomLeft, innerTopLeft)
+    }
+
+    private fun selfRegister() {
+        AppInputHandler.pages[this.id] = this
     }
 
 }
