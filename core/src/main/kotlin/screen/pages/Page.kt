@@ -1,5 +1,6 @@
 package screen.pages
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import config.AppConfig
@@ -10,6 +11,9 @@ import screen.AppScreen.Companion.controller
 
 
 abstract class Page(val id: Int, val position: Vector2) {
+
+    private lateinit var oldColor: Color
+
 
     abstract var innerTopLeft: Vector2
     abstract var outerTopLeft: Vector2
@@ -83,8 +87,11 @@ abstract class Page(val id: Int, val position: Vector2) {
     fun renderDebug(renderer: ShapeRenderer) {
         if (AppConfig.DEBUG_MODE) {
             renderer.begin(ShapeRenderer.ShapeType.Line)
+            oldColor = renderer.color
+            renderer.color = Color.YELLOW
             renderOuterPerimeter(renderer)
             renderInnerPerimeter(renderer)
+            renderer.color = oldColor
             renderer.end()
         }
     }

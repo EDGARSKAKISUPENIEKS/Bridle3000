@@ -85,9 +85,9 @@ fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
     renderer.line(0f, 0f, 0f, totalWorldHeight)
 
 //    draw contours of pages
-    renderer.color = Color.YELLOW
 //    renderer.line(0f, worldHeight, worldWidth, worldHeight)
 //    renderer.line(worldWidth, worldHeight, worldWidth, 0f)
+    renderer.color = oldColor
 
 
     renderer.end()

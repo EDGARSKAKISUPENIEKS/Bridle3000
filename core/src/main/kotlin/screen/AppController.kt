@@ -18,6 +18,9 @@ object AppController {
         worldHeight = AppConfig.DEFAULT_WORLD_HEIGHT
     }
 
+    fun update() {
+    }
+
     fun incrementWorldWidth(string: String) {
         when (string) {
             "up" -> this.worldWidth++

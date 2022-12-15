@@ -73,7 +73,6 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
 
         }
         renderDebug(renderer)
-
     }
 
     override fun updateSize() {

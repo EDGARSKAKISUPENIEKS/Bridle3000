@@ -19,7 +19,7 @@ class AppScreen(val application: Bridle3000Main) : Screen, InputMultiplexer() {
     }
 
     override fun render(delta: Float) {
-//        controler.update()
+        controller.update()
 //        Appscreen izsauc renderer un controler, kur katrs ir InputProcessor un screen ir multiplexer
 //        jāizdomā tikai kā implementēt procesoru neaizdirošot renderer ujn controler klases
 

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import config.AppConfig
+import screen.navCircles.*
 import screen.pages.FourthPage
 import screen.pages.MainPage
 import screen.pages.SecondPage
@@ -30,6 +31,11 @@ class AppRenderer : Disposable {
         val secondPage: SecondPage = SecondPage()
         val thirdPage: ThirdPage = ThirdPage()
         val fourthPage: FourthPage = FourthPage()
+        val horizontalNavCircleMain: HorizontalNavCircleMain = HorizontalNavCircleMain()
+        val horizontalNavCircleSecond: HorizontalNavCircleSecond = HorizontalNavCircleSecond()
+        val horizontalNavCircleThird: HorizontalNavCircleThird = HorizontalNavCircleThird()
+        val verticalNavCircleMain: VerticalNavCircleMain = VerticalNavCircleMain()
+        val verticalNavCirclePlus1: VerticalNavCirclePlus1 = VerticalNavCirclePlus1()
     }
 
     //    PRIVATE PROPERTIES
@@ -50,7 +56,7 @@ class AppRenderer : Disposable {
 
     fun render() {
         appInputHandler.updateCameraPosition(camera)
-        clearScreen(Color.BLACK)
+        clearScreen(Color.GRAY)
 
 //  renderDebug() ir augšā jo savādāk zīmē pa virsu lapu perimetriem
         renderDebug()
@@ -58,7 +64,11 @@ class AppRenderer : Disposable {
         secondPage.render(renderer)
         thirdPage.render(renderer)
         fourthPage.render(renderer)
-
+        horizontalNavCircleMain.render(renderer)
+        horizontalNavCircleSecond.render(renderer)
+        horizontalNavCircleThird.render(renderer)
+        verticalNavCircleMain.render(renderer)
+        verticalNavCirclePlus1.render(renderer)
     }
 
     fun resize(width: Int, height: Int) {

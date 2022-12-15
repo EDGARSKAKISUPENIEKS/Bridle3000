@@ -19,7 +19,7 @@ import kotlin.math.abs
 private const val CAMERA_ZOOM_SPEED = 0.5f
 private const val CAMERA_MAX_ZOOM_OUT = 5f
 private const val CAMERA_MAX_ZOOM_IN = 0.25f
-private val cameraMoveSpeed = if (!AppConfig.DEBUG_MODE) 15f else 5f
+
 
 //  PRIVATE PROPERTIES
 
@@ -33,21 +33,30 @@ private var zoom = 1f
     set(value) {
         field = MathUtils.clamp(value, CAMERA_MAX_ZOOM_IN, CAMERA_MAX_ZOOM_OUT)
     }
+
 private var dummyCamera = OrthographicCamera()
     get() {
         field = AppRenderer.camera
         return field
     }
 
-private val innerUp: Float
-    get() = (controller.worldHeight / 3) * 2
-private val innerRight: Float
-    get() = (controller.worldWidth / 3) * 2
-private val innerDown: Float
-    get() = controller.worldHeight / 3
-private val innerLeft: Float
-    get() = controller.worldWidth / 3
+private val cameraMoveSpeedX: Float
+    get() {
+        return if (AppConfig.DEBUG_MODE) {
+            abs(position.x - targetPosition.x)
+        } else {
+            abs(position.x - targetPosition.x) * 2
+        }
+    }
 
+private val cameraMoveSpeedY: Float
+    get() {
+        return if (AppConfig.DEBUG_MODE) {
+            abs(position.y - targetPosition.y)
+        } else {
+            abs(position.y - targetPosition.y) * 2
+        }
+    }
 
 //  DEBUG CAMERA CONTROLS AND SETTINGS
 private const val MOVE_CAMERA_LEFT_KEY: Int = Input.Keys.A
@@ -143,10 +152,22 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
                 MOVE_CAMERA_DOWN_KEY -> moveCameraDown(getDelta())
                 ZOOM_CAMERA_IN_KEY -> zoomCameraIn(getDelta())
                 ZOOM_CAMERA_OUT_KEY -> zoomCameraOut(getDelta())
-                CAMERA_POS_MAIN_SCREEN -> targetPosition.set(AppRenderer.mainPage.position)
-                CAMERA_POS_SECOND_SCREEN -> targetPosition.set(AppRenderer.secondPage.position)
-                CAMERA_POS_THIRD_SCREEN -> targetPosition.set(AppRenderer.thirdPage.position)
-                CAMERA_POS_FOURTH_SCREEN -> targetPosition.set(AppRenderer.fourthPage.position)
+                CAMERA_POS_MAIN_SCREEN -> {
+                    targetPosition.set(AppRenderer.mainPage.position)
+                    AppRenderer.mainPage.activate()
+                }
+                CAMERA_POS_SECOND_SCREEN -> {
+                    targetPosition.set(AppRenderer.secondPage.position)
+                    AppRenderer.secondPage.activate()
+                }
+                CAMERA_POS_THIRD_SCREEN -> {
+                    targetPosition.set(AppRenderer.thirdPage.position)
+                    AppRenderer.thirdPage.activate()
+                }
+                CAMERA_POS_FOURTH_SCREEN -> {
+                    targetPosition.set(AppRenderer.fourthPage.position)
+                    AppRenderer.fourthPage.activate()
+                }
 
                 WORLD_HEIGHT_PLUS -> controller.incrementWorldHeight("up")
                 WORLD_HEIGHT_MINUS -> controller.incrementWorldHeight("down")
@@ -181,7 +202,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
 
         log.debug("mans debug tap $touchPosition")
         log.debug("mans debug ${controller.worldWidth} ${controller.worldHeight}")
-        return false
+        return true
     }
 
 
@@ -191,7 +212,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
         if (AppConfig.DEBUG_MODE) {
             log.debug("mans debug longPress x - $x 7 $y")
         }
-        return false
+        return true
     }
 
     override fun fling(velocityX: Float, velocityY: Float, button: Int): Boolean {
@@ -204,7 +225,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
             movePageLeftConditions(velocityX, velocityY) -> movePageLeft()
         }
 
-        return false
+        return true
     }
 
 
@@ -231,7 +252,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
             position.set(dummyCamera.position.x, dummyCamera.position.y)
         }
 
-        return false
+        return true
     }
 
     override fun panStop(x: Float, y: Float, pointer: Int, button: Int): Boolean {
@@ -349,19 +370,19 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
     }
 
     private fun moveCameraLeft(delta: Float) {
-        setPosition(position.x - (cameraMoveSpeed * delta), position.y)
+        setPosition(position.x - (cameraMoveSpeedX * delta), position.y)
     }
 
     private fun moveCameraRight(delta: Float) {
-        setPosition(position.x + (cameraMoveSpeed * delta), position.y)
+        setPosition(position.x + (cameraMoveSpeedX * delta), position.y)
     }
 
     private fun moveCameraUp(delta: Float) {
-        setPosition(position.x, position.y + (cameraMoveSpeed * delta))
+        setPosition(position.x, position.y + (cameraMoveSpeedY * delta))
     }
 
     private fun moveCameraDown(delta: Float) {
-        setPosition(position.x, position.y - (cameraMoveSpeed * delta))
+        setPosition(position.x, position.y - (cameraMoveSpeedY * delta))
     }
 
     private fun zoomCameraIn(delta: Float) {

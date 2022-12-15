@@ -1,11 +1,16 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 eclipse.project.name = appName + '-core'
 
+sourceSets.main.java.srcDirs = ["src/main/kotlin"]
+sourceSets.test.java.srcDirs = ["src/test/kotlin"]
+
+
 dependencies {
-	api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-	api "com.badlogicgames.gdx:gdx:$gdxVersion"
-	api "io.github.libktx:ktx-box2d:$ktxVersion"
-	api "io.github.libktx:ktx-json:$ktxVersion"
-	api "io.github.libktx:ktx-math:$ktxVersion"
-	api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+    api "com.badlogicgames.gdx:gdx:$gdxVersion"
+    api "io.github.libktx:ktx-box2d:$ktxVersion"
+    api "io.github.libktx:ktx-json:$ktxVersion"
+    api "io.github.libktx:ktx-math:$ktxVersion"
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation 'junit:junit:4.12'
 }
