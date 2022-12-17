@@ -1,4 +1,5 @@
 import com.badlogic.gdx.*
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.input.GestureDetector
 import screen.AppScreen
 import utils.AppInputHandler
@@ -7,9 +8,11 @@ import utils.AppInputHandler
 /** [com.badlogic.gdx.ApplicationListener] implementation shared by all platforms.  */
 class Bridle3000Main : Game() {
 
-    companion object{
+    companion object {
         val appInputHandler = AppInputHandler()
+        val assetManager = AssetManager()
     }
+
     private val inputPlexer = InputMultiplexer()
 
 
@@ -29,5 +32,6 @@ class Bridle3000Main : Game() {
 
     override fun dispose() {
         super.dispose()
+        assetManager.dispose()
     }
 }
