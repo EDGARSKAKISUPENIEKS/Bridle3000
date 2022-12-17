@@ -2,11 +2,15 @@ package screen
 
 
 import Bridle3000Main.Companion.appInputHandler
+import Bridle3000Main.Companion.assetManager
+import assets.AssetDescriptors
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Disposable
@@ -22,7 +26,11 @@ import utils.clearScreen
 import utils.drawDebugGrid
 import utils.logger
 
-class AppRenderer : Disposable {
+//iznests pirms klases, jo klasei inicializējoties vēl nav gatavs, vai kas tāds un met FATAL ERROR
+private val  uiFont: BitmapFont = assetManager[AssetDescriptors.UI_FONT]
+
+
+class AppRenderer() : Disposable {
 
     companion object {
         private val log = logger(AppRenderer::class.java)
@@ -44,8 +52,7 @@ class AppRenderer : Disposable {
         FitViewport(AppController.worldWidth, AppController.worldHeight, camera)
     private val renderer: ShapeRenderer = ShapeRenderer()
     private val batch: SpriteBatch = SpriteBatch()
-
-
+    private val layout: GlyphLayout = GlyphLayout()
 
 
     init {
@@ -53,6 +60,7 @@ class AppRenderer : Disposable {
         camera.zoom = 1f
 //        pagaidu. Vajag globālu pasaules platumu un ekrānu pozīcijas izritēs no tā
         appInputHandler.setCameraToStartPosition()
+
     }
 
     fun render() {
@@ -62,10 +70,10 @@ class AppRenderer : Disposable {
 
 //  renderDebug() ir augšā jo savādāk zīmē pa virsu lapu perimetriem
         renderDebug()
-        mainPage.render(renderer)
-        secondPage.render(renderer)
-        thirdPage.render(renderer)
-        fourthPage.render(renderer)
+        mainPage.render(renderer, batch, uiFont, layout, camera)
+        secondPage.render(renderer, batch, uiFont, layout, camera)
+        thirdPage.render(renderer, batch, uiFont, layout, camera)
+        fourthPage.render(renderer, batch, uiFont, layout, camera)
         horizontalNavCircleMain.render(renderer)
         horizontalNavCircleSecond.render(renderer)
         horizontalNavCircleThird.render(renderer)

@@ -18,11 +18,12 @@ class AppScreen(val application: Bridle3000Main) : Screen, InputMultiplexer() {
 
 
     override fun show() {
+        log.debug("mans debug assetManager diagnostics = ${assetManager.diagnostics}")
         assetManager.load(AssetDescriptors.UI_FONT)
 
 
         assetManager.finishLoading()
-        log.debug("assetManager diagnostics = ${assetManager.diagnostics}")
+        log.debug("mans debug assetManager diagnostics = ${assetManager.diagnostics}")
     }
 
     override fun render(delta: Float) {
@@ -42,6 +43,7 @@ class AppScreen(val application: Bridle3000Main) : Screen, InputMultiplexer() {
     }
 
     override fun resume() {
+
     }
 
     override fun dispose() {

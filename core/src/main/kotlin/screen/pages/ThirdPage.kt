@@ -1,5 +1,9 @@
 package screen.pages
 
+import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.GlyphLayout
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import screen.AppScreen.Companion.controller
@@ -68,12 +72,18 @@ class ThirdPage : Page(3, Vector2(vectorX, vectorY)) {
         this.innerBottomRight = this.innerBottomRight
     }
 
-    override fun render(renderer: ShapeRenderer) {
+    override fun render(
+        renderer: ShapeRenderer,
+        batch: SpriteBatch,
+        font: BitmapFont,
+        layout: GlyphLayout,
+        camera: OrthographicCamera
+    ) {
         updateSize()
         if (this.isActive) {
 
         }
-        renderDebug(renderer)
+        renderDebug(renderer, batch, font, layout, camera)
     }
 
     override fun updateSize() {

@@ -1,6 +1,10 @@
 package screen.pages
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.GlyphLayout
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import config.AppConfig
@@ -8,6 +12,7 @@ import config.AppConfig.PAGE_BOUND_ADJUSTMENT
 import screen.AppController
 import utils.AppInputHandler
 import screen.AppScreen.Companion.controller
+import kotlin.math.abs
 
 
 abstract class Page(val id: Int, val position: Vector2) {
@@ -83,17 +88,48 @@ abstract class Page(val id: Int, val position: Vector2) {
     }
 
     abstract fun updateSize()
-    abstract fun render(renderer: ShapeRenderer)
-    fun renderDebug(renderer: ShapeRenderer) {
+    abstract fun render(
+        renderer: ShapeRenderer, batch: SpriteBatch,
+        font: BitmapFont,
+        layout: GlyphLayout,
+        camera: OrthographicCamera
+    )
+
+    fun renderDebug(
+        renderer: ShapeRenderer, batch: SpriteBatch,
+        font: BitmapFont,
+        layout: GlyphLayout,
+        camera: OrthographicCamera
+    ) {
         if (AppConfig.DEBUG_MODE) {
-            renderer.begin(ShapeRenderer.ShapeType.Line)
-            oldColor = renderer.color
-            renderer.color = Color.YELLOW
-            renderOuterPerimeter(renderer)
-            renderInnerPerimeter(renderer)
-            renderer.color = oldColor
-            renderer.end()
+            renderPerimeters(renderer)
+            renderDebugText(batch, font, layout, camera)
         }
+    }
+
+    private fun renderPerimeters(renderer: ShapeRenderer) {
+        renderer.begin(ShapeRenderer.ShapeType.Line)
+        oldColor = renderer.color
+        renderer.color = Color.YELLOW
+        renderOuterPerimeter(renderer)
+        renderInnerPerimeter(renderer)
+        renderer.color = oldColor
+        renderer.end()
+    }
+
+    open fun renderDebugText(
+        batch: SpriteBatch,
+        font: BitmapFont,
+        layout: GlyphLayout,
+        camera: OrthographicCamera
+    ) {
+        batch.projectionMatrix = camera.combined
+        batch.begin()
+        font.color = Color.DARK_GRAY
+        layout.setText(font, javaClass.simpleName)
+        font.draw(batch, layout, innerTopLeft.x, innerTopLeft.y)
+
+        batch.end()
     }
 
     private fun renderOuterPerimeter(renderer: ShapeRenderer) {
