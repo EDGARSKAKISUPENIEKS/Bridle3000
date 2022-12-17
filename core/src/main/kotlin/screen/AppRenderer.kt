@@ -56,6 +56,7 @@ class AppRenderer : Disposable {
 
     fun render() {
         appInputHandler.updateCameraPosition(camera)
+        renderer.projectionMatrix = camera.combined
         clearScreen(Color.GRAY)
 
 //  renderDebug() ir augšā jo savādāk zīmē pa virsu lapu perimetriem

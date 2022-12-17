@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3
 import config.AppConfig
 import screen.AppRenderer
 import screen.AppScreen.Companion.controller
+import screen.AppScreen.Companion.renderer
 import screen.pages.Page
 import kotlin.math.abs
 
@@ -217,7 +218,6 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
 
     override fun fling(velocityX: Float, velocityY: Float, button: Int): Boolean {
         log.debug("mans debug fling velocityX $velocityX, velocityY $velocityY , button $button")
-//          sistēmas appišana, neder
         when {
             movePageUpConditions(velocityX, velocityY) -> movePageUp()
             movePageDownConditions(velocityX, velocityY) -> movePageDown()
@@ -318,7 +318,6 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
         if (AppConfig.DEBUG_MODE) log.debug("mans debug before moved up  $position x=$targetPosition ${controller.activePage}")
         targetPosition = AppRenderer.fourthPage.position
         controller.activePage = 4
-        //TODO(padomāt vai nevajag te lietot activate() no klases funkcijām)
         if (AppConfig.DEBUG_MODE) log.debug("mans debug moved up  $position x=$targetPosition ${controller.activePage}")
     }
 
@@ -339,6 +338,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
 
     private fun movePageRight() {
         if (AppConfig.DEBUG_MODE) log.debug("mans debug before moved right $position x=$targetPosition ${controller.activePage}")
+
         if (controller.activePage == AppRenderer.thirdPage.id) {
             controller.activePage = AppRenderer.mainPage.id
         } else {
@@ -346,6 +346,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
         }
 //        no pages MutableMap paņem lapu, kurai ir id, kas paņemts no activePage un izvelk pozīciju
         targetPosition = pages[controller.activePage]!!.position
+
         if (AppConfig.DEBUG_MODE) log.debug("mans debug moved right $position x=$targetPosition ${controller.activePage}")
     }
 
@@ -355,6 +356,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
 
     private fun movePageLeft() {
         if (AppConfig.DEBUG_MODE) log.debug("mans debug before moved left $position x=$targetPosition ${controller.activePage}")
+
         if (controller.activePage == AppRenderer.mainPage.id) {
             controller.activePage = AppRenderer.thirdPage.id
         } else {
@@ -362,6 +364,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
         }
         //        no pages MutableMap paņem lapu, kurai ir id, kas paņemts no activePage un izvelk pozīciju
         targetPosition = pages[controller.activePage]!!.position
+
         if (AppConfig.DEBUG_MODE) log.debug("mans debug moved left $position x=$targetPosition ${controller.activePage}")
     }
 
