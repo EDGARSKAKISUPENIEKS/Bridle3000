@@ -4,6 +4,7 @@ import Bridle3000Main
 import assets.AssetDescriptors
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.Screen
+import utils.logger
 
 class AppScreen(val application: Bridle3000Main) : Screen, InputMultiplexer() {
 
@@ -12,11 +13,16 @@ class AppScreen(val application: Bridle3000Main) : Screen, InputMultiplexer() {
     companion object {
         var controller: AppController = AppController
         var renderer: AppRenderer = AppRenderer()
+        private val log = logger(AppRenderer::class.java)
     }
 
 
     override fun show() {
         assetManager.load(AssetDescriptors.UI_FONT)
+
+
+        assetManager.finishLoading()
+        log.debug("assetManager diagnostics = ${assetManager.diagnostics}")
     }
 
     override fun render(delta: Float) {

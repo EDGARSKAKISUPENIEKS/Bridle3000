@@ -44,7 +44,8 @@ class AppRenderer : Disposable {
         FitViewport(AppController.worldWidth, AppController.worldHeight, camera)
     private val renderer: ShapeRenderer = ShapeRenderer()
     private val batch: SpriteBatch = SpriteBatch()
-    private val image: Texture = Texture("libgdx.png")
+
+
 
 
     init {
@@ -80,19 +81,11 @@ class AppRenderer : Disposable {
     override fun dispose() {
         renderer.dispose()
         batch.dispose()
-        image.dispose()
     }
 
     private fun renderDebug() {
         if (AppConfig.DEBUG_MODE) {
             renderer.projectionMatrix = camera.combined
-
-            batch.begin()
-            batch.draw(image, 140f, 210f)
-            batch.end()
-
-
-//        render current viewport world lines
             viewport.drawDebugGrid(renderer)
         }
     }
