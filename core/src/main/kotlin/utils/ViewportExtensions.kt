@@ -14,7 +14,7 @@ private var totalWorldHeight: Float = 0f
 private var currentXLine: Float = 0f
 private var currentYLine: Float = 0f
 
-
+//der tikai priekš galvenā viewport, jo izmanto pasaules izmērus. uiViewport vajag taisīt atsevišķu fonkciju
 fun Viewport.drawDebugGrid(renderer: ShapeRenderer, cellSize: Int = 1) {
 
 //    copy old renderer color

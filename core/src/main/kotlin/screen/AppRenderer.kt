@@ -83,7 +83,7 @@ class AppRenderer() : Disposable {
 
 
 //        vajadzīgs beigās, lai reaģējot uz žestiem tiktu izmantotas pareizie pasaules izmēri camera.unproject()
-        viewport.apply()
+//        viewport.apply()
     }
 
     fun resize(width: Int, height: Int) {
