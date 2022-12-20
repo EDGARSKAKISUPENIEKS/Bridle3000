@@ -10,9 +10,9 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import config.AppConfig
+import screen.AppController
 import screen.AppRenderer
 import screen.AppScreen.Companion.controller
-import screen.pages.Page
 import kotlin.math.abs
 
 //  CONSTANTS
@@ -81,7 +81,6 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
 
     companion object {
         private val log = logger(AppInputHandler::class.java)
-        var pages: MutableMap<Int, Page> = mutableMapOf()
     }
 
     //  PUBLIC FUNCTIONS
@@ -293,19 +292,19 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
     //    PRIVATE FUNCTIONS
 
     private fun tappedOnPageBottomSide(): Boolean {
-        return touchPosition.y in pages[controller.activePage]!!.outerBottom..pages[controller.activePage]!!.innerBottom
+        return touchPosition.y in AppController.pages[controller.activePage]!!.outerBottom..AppController.pages[controller.activePage]!!.innerBottom
     }
 
     private fun tappedOnPageTopSide(): Boolean {
-        return touchPosition.y in pages[controller.activePage]!!.innerTop..pages[controller.activePage]!!.outerTop
+        return touchPosition.y in AppController.pages[controller.activePage]!!.innerTop..AppController.pages[controller.activePage]!!.outerTop
     }
 
     private fun tappedOndPageLeftSide(): Boolean {
-        return touchPosition.x in pages[controller.activePage]!!.outerLeft..pages[controller.activePage]!!.innerLeft
+        return touchPosition.x in AppController.pages[controller.activePage]!!.outerLeft..AppController.pages[controller.activePage]!!.innerLeft
     }
 
     private fun tappedOnPageRightSide(): Boolean {
-        return touchPosition.x in pages[controller.activePage]!!.innerRight..pages[controller.activePage]!!.outerRight
+        return touchPosition.x in AppController.pages[controller.activePage]!!.innerRight..AppController.pages[controller.activePage]!!.outerRight
     }
 
 
@@ -344,7 +343,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
             controller.activePage++
         }
 //        no pages MutableMap paņem lapu, kurai ir id, kas paņemts no activePage un izvelk pozīciju
-        targetPosition = pages[controller.activePage]!!.position
+        targetPosition = AppController.pages[controller.activePage]!!.position
 
         if (AppConfig.DEBUG_MODE) log.debug("mans debug moved right $position x=$targetPosition ${controller.activePage}")
     }
@@ -362,7 +361,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
             controller.activePage--
         }
         //        no pages MutableMap paņem lapu, kurai ir id, kas paņemts no activePage un izvelk pozīciju
-        targetPosition = pages[controller.activePage]!!.position
+        targetPosition = AppController.pages[controller.activePage]!!.position
 
         if (AppConfig.DEBUG_MODE) log.debug("mans debug moved left $position x=$targetPosition ${controller.activePage}")
     }

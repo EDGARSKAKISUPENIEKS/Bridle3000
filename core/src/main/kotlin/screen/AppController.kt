@@ -1,9 +1,12 @@
 package screen
 
 import config.AppConfig
-import utils.AppInputHandler.Companion.pages
+import screen.pages.Page
 
 object AppController {
+
+    var pages: MutableMap<Int, Page> = mutableMapOf()
+
     var worldWidth: Float = 0f
         private set
     var worldHeight: Float = 0f

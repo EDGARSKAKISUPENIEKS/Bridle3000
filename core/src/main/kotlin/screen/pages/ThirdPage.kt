@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
+import screen.AppController
 import screen.AppScreen.Companion.controller
-import utils.AppInputHandler
 
 // pa labi no SecondPage, tanī pašā augstumā
 private var vectorX: Float = (controller.worldWidth / 2) + (controller.worldWidth * 2)
@@ -89,6 +89,6 @@ class ThirdPage : Page(3, Vector2(vectorX, vectorY)) {
     override fun updateSize() {
         this.position.x = (controller.worldWidth / 2) + (controller.worldWidth * 2)
         this.position.y = controller.worldHeight / 2
-        AppInputHandler.pages[this.id] = this
+        AppController.pages[this.id] = this
     }
 }

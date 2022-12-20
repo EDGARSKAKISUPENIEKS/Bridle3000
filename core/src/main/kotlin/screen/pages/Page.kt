@@ -11,7 +11,6 @@ import config.AppConfig
 import config.AppConfig.PAGE_BOUND_ADJUSTMENT
 import screen.AppController
 import screen.AppScreen.Companion.controller
-import utils.AppInputHandler
 
 
 abstract class Page(val id: Int, val position: Vector2) {
@@ -174,7 +173,7 @@ abstract class Page(val id: Int, val position: Vector2) {
     }
 
     private fun selfRegister() {
-        AppInputHandler.pages[this.id] = this
+        AppController.pages[this.id] = this
     }
 
 }

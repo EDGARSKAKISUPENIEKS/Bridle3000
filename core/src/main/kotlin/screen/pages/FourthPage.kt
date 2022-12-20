@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
+import screen.AppController
 import screen.AppScreen.Companion.controller
-import utils.AppInputHandler
 
 // virs MainPage
 private var vectorX: Float = controller.worldWidth / 2
@@ -90,6 +90,6 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
     override fun updateSize() {
         this.position.x = controller.worldWidth / 2
         this.position.y = (controller.worldHeight / 2) + (controller.worldHeight)
-        AppInputHandler.pages[this.id] = this
+        AppController.pages[this.id] = this
     }
 }

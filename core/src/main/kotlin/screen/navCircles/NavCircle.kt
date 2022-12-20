@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import screen.AppController
-import utils.AppInputHandler
 
 
 abstract class NavCircle(val id: Int, val position: Vector2) {
@@ -32,11 +31,11 @@ abstract class NavCircle(val id: Int, val position: Vector2) {
         return activePagePosX() == circlePosX() && activePagePosY() == circlePosY()
     }
 
-    fun circlePosY() = AppInputHandler.pages[this.id]!!.position.y
+    fun circlePosY() = AppController.pages[this.id]!!.position.y
 
-    fun activePagePosY() = AppInputHandler.pages[AppController.activePage]!!.position.y
+    fun activePagePosY() = AppController.pages[AppController.activePage]!!.position.y
 
-    fun circlePosX() = AppInputHandler.pages[this.id]!!.position.x
+    fun circlePosX() = AppController.pages[this.id]!!.position.x
 
-    fun activePagePosX() = AppInputHandler.pages[AppController.activePage]!!.position.x
+    fun activePagePosX() = AppController.pages[AppController.activePage]!!.position.x
 }
