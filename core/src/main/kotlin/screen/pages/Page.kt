@@ -10,9 +10,8 @@ import com.badlogic.gdx.math.Vector2
 import config.AppConfig
 import config.AppConfig.PAGE_BOUND_ADJUSTMENT
 import screen.AppController
-import utils.AppInputHandler
 import screen.AppScreen.Companion.controller
-import kotlin.math.abs
+import utils.AppInputHandler
 
 
 abstract class Page(val id: Int, val position: Vector2) {

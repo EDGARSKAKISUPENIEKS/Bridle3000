@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.Vector3
 import config.AppConfig
 import screen.AppRenderer
 import screen.AppScreen.Companion.controller
-import screen.AppScreen.Companion.renderer
 import screen.pages.Page
 import kotlin.math.abs
 

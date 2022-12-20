@@ -3,7 +3,6 @@ package utils
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.viewport.Viewport
-import config.AppConfig.PAGE_BOUND_ADJUSTMENT
 import screen.AppScreen.Companion.controller
 
 private var oldColor = Color.BLACK
