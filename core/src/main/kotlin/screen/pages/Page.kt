@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.FitViewport
-import com.badlogic.gdx.utils.viewport.Viewport
 import config.AppConfig
 import config.AppConfig.PAGE_BOUND_ADJUSTMENT
 import screen.AppController
@@ -138,7 +137,12 @@ abstract class Page(val id: Int, val position: Vector2) {
         batch.begin()
         font.color = Color.DARK_GRAY
         font.data.setScale(2f)
-        layout.setText(font, javaClass.simpleName)
+        layout.setText(
+            font, "${javaClass.simpleName} \n" +
+                    "id - ${this.id} \n" +
+                    "Active page id - ${AppController.activePage} \n" +
+                    "world size - ${AppController.worldWidth} ${AppController.worldHeight}"
+        )
         font.draw(batch, layout, innerTopLeft.x * 100f, innerTopLeft.y * 100f)
         batch.end()
     }
