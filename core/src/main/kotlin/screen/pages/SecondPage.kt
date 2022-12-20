@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.utils.viewport.FitViewport
 import screen.AppController
 import screen.AppScreen.Companion.controller
 
@@ -85,13 +86,16 @@ class SecondPage : Page(2, Vector2(vectorX, vectorY)) {
         batch: SpriteBatch,
         font: BitmapFont,
         layout: GlyphLayout,
-        camera: OrthographicCamera
+        camera: OrthographicCamera,
+        viewport: FitViewport,
+        uiViewport: FitViewport,
+        uiCamera: OrthographicCamera
     ) {
         updateSize()
         if (this.isActive) {
 
         }
-        renderDebug(renderer, batch, font, layout, camera)
+        renderDebug(renderer, batch, font, layout, camera, viewport, uiViewport, uiCamera)
     }
 
     override fun updateSize() {

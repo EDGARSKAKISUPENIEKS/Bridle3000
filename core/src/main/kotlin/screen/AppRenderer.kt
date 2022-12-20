@@ -26,7 +26,7 @@ import utils.drawDebugGrid
 import utils.logger
 
 //iznests pirms klases, jo klasei inicializējoties vēl nav gatavs, vai kas tāds un met FATAL ERROR
-private val  uiFont: BitmapFont = assetManager[AssetDescriptors.UI_FONT]
+private val uiFont: BitmapFont = assetManager[AssetDescriptors.UI_FONT]
 
 
 class AppRenderer() : Disposable {
@@ -47,8 +47,11 @@ class AppRenderer() : Disposable {
 
     //    PRIVATE PROPERTIES
 
-    private val viewport: Viewport =
+    private val viewport: FitViewport =
         FitViewport(AppController.worldWidth, AppController.worldHeight, camera)
+    private val uiCamera: OrthographicCamera = OrthographicCamera()
+    private val uiViewport: FitViewport =
+        FitViewport(viewport.worldWidth * 100f, viewport.worldHeight * 100f, uiCamera)
     private val renderer: ShapeRenderer = ShapeRenderer()
     private val batch: SpriteBatch = SpriteBatch()
     private val layout: GlyphLayout = GlyphLayout()
@@ -59,29 +62,33 @@ class AppRenderer() : Disposable {
         camera.zoom = 1f
 //        pagaidu. Vajag globālu pasaules platumu un ekrānu pozīcijas izritēs no tā
         appInputHandler.setCameraToStartPosition()
-
     }
 
     fun render() {
-        appInputHandler.updateCameraPosition(camera)
         renderer.projectionMatrix = camera.combined
+        appInputHandler.updateCameraPosition(camera, uiCamera)
         clearScreen(Color.GRAY)
 
 //  renderDebug() ir augšā jo savādāk zīmē pa virsu lapu perimetriem
         renderDebug()
-        mainPage.render(renderer, batch, uiFont, layout, camera)
-        secondPage.render(renderer, batch, uiFont, layout, camera)
-        thirdPage.render(renderer, batch, uiFont, layout, camera)
-        fourthPage.render(renderer, batch, uiFont, layout, camera)
+        mainPage.render(renderer, batch, uiFont, layout, camera, viewport, uiViewport, uiCamera)
+        secondPage.render(renderer, batch, uiFont, layout, camera, viewport, uiViewport, uiCamera)
+        thirdPage.render(renderer, batch, uiFont, layout, camera, viewport, uiViewport, uiCamera)
+        fourthPage.render(renderer, batch, uiFont, layout, camera, viewport, uiViewport, uiCamera)
         horizontalNavCircleMain.render(renderer)
         horizontalNavCircleSecond.render(renderer)
         horizontalNavCircleThird.render(renderer)
         verticalNavCircleMain.render(renderer)
         verticalNavCirclePlus1.render(renderer)
+
+
+//        vajadzīgs beigās, lai reaģējot uz žestiem tiktu izmantotas pareizie pasaules izmēri camera.unproject()
+        viewport.apply()
     }
 
     fun resize(width: Int, height: Int) {
         viewport.update(width, height, true)
+        uiViewport.update(width, height, true)
     }
 
 

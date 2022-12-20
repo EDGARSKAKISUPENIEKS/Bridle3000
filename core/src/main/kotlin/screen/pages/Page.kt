@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.utils.viewport.FitViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import config.AppConfig
 import config.AppConfig.PAGE_BOUND_ADJUSTMENT
 import screen.AppController
@@ -87,25 +89,33 @@ abstract class Page(val id: Int, val position: Vector2) {
 
     abstract fun updateSize()
     abstract fun render(
-        renderer: ShapeRenderer, batch: SpriteBatch,
+        renderer: ShapeRenderer,
+        batch: SpriteBatch,
         font: BitmapFont,
         layout: GlyphLayout,
-        camera: OrthographicCamera
+        camera: OrthographicCamera,
+        viewport: FitViewport,
+        uiViewport: FitViewport,
+        uiCamera: OrthographicCamera
     )
 
-    fun renderDebug(
+    open fun renderDebug(
         renderer: ShapeRenderer, batch: SpriteBatch,
         font: BitmapFont,
         layout: GlyphLayout,
-        camera: OrthographicCamera
+        camera: OrthographicCamera,
+        viewport: FitViewport,
+        uiViewport: FitViewport,
+        uiCamera: OrthographicCamera
     ) {
         if (AppConfig.DEBUG_MODE) {
-            renderPerimeters(renderer)
-            renderDebugText(batch, font, layout, camera)
+            renderPerimeters(renderer, viewport)
+            renderDebugText(batch, font, layout, camera, uiViewport, uiCamera)
         }
     }
 
-    private fun renderPerimeters(renderer: ShapeRenderer) {
+    private fun renderPerimeters(renderer: ShapeRenderer, viewport: FitViewport) {
+        viewport.apply()
         renderer.begin(ShapeRenderer.ShapeType.Line)
         oldColor = renderer.color
         renderer.color = Color.YELLOW
@@ -119,14 +129,17 @@ abstract class Page(val id: Int, val position: Vector2) {
         batch: SpriteBatch,
         font: BitmapFont,
         layout: GlyphLayout,
-        camera: OrthographicCamera
+        camera: OrthographicCamera,
+        uiViewport: FitViewport,
+        uiCamera: OrthographicCamera
     ) {
-        batch.projectionMatrix = camera.combined
+        uiViewport.apply()
+        batch.projectionMatrix = uiCamera.combined
         batch.begin()
         font.color = Color.DARK_GRAY
+        font.data.setScale(2f)
         layout.setText(font, javaClass.simpleName)
-        font.draw(batch, layout, innerTopLeft.x, innerTopLeft.y)
-
+        font.draw(batch, layout, innerTopLeft.x * 100f, innerTopLeft.y * 100f)
         batch.end()
     }
 

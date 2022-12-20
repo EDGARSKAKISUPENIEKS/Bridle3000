@@ -91,7 +91,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
         if (AppConfig.DEBUG_MODE) log.debug("mans debug start $position x=$targetPosition ${controller.activePage}")
     }
 
-    fun updateCameraPosition(camera: OrthographicCamera) {
+    fun updateCameraPosition(camera: OrthographicCamera, uiCamera: OrthographicCamera) {
         when {
             position.y > targetPosition.y -> {
                 if (position.y - targetPosition.y < 0.1f) {
@@ -130,8 +130,11 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
         }
 
         camera.position.set(position, 0f)
+        uiCamera.position.x = position.x * 100f
+        uiCamera.position.y = position.y * 100f
 //        camera ir zoom lauks un tam tiek iestatīta vērtība no DebugCameraController zoom lauka
         camera.zoom = zoom
+        uiCamera.zoom = zoom
         camera.update()
     }
 
@@ -235,6 +238,7 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
             panPositionEnd.set(x + deltaX, y + deltaY, 0f)
 
 //        projecē tos no pikseļiem uz pasaules vienībām
+
             AppRenderer.camera.unproject(panPositionStart)
             AppRenderer.camera.unproject(panPositionEnd)
 
