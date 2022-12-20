@@ -11,8 +11,14 @@ import screen.AppScreen.Companion.controller
 
 
 // pa labi no galvenās, tanī pašā augstumā
-private var vectorX: Float = (controller.worldWidth / 2) + controller.worldWidth
-private var vectorY: Float = controller.worldHeight / 2
+private val vectorX: Float
+    get() {
+        return (controller.worldWidth / 2) + controller.worldWidth
+    }
+private val vectorY: Float
+    get() {
+        return controller.worldHeight / 2
+    }
 
 class SecondPage : Page(2, Vector2(vectorX, vectorY)) {
 
@@ -89,8 +95,8 @@ class SecondPage : Page(2, Vector2(vectorX, vectorY)) {
     }
 
     override fun updateSize() {
-        this.position.x = (controller.worldWidth / 2) + controller.worldWidth
-        this.position.y = controller.worldHeight / 2
+        this.position.x = vectorX
+        this.position.y = vectorY
         AppController.pages[this.id] = this
     }
 }

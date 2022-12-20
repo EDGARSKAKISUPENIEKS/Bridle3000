@@ -9,8 +9,14 @@ import com.badlogic.gdx.math.Vector2
 import screen.AppController
 import screen.AppScreen.Companion.controller
 
-private var vectorX: Float = controller.worldWidth / 2
-private var vectorY: Float = controller.worldHeight / 2
+private val vectorX: Float
+    get() {
+        return controller.worldWidth / 2
+    }
+private val vectorY: Float
+    get() {
+        return controller.worldHeight / 2
+    }
 
 class MainPage : Page(1, Vector2(vectorX, vectorY)) {
 
@@ -86,8 +92,8 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
     }
 
     override fun updateSize() {
-        this.position.x = controller.worldWidth / 2
-        this.position.y = controller.worldHeight / 2
+        this.position.x = vectorX
+        this.position.y = vectorY
         AppController.pages[this.id] = this
     }
 

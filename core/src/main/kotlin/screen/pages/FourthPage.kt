@@ -10,8 +10,14 @@ import screen.AppController
 import screen.AppScreen.Companion.controller
 
 // virs MainPage
-private var vectorX: Float = controller.worldWidth / 2
-private var vectorY: Float = (controller.worldHeight / 2) + controller.worldHeight
+private val vectorX: Float
+    get() {
+        return controller.worldWidth / 2
+    }
+private val vectorY: Float
+    get() {
+        return (controller.worldHeight / 2) + controller.worldHeight
+    }
 
 class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
 
@@ -88,8 +94,8 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
     }
 
     override fun updateSize() {
-        this.position.x = controller.worldWidth / 2
-        this.position.y = (controller.worldHeight / 2) + (controller.worldHeight)
+        this.position.x = vectorX
+        this.position.y = vectorY
         AppController.pages[this.id] = this
     }
 }
