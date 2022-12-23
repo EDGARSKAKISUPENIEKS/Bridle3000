@@ -1,5 +1,6 @@
 package screen.pages
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.GlyphLayout
@@ -7,8 +8,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.FitViewport
+import config.AppConfig
 import screen.AppController
+import screen.AppRenderer
 import screen.AppScreen.Companion.controller
+import screen.bridle.Beam
+import screen.texts.BeamDistanceText
+import utils.logger
+import java.util.*
+import kotlin.math.abs
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 private val vectorX: Float
     get() {
@@ -20,7 +30,6 @@ private val vectorY: Float
     }
 
 class MainPage : Page(1, Vector2(vectorX, vectorY)) {
-
 
     override var innerTopLeft: Vector2 = Vector2()
         get() {
@@ -71,14 +80,54 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
             return field
         }
 
+    var leftBeam: Beam = Beam(AppController.beamWidth, AppController.beamHeight)
+    var rightBeam: Beam = Beam(AppController.beamWidth, AppController.beamHeight)
+    var beamDistanceText: BeamDistanceText = BeamDistanceText()
+
+
+    private lateinit var oldColor: Color
+
+    companion object {
+        private val log = logger(AppRenderer::class.java)
+    }
+
     init {
         this.innerTopLeft = this.innerTopLeft
         this.innerTopRight = this.innerTopRight
         this.innerBottomLeft = this.innerBottomLeft
         this.innerBottomRight = this.innerBottomRight
+        leftBeam.updatePosition(innerTopLeft)
+        rightBeam.updatePosition(innerTopRight.x - rightBeam.width, innerTopRight.y)
     }
 
     override fun render(
+        renderer: ShapeRenderer,
+        batch: SpriteBatch,
+        debugUiFont: BitmapFont,
+        layout: GlyphLayout,
+        camera: OrthographicCamera,
+        viewport: FitViewport,
+        uiViewport: FitViewport,
+        uiCamera: OrthographicCamera
+    ) {
+        update()
+        if (this.isActive) {
+            beamDistanceText.render(
+                renderer,
+                batch,
+                debugUiFont,
+                layout,
+                uiViewport,
+                uiCamera,
+                leftBeam,
+                rightBeam,
+                this
+            )
+        }
+        renderDebug(renderer, batch, debugUiFont, layout, camera, viewport, uiViewport, uiCamera)
+    }
+
+    override fun renderDebug(
         renderer: ShapeRenderer,
         batch: SpriteBatch,
         font: BitmapFont,
@@ -88,17 +137,40 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         uiViewport: FitViewport,
         uiCamera: OrthographicCamera
     ) {
-        updateSize()
-        if (this.isActive) {
-
+        super.renderDebug(renderer, batch, font, layout, camera, viewport, uiViewport, uiCamera)
+        if (AppConfig.DEBUG_MODE) {
+            drawDebugBeams(renderer, viewport, camera)
         }
-        renderDebug(renderer, batch, font, layout, camera, viewport, uiViewport, uiCamera)
     }
 
-    override fun updateSize() {
+
+    private fun drawDebugBeams(
+        renderer: ShapeRenderer,
+        viewport: FitViewport,
+        camera: OrthographicCamera
+    ) {
+        viewport.apply()
+        oldColor = renderer.color
+        renderer.color = Color.OLIVE
+        renderer.projectionMatrix = camera.combined
+        renderer.begin(ShapeRenderer.ShapeType.Filled)
+
+        leftBeam.position.set(innerTopLeft)
+        rightBeam.position.set(innerTopRight.x - rightBeam.width, innerTopRight.y)
+
+        renderer.rect(leftBeam.position.x, leftBeam.position.y, leftBeam.width, leftBeam.height)
+        renderer.rect(rightBeam.position.x, rightBeam.position.y, rightBeam.width, rightBeam.height)
+
+        renderer.color = oldColor
+        renderer.end()
+    }
+
+    override fun update() {
         this.position.x = vectorX
         this.position.y = vectorY
         AppController.pages[this.id] = this
+        leftBeam.updatePosition(innerTopLeft)
+        rightBeam.updatePosition(innerTopRight.x - rightBeam.width, innerTopRight.y)
     }
 
 

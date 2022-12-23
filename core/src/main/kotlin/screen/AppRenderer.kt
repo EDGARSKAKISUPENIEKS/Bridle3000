@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import config.AppConfig
+import screen.bridle.Beam
 import screen.navCircles.*
 import screen.pages.FourthPage
 import screen.pages.MainPage
@@ -75,11 +76,11 @@ class AppRenderer() : Disposable {
         secondPage.render(renderer, batch, uiFont, layout, camera, viewport, uiViewport, uiCamera)
         thirdPage.render(renderer, batch, uiFont, layout, camera, viewport, uiViewport, uiCamera)
         fourthPage.render(renderer, batch, uiFont, layout, camera, viewport, uiViewport, uiCamera)
-        horizontalNavCircleMain.render(renderer)
-        horizontalNavCircleSecond.render(renderer)
-        horizontalNavCircleThird.render(renderer)
-        verticalNavCircleMain.render(renderer)
-        verticalNavCirclePlus1.render(renderer)
+        horizontalNavCircleMain.render(renderer, camera, viewport)
+        horizontalNavCircleSecond.render(renderer, camera, viewport)
+        horizontalNavCircleThird.render(renderer, camera, viewport)
+        verticalNavCircleMain.render(renderer, camera, viewport)
+        verticalNavCirclePlus1.render(renderer, camera, viewport)
 
 
 //        vajadzīgs beigās, lai reaģējot uz žestiem tiktu izmantotas pareizie pasaules izmēri camera.unproject()

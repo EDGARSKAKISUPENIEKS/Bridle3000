@@ -89,7 +89,7 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
         uiViewport: FitViewport,
         uiCamera: OrthographicCamera
     ) {
-        updateSize()
+        update()
         if (this.isActive) {
 
 
@@ -97,7 +97,7 @@ class FourthPage : Page(4, Vector2(vectorX, vectorY)) {
         renderDebug(renderer, batch, font, layout, camera, viewport, uiViewport, uiCamera)
     }
 
-    override fun updateSize() {
+    override fun update() {
         this.position.x = vectorX
         this.position.y = vectorY
         AppController.pages[this.id] = this

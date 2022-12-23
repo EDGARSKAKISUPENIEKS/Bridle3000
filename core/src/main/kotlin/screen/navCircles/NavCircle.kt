@@ -1,8 +1,10 @@
 package screen.navCircles
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.utils.viewport.FitViewport
 import screen.AppController
 
 
@@ -12,8 +14,10 @@ abstract class NavCircle(val id: Int, val position: Vector2) {
 
 
     abstract fun updatePosition()
-    open fun render(renderer: ShapeRenderer) {
+    open fun render(renderer: ShapeRenderer, camera: OrthographicCamera, viewport: FitViewport) {
         updatePosition()
+        viewport.apply()
+        renderer.projectionMatrix = camera.combined
         if (isActive()) {
             renderer.begin(ShapeRenderer.ShapeType.Filled)
         } else {

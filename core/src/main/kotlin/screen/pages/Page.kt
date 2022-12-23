@@ -83,10 +83,10 @@ abstract class Page(val id: Int, val position: Vector2) {
 
     open fun activate() {
         AppController.activePage = this.id
-        updateSize()
+        update()
     }
 
-    abstract fun updateSize()
+    abstract fun update()
     abstract fun render(
         renderer: ShapeRenderer,
         batch: SpriteBatch,
@@ -108,13 +108,14 @@ abstract class Page(val id: Int, val position: Vector2) {
         uiCamera: OrthographicCamera
     ) {
         if (AppConfig.DEBUG_MODE) {
-            renderPerimeters(renderer, viewport)
+            renderPerimeters(renderer, viewport, camera)
             renderDebugText(batch, font, layout, camera, uiViewport, uiCamera)
         }
     }
 
-    private fun renderPerimeters(renderer: ShapeRenderer, viewport: FitViewport) {
+    private fun renderPerimeters(renderer: ShapeRenderer, viewport: FitViewport, camera: OrthographicCamera) {
         viewport.apply()
+        renderer.projectionMatrix = camera.combined
         renderer.begin(ShapeRenderer.ShapeType.Line)
         oldColor = renderer.color
         renderer.color = Color.YELLOW
@@ -136,12 +137,12 @@ abstract class Page(val id: Int, val position: Vector2) {
         batch.projectionMatrix = uiCamera.combined
         batch.begin()
         font.color = Color.DARK_GRAY
-        font.data.setScale(2f)
+        font.data.setScale(1f)
         layout.setText(
             font, "${javaClass.simpleName} \n" +
                     "id - ${this.id} \n" +
                     "Active page id - ${AppController.activePage} \n" +
-                    "world size - ${AppController.worldWidth} ${AppController.worldHeight}"
+                    "world size - x ${AppController.worldWidth} y ${AppController.worldHeight}"
         )
         font.draw(batch, layout, innerTopLeft.x * 100f, innerTopLeft.y * 100f)
         batch.end()
