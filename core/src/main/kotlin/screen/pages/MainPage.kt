@@ -13,12 +13,8 @@ import screen.AppController
 import screen.AppRenderer
 import screen.AppScreen.Companion.controller
 import screen.bridle.Beam
-import screen.texts.BeamDistanceText
+import screen.texts.BeamDistance
 import utils.logger
-import java.util.*
-import kotlin.math.abs
-import kotlin.math.roundToInt
-import kotlin.math.roundToLong
 
 private val vectorX: Float
     get() {
@@ -82,7 +78,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
 
     var leftBeam: Beam = Beam(AppController.beamWidth, AppController.beamHeight)
     var rightBeam: Beam = Beam(AppController.beamWidth, AppController.beamHeight)
-    var beamDistanceText: BeamDistanceText = BeamDistanceText()
+    var beamDistance: BeamDistance = BeamDistance()
 
 
     private lateinit var oldColor: Color
@@ -112,7 +108,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
     ) {
         update()
         if (this.isActive) {
-            beamDistanceText.render(
+            beamDistance.render(
                 renderer,
                 batch,
                 debugUiFont,
@@ -121,7 +117,6 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
                 uiCamera,
                 leftBeam,
                 rightBeam,
-                this
             )
         }
         renderDebug(renderer, batch, debugUiFont, layout, camera, viewport, uiViewport, uiCamera)
