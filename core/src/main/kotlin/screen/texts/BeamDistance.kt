@@ -11,14 +11,15 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import screen.AppController
 import screen.AppRenderer
 import screen.bridle.Beam
-import screen.pages.Page
 import java.util.*
 import kotlin.math.abs
 
 class BeamDistance {
     private lateinit var oldColor: Color
-    private lateinit var beamDistanceText: String
-    private var textPosition: Vector2 = Vector2()
+    private lateinit var beamDistanceNumber: String
+
+
+    private var beamDistanceNumberPosition: Vector2 = Vector2()
     private var leftArrowOutside: Vector2 = Vector2()
     private var leftArrowInside: Vector2 = Vector2()
     private var leftArrowOutsideUpperWingEnd: Vector2 = Vector2()
@@ -38,14 +39,14 @@ class BeamDistance {
     fun render(
         renderer: ShapeRenderer,
         batch: SpriteBatch,
-        font: BitmapFont,
+        debugUiFont: BitmapFont,
         layout: GlyphLayout,
         uiViewport: FitViewport,
         uiCamera: OrthographicCamera,
         leftBeam: Beam,
         rightBeam: Beam,
     ) {
-        renderDistanceNumber(uiViewport, batch, uiCamera, leftBeam, rightBeam, font, layout)
+        renderDistanceNumber(uiViewport, batch, uiCamera, leftBeam, rightBeam, debugUiFont, layout)
         renderLeftArrow(renderer, uiViewport, uiCamera)
         renderRightArrow(renderer, uiViewport, uiCamera)
     }
@@ -101,36 +102,32 @@ class BeamDistance {
         renderer.end()
     }
 
+
     private fun renderDistanceNumber(
         uiViewport: FitViewport,
         batch: SpriteBatch,
         uiCamera: OrthographicCamera,
         leftBeam: Beam,
         rightBeam: Beam,
-        font: BitmapFont,
+        debugUiFont: BitmapFont,
         layout: GlyphLayout
     ) {
         uiViewport.apply()
         batch.projectionMatrix = uiCamera.combined
         batch.begin()
-        beamDistanceText =
+        beamDistanceNumber =
             "%.2f".format(
                 Locale.ENGLISH,
                 abs(leftBeam.position.x + AppController.beamWidth - rightBeam.position.x)
             )
-        font.color = Color.BLACK
-        font.data.setScale(1f)
-        layout.setText(font, beamDistanceText)
-        textPosition.set(
+        debugUiFont.color = Color.BLACK
+        debugUiFont.data.setScale(1f)
+        layout.setText(debugUiFont, beamDistanceNumber)
+        beamDistanceNumberPosition.set(
             AppRenderer.mainPage.position.x * 100f - (layout.width / 2),
             AppRenderer.mainPage.innerTop * 100f + layout.height
         )
-        font.draw(
-            batch,
-            layout,
-            textPosition.x,
-            textPosition.y
-        )
+        debugUiFont.draw(batch, layout, beamDistanceNumberPosition.x, beamDistanceNumberPosition.y)
         updatePositions(leftBeam, rightBeam, layout)
         batch.end()
     }
@@ -140,11 +137,11 @@ class BeamDistance {
 //        beam pozīcijas no galvenā viewport, tāpēc vajag reizināt
         leftArrowOutside.set(
             (leftBeam.position.x + AppController.beamWidth) * 100f + arrowAdjustment,
-            textPosition.y - layout.height / 2
+            beamDistanceNumberPosition.y - layout.height / 2
         )
         leftArrowInside.set(
-            textPosition.x - arrowAdjustment,
-            textPosition.y - layout.height / 2
+            beamDistanceNumberPosition.x - arrowAdjustment,
+            beamDistanceNumberPosition.y - layout.height / 2
         )
         leftArrowOutsideUpperWingEnd.set(
             leftArrowOutside.x + arrowAdjustment,
@@ -163,12 +160,12 @@ class BeamDistance {
             leftArrowInside.y - arrowAdjustment
         )
         rightArrowInside.set(
-            textPosition.x + layout.width + arrowAdjustment,
-            textPosition.y - layout.height / 2
+            beamDistanceNumberPosition.x + layout.width + arrowAdjustment,
+            beamDistanceNumberPosition.y - layout.height / 2
         )
         rightArrowOutside.set(
             (rightBeam.position.x * 100f) - arrowAdjustment,
-            textPosition.y - layout.height / 2
+            beamDistanceNumberPosition.y - layout.height / 2
         )
         rightArrowOutsideUpperWing.set(
             rightArrowOutside.x - arrowAdjustment,

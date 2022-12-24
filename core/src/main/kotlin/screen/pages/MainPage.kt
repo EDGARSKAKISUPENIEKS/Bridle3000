@@ -13,6 +13,7 @@ import screen.AppController
 import screen.AppRenderer
 import screen.AppScreen.Companion.controller
 import screen.bridle.Beam
+import screen.texts.BeamDimensions
 import screen.texts.BeamDistance
 import utils.logger
 
@@ -76,9 +77,10 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
             return field
         }
 
-    var leftBeam: Beam = Beam(AppController.beamWidth, AppController.beamHeight)
-    var rightBeam: Beam = Beam(AppController.beamWidth, AppController.beamHeight)
-    var beamDistance: BeamDistance = BeamDistance()
+    val leftBeam: Beam = Beam(AppController.beamWidth, AppController.beamHeight)
+    val rightBeam: Beam = Beam(AppController.beamWidth, AppController.beamHeight)
+    val beamDistance: BeamDistance = BeamDistance()
+    val beamDimensions: BeamDimensions = BeamDimensions()
 
 
     private lateinit var oldColor: Color
@@ -116,7 +118,16 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
                 uiViewport,
                 uiCamera,
                 leftBeam,
+                rightBeam
+            )
+            beamDimensions.render(
+                uiViewport,
+                batch,
+                uiCamera,
+                leftBeam,
                 rightBeam,
+                debugUiFont,
+                layout
             )
         }
         renderDebug(renderer, batch, debugUiFont, layout, camera, viewport, uiViewport, uiCamera)
@@ -146,9 +157,9 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
     ) {
         viewport.apply()
         oldColor = renderer.color
-        renderer.color = Color.OLIVE
+        renderer.color = Color.CYAN
         renderer.projectionMatrix = camera.combined
-        renderer.begin(ShapeRenderer.ShapeType.Filled)
+        renderer.begin(ShapeRenderer.ShapeType.Line)
 
         leftBeam.position.set(innerTopLeft)
         rightBeam.position.set(innerTopRight.x - rightBeam.width, innerTopRight.y)
