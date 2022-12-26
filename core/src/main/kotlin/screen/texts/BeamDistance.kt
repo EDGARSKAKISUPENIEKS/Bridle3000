@@ -20,6 +20,7 @@ class BeamDistance {
 
 
     private var beamDistanceNumberPosition: Vector2 = Vector2()
+    private var beamDistanceTextPosition: Vector2 = Vector2()
     private var leftArrowOutside: Vector2 = Vector2()
     private var leftArrowInside: Vector2 = Vector2()
     private var leftArrowOutsideUpperWingEnd: Vector2 = Vector2()
@@ -35,6 +36,8 @@ class BeamDistance {
 
     private var arrowAdjustment: Float = 0f
 
+    private var beamDistanceText: String = "beam distance"
+
 
     fun render(
         renderer: ShapeRenderer,
@@ -47,8 +50,44 @@ class BeamDistance {
         rightBeam: Beam,
     ) {
         renderDistanceNumber(uiViewport, batch, uiCamera, leftBeam, rightBeam, debugUiFont, layout)
+        renderDistanceText(uiViewport, batch, uiCamera, debugUiFont, layout)
         renderLeftArrow(renderer, uiViewport, uiCamera)
         renderRightArrow(renderer, uiViewport, uiCamera)
+    }
+
+    private fun renderDistanceText(
+        uiViewport: FitViewport,
+        batch: SpriteBatch,
+        uiCamera: OrthographicCamera,
+        debugUiFont: BitmapFont,
+        layout: GlyphLayout
+    ) {
+        uiViewport.apply()
+        batch.projectionMatrix = uiCamera.combined
+        batch.begin()
+        debugUiFont.color = Color.BLACK
+        debugUiFont.data.setScale(0.5f)
+        layout.setText(debugUiFont, beamDistanceText)
+        debugUiFont.data.setLineHeight(layout.height * 2f)
+        beamDistanceTextPosition.set(
+            leftArrowInside.x - (abs(leftArrowInside.x - leftArrowOutside.x) / 2) - (layout.width / 2),
+            leftArrowInside.y + layout.height * 2
+        )
+//        ja teksta platums pārsniedz attālumu starp bultām
+        if (layout.width > (abs(leftArrowInsideUpperWingEnd.x - leftArrowOutsideUpperWingEnd.x))) {
+            layout.setText(debugUiFont, "beam\ndistance")
+        }
+
+        debugUiFont.draw(batch, layout, beamDistanceTextPosition.x, beamDistanceNumberPosition.y)
+        beamDistanceTextPosition.set(
+            rightArrowOutside.x - (abs(rightArrowInside.x - rightArrowOutside.x) / 2) - (layout.width / 2),
+            rightArrowInside.y + layout.height * 2
+        )
+        debugUiFont.draw(batch, layout, beamDistanceTextPosition.x, beamDistanceNumberPosition.y)
+        layout.setText(debugUiFont, "beam distance")
+
+
+        batch.end()
     }
 
     private fun renderLeftArrow(
@@ -68,10 +107,6 @@ class BeamDistance {
         renderer.line(leftArrowOutside, leftArrowOutsideUpperWingEnd)
 //        ārējās bultas apakaša
         renderer.line(leftArrowOutside, leftArrowOutsideLowerWingEnd)
-//        iekšējās bultas augša
-        renderer.line(leftArrowInside, leftArrowInsideUpperWingEnd)
-//        iekšējās bultas apakša
-        renderer.line(leftArrowInside, leftArrowInsideLowerWingEnd)
 
         renderer.color = oldColor
         renderer.end()
@@ -94,10 +129,6 @@ class BeamDistance {
         renderer.line(rightArrowOutside, rightArrowOutsideUpperWing)
 //        ārējā apakšējā bulta
         renderer.line(rightArrowOutside, rightArrowOutsideLowerWing)
-//        iekšējā augšējā bulta
-        renderer.line(rightArrowInside, rightArrowInsideUpperWing)
-//        iekšējā apakšējā bulta
-        renderer.line(rightArrowInside, rightArrowInsideLowerWing)
 
         renderer.end()
     }
