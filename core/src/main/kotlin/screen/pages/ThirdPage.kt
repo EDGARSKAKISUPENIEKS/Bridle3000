@@ -82,7 +82,7 @@ class ThirdPage : Page(3, Vector2(vectorX, vectorY)) {
     override fun render(
         renderer: ShapeRenderer,
         batch: SpriteBatch,
-        font: BitmapFont,
+        debugUiFont: BitmapFont,
         layout: GlyphLayout,
         camera: OrthographicCamera,
         viewport: FitViewport,
@@ -93,7 +93,7 @@ class ThirdPage : Page(3, Vector2(vectorX, vectorY)) {
         if (this.isActive) {
 
         }
-        renderDebug(renderer, batch, font, layout, camera, viewport, uiViewport, uiCamera)
+        renderDebug(renderer, batch, debugUiFont, layout, camera, viewport, uiViewport, uiCamera)
     }
 
     override fun update() {

@@ -55,6 +55,23 @@ class BeamHorizontalLoad {
         )
         renderLeftArrow(renderer, uiViewport, uiCamera)
         renderRightArrow(renderer, uiViewport, uiCamera)
+        renderHorizontalLoadText(uiViewport, batch, uiCamera, debugUiFont, layout)
+    }
+
+    private fun renderHorizontalLoadText(
+        uiViewport: FitViewport,
+        batch: SpriteBatch,
+        uiCamera: OrthographicCamera,
+        debugUiFont: BitmapFont,
+        layout: GlyphLayout
+    ) {
+        uiViewport.apply()
+        batch.projectionMatrix = uiCamera.combined
+        batch.begin()
+
+        oldColor = debugUiFont.color
+
+        batch.end()
     }
 
     private fun renderRightArrow(

@@ -148,14 +148,14 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
     override fun renderDebug(
         renderer: ShapeRenderer,
         batch: SpriteBatch,
-        font: BitmapFont,
+        debugUiFont: BitmapFont,
         layout: GlyphLayout,
         camera: OrthographicCamera,
         viewport: FitViewport,
         uiViewport: FitViewport,
         uiCamera: OrthographicCamera
     ) {
-        super.renderDebug(renderer, batch, font, layout, camera, viewport, uiViewport, uiCamera)
+        super.renderDebug(renderer, batch, debugUiFont, layout, camera, viewport, uiViewport, uiCamera)
         if (AppConfig.DEBUG_MODE) {
             drawDebugBeams(renderer, viewport, camera)
         }

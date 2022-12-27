@@ -127,7 +127,7 @@ abstract class Page(val id: Int, val position: Vector2) {
 
     open fun renderDebugText(
         batch: SpriteBatch,
-        font: BitmapFont,
+        debugUiFont: BitmapFont,
         layout: GlyphLayout,
         camera: OrthographicCamera,
         uiViewport: FitViewport,
@@ -135,16 +135,18 @@ abstract class Page(val id: Int, val position: Vector2) {
     ) {
         uiViewport.apply()
         batch.projectionMatrix = uiCamera.combined
+        oldColor = debugUiFont.color
         batch.begin()
-        font.color = Color.DARK_GRAY
-        font.data.setScale(1f)
+        debugUiFont.color = Color.DARK_GRAY
+        debugUiFont.data.setScale(1f)
         layout.setText(
-            font, "${javaClass.simpleName} \n" +
+            debugUiFont, "${javaClass.simpleName} \n" +
                     "id - ${this.id} \n" +
                     "Active page id - ${AppController.activePage} \n" +
                     "world size - x ${AppController.worldWidth} y ${AppController.worldHeight}"
         )
-        font.draw(batch, layout, innerTopLeft.x * 100f, innerTopLeft.y * 100f)
+        debugUiFont.draw(batch, layout, innerTopLeft.x * 100f, innerTopLeft.y * 100f)
+        debugUiFont.color = oldColor
         batch.end()
     }
 

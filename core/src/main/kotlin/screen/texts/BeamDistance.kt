@@ -48,9 +48,9 @@ class BeamDistance {
         rightBeam: Beam
     ) {
         renderDistanceNumber(uiViewport, batch, uiCamera, leftBeam, rightBeam, debugUiFont, layout)
-        renderDistanceText(uiViewport, batch, uiCamera, debugUiFont, layout)
         renderLeftArrow(renderer, uiViewport, uiCamera)
         renderRightArrow(renderer, uiViewport, uiCamera)
+        renderDistanceText(uiViewport, batch, uiCamera, debugUiFont, layout)
     }
 
     private fun renderDistanceText(
@@ -63,6 +63,8 @@ class BeamDistance {
         uiViewport.apply()
         batch.projectionMatrix = uiCamera.combined
         batch.begin()
+
+        oldColor = debugUiFont.color
         debugUiFont.color = Color.BLACK
         debugUiFont.data.setScale(0.5f)
         layout.setText(debugUiFont, beamDistanceText)
@@ -83,7 +85,7 @@ class BeamDistance {
         )
         debugUiFont.draw(batch, layout, beamDistanceTextPosition.x, beamDistanceTextPosition.y)
         layout.setText(debugUiFont, "beam distance")
-
+        debugUiFont.color = oldColor
 
         batch.end()
     }

@@ -23,6 +23,8 @@ class BeamDimensions {
     private var rightBeamXSizePos: Vector2 = Vector2()
     private var rightBeamYSizePos: Vector2 = Vector2()
 
+    private lateinit var oldColor: Color
+
 
     fun render(
         uiViewport: FitViewport,
@@ -48,6 +50,7 @@ class BeamDimensions {
     ) {
         uiViewport.apply()
         batch.projectionMatrix = uiCamera.combined
+        oldColor = debugUiFont.color
         batch.begin()
 
         debugUiFont.color = Color.BLACK
@@ -84,6 +87,7 @@ class BeamDimensions {
             ((rightBeam.position.y + rightBeam.height / 2) * 100f) + layout.height / 2
         )
         debugUiFont.draw(batch, layout, rightBeamYSizePos.x, rightBeamYSizePos.y)
+        debugUiFont.color = oldColor
 
         batch.end()
     }
