@@ -25,14 +25,12 @@ class BeamDistance {
     private var leftArrowInside: Vector2 = Vector2()
     private var leftArrowOutsideUpperWingEnd: Vector2 = Vector2()
     private var leftArrowOutsideLowerWingEnd: Vector2 = Vector2()
-    private var leftArrowInsideUpperWingEnd: Vector2 = Vector2()
-    private var leftArrowInsideLowerWingEnd: Vector2 = Vector2()
+
     private var rightArrowOutside: Vector2 = Vector2()
     private var rightArrowInside: Vector2 = Vector2()
     private var rightArrowOutsideUpperWing: Vector2 = Vector2()
     private var rightArrowOutsideLowerWing: Vector2 = Vector2()
-    private var rightArrowInsideUpperWing: Vector2 = Vector2()
-    private var rightArrowInsideLowerWing: Vector2 = Vector2()
+
 
     private var arrowAdjustment: Float = 0f
 
@@ -47,7 +45,7 @@ class BeamDistance {
         uiViewport: FitViewport,
         uiCamera: OrthographicCamera,
         leftBeam: Beam,
-        rightBeam: Beam,
+        rightBeam: Beam
     ) {
         renderDistanceNumber(uiViewport, batch, uiCamera, leftBeam, rightBeam, debugUiFont, layout)
         renderDistanceText(uiViewport, batch, uiCamera, debugUiFont, layout)
@@ -71,19 +69,19 @@ class BeamDistance {
         debugUiFont.data.setLineHeight(layout.height * 2f)
         beamDistanceTextPosition.set(
             leftArrowInside.x - (abs(leftArrowInside.x - leftArrowOutside.x) / 2) - (layout.width / 2),
-            leftArrowInside.y + layout.height * 2
+            leftArrowInside.y + layout.height
         )
 //        ja teksta platums pārsniedz attālumu starp bultām
-        if (layout.width > (abs(leftArrowInsideUpperWingEnd.x - leftArrowOutsideUpperWingEnd.x))) {
+        if (layout.width > (abs((leftArrowInside.x - arrowAdjustment) - (leftArrowOutside.x - arrowAdjustment)))) {
             layout.setText(debugUiFont, "beam\ndistance")
         }
 
-        debugUiFont.draw(batch, layout, beamDistanceTextPosition.x, beamDistanceNumberPosition.y)
+        debugUiFont.draw(batch, layout, beamDistanceTextPosition.x, beamDistanceTextPosition.y)
         beamDistanceTextPosition.set(
             rightArrowOutside.x - (abs(rightArrowInside.x - rightArrowOutside.x) / 2) - (layout.width / 2),
-            rightArrowInside.y + layout.height * 2
+            rightArrowInside.y + layout.height
         )
-        debugUiFont.draw(batch, layout, beamDistanceTextPosition.x, beamDistanceNumberPosition.y)
+        debugUiFont.draw(batch, layout, beamDistanceTextPosition.x, beamDistanceTextPosition.y)
         layout.setText(debugUiFont, "beam distance")
 
 
@@ -130,6 +128,7 @@ class BeamDistance {
 //        ārējā apakšējā bulta
         renderer.line(rightArrowOutside, rightArrowOutsideLowerWing)
 
+        renderer.color = oldColor
         renderer.end()
     }
 
@@ -152,7 +151,7 @@ class BeamDistance {
                 abs(leftBeam.position.x + AppController.beamWidth - rightBeam.position.x)
             )
         debugUiFont.color = Color.BLACK
-        debugUiFont.data.setScale(1f)
+        debugUiFont.data.setScale(0.75f)
         layout.setText(debugUiFont, beamDistanceNumber)
         beamDistanceNumberPosition.set(
             AppRenderer.mainPage.position.x * 100f - (layout.width / 2),
@@ -182,14 +181,6 @@ class BeamDistance {
             leftArrowOutside.x + arrowAdjustment,
             leftArrowOutside.y - arrowAdjustment
         )
-        leftArrowInsideUpperWingEnd.set(
-            leftArrowInside.x - arrowAdjustment,
-            leftArrowInside.y + arrowAdjustment
-        )
-        leftArrowInsideLowerWingEnd.set(
-            leftArrowInside.x - arrowAdjustment,
-            leftArrowInside.y - arrowAdjustment
-        )
         rightArrowInside.set(
             beamDistanceNumberPosition.x + layout.width + arrowAdjustment,
             beamDistanceNumberPosition.y - layout.height / 2
@@ -205,14 +196,6 @@ class BeamDistance {
         rightArrowOutsideLowerWing.set(
             rightArrowOutside.x - arrowAdjustment,
             rightArrowOutside.y - arrowAdjustment
-        )
-        rightArrowInsideUpperWing.set(
-            rightArrowInside.x + arrowAdjustment,
-            rightArrowInside.y + arrowAdjustment
-        )
-        rightArrowInsideLowerWing.set(
-            rightArrowInside.x + arrowAdjustment,
-            rightArrowInside.y - arrowAdjustment
         )
     }
 }

@@ -15,6 +15,7 @@ import screen.AppScreen.Companion.controller
 import screen.bridle.Beam
 import screen.texts.BeamDimensions
 import screen.texts.BeamDistance
+import screen.texts.BeamHorizontalLoad
 import utils.logger
 
 private val vectorX: Float
@@ -81,6 +82,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
     val rightBeam: Beam = Beam(AppController.beamWidth, AppController.beamHeight)
     val beamDistance: BeamDistance = BeamDistance()
     val beamDimensions: BeamDimensions = BeamDimensions()
+    val beamHorizontalLoad: BeamHorizontalLoad = BeamHorizontalLoad()
 
 
     private lateinit var oldColor: Color
@@ -128,6 +130,16 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
                 rightBeam,
                 debugUiFont,
                 layout
+            )
+            beamHorizontalLoad.render(
+                renderer,
+                batch,
+                debugUiFont,
+                layout,
+                uiViewport,
+                uiCamera,
+                leftBeam,
+                rightBeam
             )
         }
         renderDebug(renderer, batch, debugUiFont, layout, camera, viewport, uiViewport, uiCamera)
