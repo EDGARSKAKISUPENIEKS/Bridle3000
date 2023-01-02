@@ -1,4 +1,4 @@
-package screen.texts
+package screen.bridle
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.FitViewport
 import screen.AppController
 import screen.AppRenderer
-import screen.bridle.Beam
 import java.util.*
 import kotlin.math.abs
 
@@ -70,7 +69,38 @@ class BeamHorizontalLoad {
         batch.begin()
 
         oldColor = debugUiFont.color
+        debugUiFont.color = Color.BLACK
+        debugUiFont.data.setScale(0.5f)
+//        ja teksta platums pārsniedz attālumu starp bultām
+        if (layout.width > (abs((leftArrowInside.x - arrowAdjustment) - (leftArrowOutside.x + arrowAdjustment)))) {
+            layout.setText(debugUiFont, beamHorizontalLoadText.replace(" ", "\n"))
+        } else {
+            layout.setText(debugUiFont, beamHorizontalLoadText)
+        }
+        debugUiFont.data.setLineHeight(layout.height * 2f)
+        beamHorizontalLoadTextPosition.set(
+            leftArrowInside.x - (abs(leftArrowInside.x - leftArrowOutside.x) / 2) - (layout.width / 2),
+            leftArrowInside.y + layout.height
+        )
+        debugUiFont.draw(
+            batch,
+            layout,
+            beamHorizontalLoadTextPosition.x,
+            beamHorizontalLoadTextPosition.y
+        )
+        beamHorizontalLoadTextPosition.set(
+            rightArrowOutside.x - (abs(rightArrowInside.x - rightArrowOutside.x) / 2) - (layout.width / 2),
+            rightArrowInside.y + layout.height
+        )
+        debugUiFont.draw(
+            batch,
+            layout,
+            beamHorizontalLoadTextPosition.x,
+            beamHorizontalLoadTextPosition.y
+        )
 
+
+        debugUiFont.color = oldColor
         batch.end()
     }
 
@@ -134,7 +164,7 @@ class BeamHorizontalLoad {
         beamHorizontalLoadNumber =
             "%.2f".format(
                 Locale.ENGLISH,
-                123456789.00
+                42069.00
             )
         debugUiFont.color = Color.BLACK
         debugUiFont.data.setScale(0.75f)

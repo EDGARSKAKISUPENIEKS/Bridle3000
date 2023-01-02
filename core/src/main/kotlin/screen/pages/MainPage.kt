@@ -13,9 +13,9 @@ import screen.AppController
 import screen.AppRenderer
 import screen.AppScreen.Companion.controller
 import screen.bridle.Beam
-import screen.texts.BeamDimensions
-import screen.texts.BeamDistance
-import screen.texts.BeamHorizontalLoad
+import screen.bridle.BeamDimensions
+import screen.bridle.BeamHorizontalDistance
+import screen.bridle.BeamHorizontalLoad
 import utils.logger
 
 private val vectorX: Float
@@ -80,7 +80,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
 
     val leftBeam: Beam = Beam(AppController.beamWidth, AppController.beamHeight)
     val rightBeam: Beam = Beam(AppController.beamWidth, AppController.beamHeight)
-    val beamDistance: BeamDistance = BeamDistance()
+    val beamHorizontalDistance: BeamHorizontalDistance = BeamHorizontalDistance()
     val beamDimensions: BeamDimensions = BeamDimensions()
     val beamHorizontalLoad: BeamHorizontalLoad = BeamHorizontalLoad()
 
@@ -97,7 +97,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         this.innerBottomLeft = this.innerBottomLeft
         this.innerBottomRight = this.innerBottomRight
         leftBeam.updatePosition(innerTopLeft)
-        rightBeam.updatePosition(innerTopRight.x - rightBeam.width, innerTopRight.y)
+        rightBeam.updatePosition(innerTopRight.x - rightBeam.xSize, innerTopRight.y)
     }
 
     override fun render(
@@ -112,7 +112,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
     ) {
         update()
         if (this.isActive) {
-            beamDistance.render(
+            beamHorizontalDistance.render(
                 renderer,
                 batch,
                 debugUiFont,
@@ -174,10 +174,10 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         renderer.begin(ShapeRenderer.ShapeType.Line)
 
         leftBeam.position.set(innerTopLeft)
-        rightBeam.position.set(innerTopRight.x - rightBeam.width, innerTopRight.y)
+        rightBeam.position.set(innerTopRight.x - rightBeam.xSize, innerTopRight.y)
 
-        renderer.rect(leftBeam.position.x, leftBeam.position.y, leftBeam.width, leftBeam.height)
-        renderer.rect(rightBeam.position.x, rightBeam.position.y, rightBeam.width, rightBeam.height)
+        renderer.rect(leftBeam.position.x, leftBeam.position.y, leftBeam.xSize, leftBeam.ySize)
+        renderer.rect(rightBeam.position.x, rightBeam.position.y, rightBeam.xSize, rightBeam.ySize)
 
         renderer.color = oldColor
         renderer.end()
@@ -188,7 +188,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         this.position.y = vectorY
         AppController.pages[this.id] = this
         leftBeam.updatePosition(innerTopLeft)
-        rightBeam.updatePosition(innerTopRight.x - rightBeam.width, innerTopRight.y)
+        rightBeam.updatePosition(innerTopRight.x - rightBeam.xSize, innerTopRight.y)
     }
 
 

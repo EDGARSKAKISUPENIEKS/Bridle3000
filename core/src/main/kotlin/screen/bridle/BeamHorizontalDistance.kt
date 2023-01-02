@@ -1,4 +1,4 @@
-package screen.texts
+package screen.bridle
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -10,11 +10,10 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.FitViewport
 import screen.AppController
 import screen.AppRenderer
-import screen.bridle.Beam
 import java.util.*
 import kotlin.math.abs
 
-class BeamDistance {
+class BeamHorizontalDistance {
     private lateinit var oldColor: Color
     private lateinit var beamDistanceNumber: String
 
@@ -67,16 +66,17 @@ class BeamDistance {
         oldColor = debugUiFont.color
         debugUiFont.color = Color.BLACK
         debugUiFont.data.setScale(0.5f)
-        layout.setText(debugUiFont, beamDistanceText)
+//        ja teksta platums pārsniedz attālumu starp bultām
+        if (layout.width > (abs((leftArrowInside.x - arrowAdjustment) - (leftArrowOutside.x + arrowAdjustment)))) {
+            layout.setText(debugUiFont, beamDistanceText.replace(" ", "\n"))
+        } else {
+            layout.setText(debugUiFont, beamDistanceText)
+        }
         debugUiFont.data.setLineHeight(layout.height * 2f)
         beamDistanceTextPosition.set(
             leftArrowInside.x - (abs(leftArrowInside.x - leftArrowOutside.x) / 2) - (layout.width / 2),
             leftArrowInside.y + layout.height
         )
-//        ja teksta platums pārsniedz attālumu starp bultām
-        if (layout.width > (abs((leftArrowInside.x - arrowAdjustment) - (leftArrowOutside.x - arrowAdjustment)))) {
-            layout.setText(debugUiFont, "beam\ndistance")
-        }
 
         debugUiFont.draw(batch, layout, beamDistanceTextPosition.x, beamDistanceTextPosition.y)
         beamDistanceTextPosition.set(
@@ -84,7 +84,6 @@ class BeamDistance {
             rightArrowInside.y + layout.height
         )
         debugUiFont.draw(batch, layout, beamDistanceTextPosition.x, beamDistanceTextPosition.y)
-        layout.setText(debugUiFont, "beam distance")
         debugUiFont.color = oldColor
 
         batch.end()
