@@ -12,10 +12,7 @@ import config.AppConfig
 import screen.AppController
 import screen.AppRenderer
 import screen.AppScreen.Companion.controller
-import screen.bridle.Beam
-import screen.bridle.BeamDimensions
-import screen.bridle.BeamHorizontalDistance
-import screen.bridle.BeamHorizontalLoad
+import screen.bridle.*
 import utils.logger
 
 private val vectorX: Float
@@ -83,6 +80,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
     val beamHorizontalDistance: BeamHorizontalDistance = BeamHorizontalDistance()
     val beamDimensions: BeamDimensions = BeamDimensions()
     val beamHorizontalLoad: BeamHorizontalLoad = BeamHorizontalLoad()
+    val beamHeight: BeamHeight = BeamHeight()
 
 
     private lateinit var oldColor: Color
@@ -141,6 +139,16 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
                 leftBeam,
                 rightBeam
             )
+            beamHeight.render(
+                renderer,
+                batch,
+                debugUiFont,
+                layout,
+                uiViewport,
+                uiCamera,
+                leftBeam,
+                rightBeam
+            )
         }
         renderDebug(renderer, batch, debugUiFont, layout, camera, viewport, uiViewport, uiCamera)
     }
@@ -155,7 +163,16 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         uiViewport: FitViewport,
         uiCamera: OrthographicCamera
     ) {
-        super.renderDebug(renderer, batch, debugUiFont, layout, camera, viewport, uiViewport, uiCamera)
+        super.renderDebug(
+            renderer,
+            batch,
+            debugUiFont,
+            layout,
+            camera,
+            viewport,
+            uiViewport,
+            uiCamera
+        )
         if (AppConfig.DEBUG_MODE) {
             drawDebugBeams(renderer, viewport, camera)
         }

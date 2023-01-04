@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2
 class Beam(var xSize: Float, var ySize: Float) {
     var position: Vector2 = Vector2()
 
-    var hight: Float = this.position.y
+    var height: Float = this.position.y
         get() {
             return this.position.y
         }
