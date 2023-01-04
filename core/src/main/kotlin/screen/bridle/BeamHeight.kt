@@ -116,7 +116,7 @@ class BeamHeight {
 
         debugUiFont.color = oldColor
         batch.end()
-        updateLeftArrowPositions(leftBeam, layout)
+        updateLeftTopArrowPositions(leftBeam, layout)
     }
 
     private fun renderRightBeamHeightNumber(
@@ -144,8 +144,8 @@ class BeamHeight {
         debugUiFont.draw(
             batch,
             layout,
-            leftBeamHeightNumberPosition.x,
-            leftBeamHeightNumberPosition.y
+            rightBeamHeightNumberPosition.x,
+            rightBeamHeightNumberPosition.y
         )
 
         batch.end()
@@ -181,6 +181,7 @@ class BeamHeight {
         )
 
         batch.end()
+        updateLeftBottomArrowPositions(leftBeam, layout)
     }
 
 
@@ -211,7 +212,29 @@ class BeamHeight {
         renderer.end()
     }
 
-    private fun updateLeftArrowPositions(leftBeam: Beam, layout: GlyphLayout) {
+    private fun updateLeftBottomArrowPositions(leftBeam: Beam, layout: GlyphLayout){
+        arrowAdjustment = layout.height /2
+
+        leftBottomArrowInside.set(
+            leftBeamHeightNumberPosition.x + (layout.width / 2f),
+            leftBeamHeightNumberPosition.y - layout.height - arrowAdjustment
+        )
+        leftBottomArrowOutside.set(
+            leftBeamHeightNumberPosition.x + (layout.width / 2f),
+            0f + arrowAdjustment
+        )
+        leftBottomArrowLeftWing.set(
+            leftBottomArrowOutside.x - arrowAdjustment,
+            leftBottomArrowOutside.y + arrowAdjustment
+        )
+        leftBottomArrowRightWing.set(
+            leftBottomArrowOutside.x + arrowAdjustment,
+            leftBottomArrowOutside.y + arrowAdjustment
+        )
+
+    }
+
+    private fun updateLeftTopArrowPositions(leftBeam: Beam, layout: GlyphLayout) {
         arrowAdjustment = layout.height / 2
 
         leftTopArrowOutside.set(
@@ -230,8 +253,6 @@ class BeamHeight {
             leftTopArrowOutside.x + arrowAdjustment,
             leftTopArrowOutside.y - arrowAdjustment
         )
-
-
     }
 
 
