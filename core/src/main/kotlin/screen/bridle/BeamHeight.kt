@@ -197,13 +197,22 @@ class BeamHeight {
 
 //        augšējās bultas vertikālā līnija
         renderer.line(leftTopArrowInside, leftTopArrowOutside)
-//        augšējās līnijas kreisā buta
+//        augšējās līnijas kreisā bulta
+        renderer.line(leftTopArrowOutside, leftTopArrowLeftWing)
+//        augšējās līnijas labā bulta
+        renderer.line(leftTopArrowOutside, leftTopArrowRightWing)
+//        apakšējās bultas vertikālā līnija
+        renderer.line(leftBottomArrowInside, leftBottomArrowOutside)
+//        apakšējās līnijas kreisā bulta
+        renderer.line(leftBottomArrowOutside, leftBottomArrowLeftWing)
+//        apakšējās līnijas labā bulta
+        renderer.line(leftBottomArrowOutside, leftBottomArrowRightWing)
 
         renderer.end()
     }
 
     private fun updateLeftArrowPositions(leftBeam: Beam, layout: GlyphLayout) {
-        arrowAdjustment = layout.height / 3
+        arrowAdjustment = layout.height / 2
 
         leftTopArrowOutside.set(
             (leftBeam.position.x * 100f) + ((leftBeam.xSize * 100f) / 2f),
@@ -212,6 +221,14 @@ class BeamHeight {
         leftTopArrowInside.set(
             leftBeamHeightTextPosition.x + (layout.width / 2f),
             leftBeamHeightTextPosition.y + arrowAdjustment
+        )
+        leftTopArrowLeftWing.set(
+            leftTopArrowOutside.x - arrowAdjustment,
+            leftTopArrowOutside.y - arrowAdjustment
+        )
+        leftTopArrowRightWing.set(
+            leftTopArrowOutside.x + arrowAdjustment,
+            leftTopArrowOutside.y - arrowAdjustment
         )
 
 
