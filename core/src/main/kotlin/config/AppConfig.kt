@@ -2,7 +2,7 @@ package config
 
 object AppConfig {
 
-    var DEBUG_MODE = true
+    var DEBUG_MODE = false
 
     const val DEFAULT_WORLD_WIDTH = 6f
     const val DEFAULT_WORLD_HEIGHT = 12f

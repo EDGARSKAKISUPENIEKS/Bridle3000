@@ -104,13 +104,13 @@ class BeamHeight {
         batch.projectionMatrix = uiCamera.combined
         batch.begin()
         oldColor = debugUiFont.color
+
         debugUiFont.color = Color.BLACK
         debugUiFont.data.setScale(0.5f)
-
         layout.setText(debugUiFont, beamHeightText)
         leftBeamHeightTextPosition.set(
             (leftBeam.position.x * 100f) + (leftBeam.xSize * 100f) - (layout.width / 2f),
-            ((leftBeam.height / 2) * 100f) + layout.height
+            ((leftBeam.height * 100f) / 2f) + layout.height
         )
         debugUiFont.draw(batch, layout, leftBeamHeightTextPosition.x, leftBeamHeightTextPosition.y)
 

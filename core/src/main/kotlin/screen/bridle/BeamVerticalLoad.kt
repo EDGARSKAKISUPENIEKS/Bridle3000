@@ -13,7 +13,7 @@ import java.util.*
 class BeamVerticalLoad {
     private lateinit var oldColor: Color
 
-    private var beamLoadText: String = "vertical load"
+    private var beamLoadText: String = "load"
     private lateinit var leftBeamLoadNumber: String
     private var leftBeamLoadNumberPosition: Vector2 = Vector2()
     private var leftBeamLoadTextPosition: Vector2 = Vector2()
@@ -50,6 +50,83 @@ class BeamVerticalLoad {
         rightBeam: Beam
     ) {
         renderLeftBeamLoadNumber(uiViewport, batch, uiCamera, leftBeam, debugUiFont, layout)
+        renderLeftBeamLoadText(uiViewport, batch, leftBeam, uiCamera, debugUiFont, layout)
+        renderLeftLoadArrows(renderer, uiViewport, uiCamera)
+    }
+
+    private fun renderLeftLoadArrows(
+        renderer: ShapeRenderer,
+        uiViewport: FitViewport,
+        uiCamera: OrthographicCamera
+    ) {
+        oldColor = renderer.color
+        renderer.color = Color.BLACK
+        uiViewport.apply()
+        renderer.projectionMatrix = uiCamera.combined
+        renderer.begin(ShapeRenderer.ShapeType.Line)
+
+//        augšējās bultas vertikālā līnija
+        renderer.line(leftTopArrowInside, leftTopArrowOutside)
+//        augšējās līnijas kreisā bulta
+        renderer.line(leftTopArrowInside, leftTopArrowLeftWing)
+//        augšējās līnijas labā bulta
+        renderer.line(leftTopArrowInside, leftTopArrowRightWing)
+//        apagšējās bultas vertikālā līnija
+        renderer.line(leftBottomArrowInside, leftBottomArrowOutside)
+//        apakšējās līnijas kreisā bulta
+        renderer.line(leftBottomArrowOutside, leftBottomArrowLeftWing)
+//        apakšējās līnijas labā bulta
+        renderer.line(leftBottomArrowOutside, leftBottomArrowRightWing)
+
+        renderer.end()
+    }
+
+    private fun renderLeftBeamLoadText(
+        uiViewport: FitViewport,
+        batch: SpriteBatch,
+        leftBeam: Beam,
+        uiCamera: OrthographicCamera,
+        debugUiFont: BitmapFont,
+        layout: GlyphLayout
+    ) {
+        uiViewport.apply()
+        batch.projectionMatrix = uiCamera.combined
+        batch.begin()
+        oldColor = debugUiFont.color
+
+        debugUiFont.color = Color.BLACK
+        debugUiFont.data.setScale(0.5f)
+        layout.setText(debugUiFont, beamLoadText)
+        leftBeamLoadTextPosition.set(
+            (leftBeam.position.x * 100f) - (layout.width / 2f),
+            ((leftBeam.height * 100f) / 2f) + layout.height
+        )
+        debugUiFont.draw(batch, layout, leftBeamLoadTextPosition.x, leftBeamLoadTextPosition.y)
+
+        debugUiFont.color = oldColor
+        batch.end()
+        updateLeftTopArrowPositions(leftBeam, layout)
+    }
+
+    private fun updateLeftTopArrowPositions(leftBeam: Beam, layout: GlyphLayout) {
+        arrowAdjustment = layout.height / 2f
+
+        leftTopArrowOutside.set(
+            (leftBeam.position.x * 100f),
+            (leftBeam.position.y * 100f) - arrowAdjustment
+        )
+        leftTopArrowInside.set(
+            leftBeamLoadTextPosition.x + (layout.width / 2f),
+            leftBeamLoadTextPosition.y + arrowAdjustment
+        )
+        leftTopArrowLeftWing.set(
+            leftTopArrowInside.x - arrowAdjustment,
+            leftTopArrowInside.y + arrowAdjustment
+        )
+        leftTopArrowRightWing.set(
+            leftTopArrowInside.x + arrowAdjustment,
+            leftTopArrowInside.y + arrowAdjustment
+        )
     }
 
     private fun renderLeftBeamLoadNumber(
@@ -84,6 +161,21 @@ class BeamVerticalLoad {
     private fun updateLeftBottomArrowPositions(layout: GlyphLayout) {
         arrowAdjustment = layout.height / 2f
 
-
+        leftBottomArrowInside.set(
+            leftBeamLoadNumberPosition.x + (layout.width / 2f),
+            leftBeamLoadNumberPosition.y - layout.height - arrowAdjustment
+        )
+        leftBottomArrowOutside.set(
+            leftBeamLoadNumberPosition.x + (layout.width / 2f),
+            0f + arrowAdjustment
+        )
+        leftBottomArrowLeftWing.set(
+            leftBottomArrowOutside.x - arrowAdjustment,
+            leftBottomArrowOutside.y + arrowAdjustment
+        )
+        leftBottomArrowRightWing.set(
+            leftBottomArrowOutside.x + arrowAdjustment,
+            leftBottomArrowOutside.y + arrowAdjustment
+        )
     }
 }
