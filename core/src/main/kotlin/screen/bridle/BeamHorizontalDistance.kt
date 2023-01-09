@@ -33,7 +33,7 @@ class BeamHorizontalDistance {
 
     private var arrowAdjustment: Float = 0f
 
-    private var beamDistanceText: String = "beam distance"
+    private var beamDistanceText: String = "distance"
 
 
     fun render(
@@ -66,12 +66,7 @@ class BeamHorizontalDistance {
         oldColor = debugUiFont.color
         debugUiFont.color = Color.BLACK
         debugUiFont.data.setScale(0.5f)
-//        ja teksta platums pārsniedz attālumu starp bultām
-        if (layout.width > (abs((leftArrowInside.x - arrowAdjustment) - (leftArrowOutside.x + arrowAdjustment)))) {
-            layout.setText(debugUiFont, beamDistanceText.replace(" ", "\n"))
-        } else {
             layout.setText(debugUiFont, beamDistanceText)
-        }
         debugUiFont.data.setLineHeight(layout.height * 2f)
         beamDistanceTextPosition.set(
             leftArrowInside.x - (abs(leftArrowInside.x - leftArrowOutside.x) / 2) - (layout.width / 2),

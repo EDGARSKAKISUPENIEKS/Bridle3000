@@ -12,8 +12,6 @@ import java.util.*
 
 class BeamHeight {
     private lateinit var oldColor: Color
-    private lateinit var leftBeamHeight: String
-    private lateinit var rightBeamHeight: String
 
     private var leftBeamHeightNumberPosition: Vector2 = Vector2()
     private lateinit var leftBeamHeightNumber: String
@@ -40,7 +38,7 @@ class BeamHeight {
 
     private var arrowAdjustment: Float = 0f
 
-    private var beamHeightText: String = "beam height"
+    private var beamHeightText: String = "height"
 
 
     fun render(
@@ -165,10 +163,9 @@ class BeamHeight {
         uiViewport.apply()
         batch.projectionMatrix = uiCamera.combined
         batch.begin()
-        leftBeamHeightNumber = "%.2f".format(
-            Locale.ENGLISH,
-            leftBeam.height
-        )
+        oldColor = debugUiFont.color
+
+        leftBeamHeightNumber = "%.2f".format(Locale.ENGLISH, leftBeam.height)
         debugUiFont.color = Color.BLACK
         debugUiFont.data.setScale(0.5f)
         layout.setText(debugUiFont, leftBeamHeightNumber)
@@ -183,6 +180,7 @@ class BeamHeight {
             leftBeamHeightNumberPosition.y
         )
 
+        debugUiFont.color = oldColor
         batch.end()
         updateLeftBottomArrowPositions(layout)
     }
@@ -216,7 +214,7 @@ class BeamHeight {
     }
 
     private fun updateLeftBottomArrowPositions(layout: GlyphLayout) {
-        arrowAdjustment = layout.height / 2
+        arrowAdjustment = layout.height / 2f
 
         leftBottomArrowInside.set(
             leftBeamHeightNumberPosition.x + (layout.width / 2f),

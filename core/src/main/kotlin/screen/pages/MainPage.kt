@@ -81,6 +81,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
     val beamDimensions: BeamDimensions = BeamDimensions()
     val beamHorizontalLoad: BeamHorizontalLoad = BeamHorizontalLoad()
     val beamHeight: BeamHeight = BeamHeight()
+    val beamVerticalLoad: BeamVerticalLoad = BeamVerticalLoad()
 
 
     private lateinit var oldColor: Color
@@ -111,45 +112,21 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         update()
         if (this.isActive) {
             beamHorizontalDistance.render(
-                renderer,
-                batch,
-                debugUiFont,
-                layout,
-                uiViewport,
-                uiCamera,
-                leftBeam,
-                rightBeam
+                renderer, batch, debugUiFont, layout, uiViewport, uiCamera, leftBeam, rightBeam
             )
             beamDimensions.render(
-                uiViewport,
-                batch,
-                uiCamera,
-                leftBeam,
-                rightBeam,
-                debugUiFont,
-                layout
+                uiViewport, batch, uiCamera, leftBeam, rightBeam, debugUiFont, layout
             )
             beamHorizontalLoad.render(
-                renderer,
-                batch,
-                debugUiFont,
-                layout,
-                uiViewport,
-                uiCamera,
-                leftBeam,
-                rightBeam
+                renderer, batch, debugUiFont, layout, uiViewport, uiCamera, leftBeam, rightBeam
             )
             beamHeight.render(
-                renderer,
-                batch,
-                debugUiFont,
-                layout,
-                uiViewport,
-                uiCamera,
-                leftBeam,
-                rightBeam
+                renderer, batch, debugUiFont, layout, uiViewport, uiCamera, leftBeam, rightBeam
             )
         }
+        beamVerticalLoad.render(
+            renderer, batch, debugUiFont, layout, uiViewport, uiCamera, leftBeam, rightBeam
+        )
         renderDebug(renderer, batch, debugUiFont, layout, camera, viewport, uiViewport, uiCamera)
     }
 
