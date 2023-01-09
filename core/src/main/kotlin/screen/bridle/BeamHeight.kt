@@ -55,9 +55,10 @@ class BeamHeight {
     ) {
         renderLeftBeamHeightNumber(uiViewport, batch, uiCamera, leftBeam, debugUiFont, layout)
         renderLeftBeamHeightText(uiViewport, batch, leftBeam, uiCamera, debugUiFont, layout)
+        renderLeftHeightArrows(renderer, uiViewport, uiCamera)
         renderRightBeamHeightNumber(uiViewport, batch, uiCamera, rightBeam, debugUiFont, layout)
         renderRightBeamHeightText(uiViewport, batch, rightBeam, uiCamera, debugUiFont, layout)
-        renderLeftArrows(renderer, uiViewport, uiCamera)
+        renderRightHeightArrows(renderer, uiViewport, uiCamera)
     }
 
     private fun renderRightBeamHeightText(
@@ -77,7 +78,7 @@ class BeamHeight {
 
         layout.setText(debugUiFont, beamHeightText)
         rightBeamHeightTextPosition.set(
-            (rightBeam.position.x * 100f) + ((rightBeam.xSize * 100f) / 2f) - (layout.width / 2f),
+            (rightBeam.position.x * 100f) - (layout.width / 2f),
             ((rightBeam.height / 2) * 100f) + layout.height
         )
         debugUiFont.draw(
@@ -89,6 +90,7 @@ class BeamHeight {
 
         debugUiFont.color = oldColor
         batch.end()
+        updateRightTopArrowPositions(rightBeam, layout)
     }
 
 
@@ -109,7 +111,7 @@ class BeamHeight {
 
         layout.setText(debugUiFont, beamHeightText)
         leftBeamHeightTextPosition.set(
-            (leftBeam.position.x * 100f) + ((leftBeam.xSize * 100f) / 2f) - (layout.width / 2f),
+            (leftBeam.position.x * 100f) + (leftBeam.xSize * 100f) - (layout.width / 2f),
             ((leftBeam.height / 2) * 100f) + layout.height
         )
         debugUiFont.draw(batch, layout, leftBeamHeightTextPosition.x, leftBeamHeightTextPosition.y)
@@ -138,7 +140,7 @@ class BeamHeight {
         debugUiFont.data.setScale(0.5f)
         layout.setText(debugUiFont, rightBeamHeightNumber)
         rightBeamHeightNumberPosition.set(
-            (rightBeam.position.x * 100f) + ((rightBeam.xSize * 100f) / 2f) - (layout.width / 2f),
+            (rightBeam.position.x * 100f) - (layout.width / 2f),
             ((rightBeam.height / 2) * 100f) - (layout.height / 2f)
         )
         debugUiFont.draw(
@@ -149,6 +151,7 @@ class BeamHeight {
         )
 
         batch.end()
+        updateRightBottomArrowPositions(layout)
     }
 
     private fun renderLeftBeamHeightNumber(
@@ -170,7 +173,7 @@ class BeamHeight {
         debugUiFont.data.setScale(0.5f)
         layout.setText(debugUiFont, leftBeamHeightNumber)
         leftBeamHeightNumberPosition.set(
-            (leftBeam.position.x * 100f) + ((leftBeam.xSize * 100f) / 2f) - (layout.width / 2f),
+            (leftBeam.position.x * 100f) + (leftBeam.xSize * 100f) - (layout.width / 2f),
             ((leftBeam.height / 2) * 100f) - (layout.height / 2f)
         )
         debugUiFont.draw(
@@ -181,11 +184,11 @@ class BeamHeight {
         )
 
         batch.end()
-        updateLeftBottomArrowPositions(leftBeam, layout)
+        updateLeftBottomArrowPositions(layout)
     }
 
 
-    private fun renderLeftArrows(
+    private fun renderLeftHeightArrows(
         renderer: ShapeRenderer,
         uiViewport: FitViewport,
         uiCamera: OrthographicCamera,
@@ -212,8 +215,8 @@ class BeamHeight {
         renderer.end()
     }
 
-    private fun updateLeftBottomArrowPositions(leftBeam: Beam, layout: GlyphLayout){
-        arrowAdjustment = layout.height /2
+    private fun updateLeftBottomArrowPositions(layout: GlyphLayout) {
+        arrowAdjustment = layout.height / 2
 
         leftBottomArrowInside.set(
             leftBeamHeightNumberPosition.x + (layout.width / 2f),
@@ -238,7 +241,7 @@ class BeamHeight {
         arrowAdjustment = layout.height / 2
 
         leftTopArrowOutside.set(
-            (leftBeam.position.x * 100f) + ((leftBeam.xSize * 100f) / 2f),
+            (leftBeam.position.x * 100f) + (leftBeam.xSize * 100f),
             (leftBeam.height * 100f) - arrowAdjustment
         )
         leftTopArrowInside.set(
@@ -252,6 +255,76 @@ class BeamHeight {
         leftTopArrowRightWing.set(
             leftTopArrowOutside.x + arrowAdjustment,
             leftTopArrowOutside.y - arrowAdjustment
+        )
+    }
+
+    private fun renderRightHeightArrows(
+        renderer: ShapeRenderer,
+        uiViewport: FitViewport,
+        uiCamera: OrthographicCamera
+    ) {
+        oldColor = renderer.color
+        renderer.color = Color.BLACK
+        uiViewport.apply()
+        renderer.projectionMatrix = uiCamera.combined
+        renderer.begin(ShapeRenderer.ShapeType.Line)
+
+//        augšējās bultas vertikālā līnija
+        renderer.line(rightTopArrowInside, rightTopArrowOutside)
+//        augšējās līnijas kreisā bulta
+        renderer.line(rightTopArrowOutside, rightTopArrowLeftWing)
+//        augšējās līnijas labā bulta
+        renderer.line(rightTopArrowOutside, rightTopArrowRightWing)
+//        apakšējās bultas vertikālā līnija
+        renderer.line(rightBottomArrowInside, rightBottomArrowOutside)
+//        apakšējās līnijas kreisā bulta
+        renderer.line(rightBottomArrowOutside, rightBottomArrowLeftWing)
+//        apakšējās līnijas labā bulta
+        renderer.line(rightBottomArrowOutside, rightBottomArrowRightWing)
+
+        renderer.end()
+        renderer.color = oldColor
+    }
+
+    private fun updateRightTopArrowPositions(rightBeam: Beam, layout: GlyphLayout) {
+        arrowAdjustment = layout.height / 2
+
+        rightTopArrowOutside.set(
+            (rightBeam.position.x * 100f),
+            (rightBeam.height * 100f) - arrowAdjustment
+        )
+        rightTopArrowInside.set(
+            rightBeamHeightTextPosition.x + (layout.width / 2),
+            rightBeamHeightTextPosition.y + arrowAdjustment
+        )
+        rightTopArrowLeftWing.set(
+            rightTopArrowOutside.x - arrowAdjustment,
+            rightTopArrowOutside.y - arrowAdjustment
+        )
+        rightTopArrowRightWing.set(
+            rightTopArrowOutside.x + arrowAdjustment,
+            rightTopArrowOutside.y - arrowAdjustment
+        )
+    }
+
+    private fun updateRightBottomArrowPositions(layout: GlyphLayout) {
+        arrowAdjustment = layout.height / 2
+
+        rightBottomArrowInside.set(
+            rightBeamHeightNumberPosition.x + (layout.width / 2f),
+            rightBeamHeightNumberPosition.y - layout.height - arrowAdjustment
+        )
+        rightBottomArrowOutside.set(
+            rightBeamHeightNumberPosition.x + (layout.width / 2f),
+            0f + arrowAdjustment
+        )
+        rightBottomArrowLeftWing.set(
+            rightBottomArrowOutside.x - arrowAdjustment,
+            rightBottomArrowOutside.y + arrowAdjustment
+        )
+        rightBottomArrowRightWing.set(
+            rightBottomArrowOutside.x + arrowAdjustment,
+            rightBottomArrowOutside.y + arrowAdjustment
         )
     }
 
