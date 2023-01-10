@@ -83,6 +83,8 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
     val beamHeight: BeamHeight = BeamHeight()
     val beamVerticalLoad: BeamVerticalLoad = BeamVerticalLoad()
 
+    val load: Load = Load(Vector2())
+
 
     private lateinit var oldColor: Color
 
@@ -97,6 +99,10 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         this.innerBottomRight = this.innerBottomRight
         leftBeam.updatePosition(innerTopLeft)
         rightBeam.updatePosition(innerTopRight.x - rightBeam.xSize, innerTopRight.y)
+        load.updatePosition(
+            (AppController.worldWidth / 2f) - (load.xSize / 2f),
+            (AppController.worldHeight / 2f) - (load.ySize / 2f)
+        )
     }
 
     override fun render(
@@ -152,7 +158,30 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         )
         if (AppConfig.DEBUG_MODE) {
             drawDebugBeams(renderer, viewport, camera)
+            drawDebugLoad(renderer, viewport, camera)
         }
+    }
+
+    private fun drawDebugLoad(
+        renderer: ShapeRenderer,
+        viewport: FitViewport,
+        camera: OrthographicCamera
+    ) {
+        viewport.apply()
+        renderer.projectionMatrix = camera.combined
+        renderer.begin(ShapeRenderer.ShapeType.Line)
+        oldColor = renderer.color
+        renderer.color = Color.CYAN
+
+        load.updatePosition(
+            (AppController.worldWidth / 2f) - (load.xSize / 2f),
+            (AppController.worldHeight / 2f) - (load.ySize / 2f)
+        )
+
+        renderer.rect(load.position.x, load.position.y, load.xSize, load.ySize)
+
+        renderer.color = oldColor
+        renderer.end()
     }
 
 
@@ -162,13 +191,13 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         camera: OrthographicCamera
     ) {
         viewport.apply()
-        oldColor = renderer.color
-        renderer.color = Color.CYAN
         renderer.projectionMatrix = camera.combined
         renderer.begin(ShapeRenderer.ShapeType.Line)
+        oldColor = renderer.color
+        renderer.color = Color.CYAN
 
-        leftBeam.position.set(innerTopLeft)
-        rightBeam.position.set(innerTopRight.x - rightBeam.xSize, innerTopRight.y)
+        leftBeam.updatePosition(innerTopLeft)
+        rightBeam.updatePosition(innerTopRight.x - rightBeam.xSize, innerTopRight.y)
 
         renderer.rect(leftBeam.position.x, leftBeam.position.y, leftBeam.xSize, leftBeam.ySize)
         renderer.rect(rightBeam.position.x, rightBeam.position.y, rightBeam.xSize, rightBeam.ySize)
