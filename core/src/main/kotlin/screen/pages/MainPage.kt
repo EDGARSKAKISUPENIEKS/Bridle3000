@@ -84,6 +84,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
     val beamVerticalLoad: BeamVerticalLoad = BeamVerticalLoad()
 
     val load: Load = Load(Vector2())
+    val loadDimensions: LoadDimensions = LoadDimensions()
 
 
     private lateinit var oldColor: Color
@@ -100,9 +101,10 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         leftBeam.updatePosition(innerTopLeft)
         rightBeam.updatePosition(innerTopRight.x - rightBeam.xSize, innerTopRight.y)
         load.updatePosition(
-            (AppController.worldWidth / 2f) - (load.xSize / 2f),
-            (AppController.worldHeight / 2f) - (load.ySize / 2f)
+            (controller.worldWidth / 2f) - (load.xSize / 2f),
+            (controller.worldHeight / 2f) - (load.ySize / 2f)
         )
+        log.debug("mans debug ${load.position}")
     }
 
     override fun render(
@@ -129,10 +131,11 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
             beamHeight.render(
                 renderer, batch, debugUiFont, layout, uiViewport, uiCamera, leftBeam, rightBeam
             )
+            beamVerticalLoad.render(
+                renderer, batch, debugUiFont, layout, uiViewport, uiCamera, leftBeam, rightBeam
+            )
+            loadDimensions.render(uiViewport, batch, uiCamera, load, debugUiFont, layout)
         }
-        beamVerticalLoad.render(
-            renderer, batch, debugUiFont, layout, uiViewport, uiCamera, leftBeam, rightBeam
-        )
         renderDebug(renderer, batch, debugUiFont, layout, camera, viewport, uiViewport, uiCamera)
     }
 
@@ -173,10 +176,10 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         oldColor = renderer.color
         renderer.color = Color.CYAN
 
-        load.updatePosition(
-            (AppController.worldWidth / 2f) - (load.xSize / 2f),
-            (AppController.worldHeight / 2f) - (load.ySize / 2f)
-        )
+//        load.updatePosition(
+//            (AppController.worldWidth / 2f) - (load.xSize / 2f),
+//            (AppController.worldHeight / 2f) - (load.ySize / 2f)
+//        )
 
         renderer.rect(load.position.x, load.position.y, load.xSize, load.ySize)
 
@@ -196,8 +199,8 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         oldColor = renderer.color
         renderer.color = Color.CYAN
 
-        leftBeam.updatePosition(innerTopLeft)
-        rightBeam.updatePosition(innerTopRight.x - rightBeam.xSize, innerTopRight.y)
+//        leftBeam.updatePosition(innerTopLeft)
+//        rightBeam.updatePosition(innerTopRight.x - rightBeam.xSize, innerTopRight.y)
 
         renderer.rect(leftBeam.position.x, leftBeam.position.y, leftBeam.xSize, leftBeam.ySize)
         renderer.rect(rightBeam.position.x, rightBeam.position.y, rightBeam.xSize, rightBeam.ySize)
@@ -212,6 +215,10 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         AppController.pages[this.id] = this
         leftBeam.updatePosition(innerTopLeft)
         rightBeam.updatePosition(innerTopRight.x - rightBeam.xSize, innerTopRight.y)
+        load.updatePosition(
+            (controller.worldWidth / 2f) - (load.xSize / 2f),
+            (controller.worldHeight / 2f) - (load.ySize / 2f)
+        )
     }
 
 

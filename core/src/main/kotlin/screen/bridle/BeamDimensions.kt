@@ -83,8 +83,8 @@ class BeamDimensions {
             ((rightBeam.position.y + rightBeam.ySize / 2) * 100f) + layout.height / 2
         )
         debugUiFont.draw(batch, layout, rightBeamYSizePos.x, rightBeamYSizePos.y)
-        debugUiFont.color = oldColor
 
+        debugUiFont.color = oldColor
         batch.end()
     }
 }
