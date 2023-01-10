@@ -71,9 +71,9 @@ class BeamHeight {
         batch.projectionMatrix = uiCamera.combined
         batch.begin()
         oldColor = debugUiFont.color
+
         debugUiFont.color = Color.BLACK
         debugUiFont.data.setScale(0.5f)
-
         layout.setText(debugUiFont, beamHeightText)
         rightBeamHeightTextPosition.set(
             (rightBeam.position.x * 100f) - (layout.width / 2f),
@@ -130,6 +130,8 @@ class BeamHeight {
         uiViewport.apply()
         batch.projectionMatrix = uiCamera.combined
         batch.begin()
+        oldColor = debugUiFont.color
+
         rightBeamHeightNumber = "%.2f".format(
             Locale.ENGLISH,
             rightBeam.height
@@ -149,6 +151,7 @@ class BeamHeight {
         )
 
         batch.end()
+        debugUiFont.color = oldColor
         updateRightBottomArrowPositions(layout)
     }
 

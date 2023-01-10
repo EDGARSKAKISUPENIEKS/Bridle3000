@@ -52,6 +52,144 @@ class BeamVerticalLoad {
         renderLeftBeamLoadNumber(uiViewport, batch, uiCamera, leftBeam, debugUiFont, layout)
         renderLeftBeamLoadText(uiViewport, batch, leftBeam, uiCamera, debugUiFont, layout)
         renderLeftLoadArrows(renderer, uiViewport, uiCamera)
+        renderRightBeamLoadNumber(uiViewport, batch, uiCamera, rightBeam, debugUiFont, layout)
+        renderRightBeamLoadText(uiViewport, batch, rightBeam, uiCamera, debugUiFont, layout)
+        renderRightLoadArrows(renderer, uiViewport, uiCamera)
+    }
+
+    private fun renderRightLoadArrows(
+        renderer: ShapeRenderer,
+        uiViewport: FitViewport,
+        uiCamera: OrthographicCamera
+    ) {
+        oldColor = renderer.color
+        renderer.color = Color.BLACK
+        uiViewport.apply()
+        renderer.projectionMatrix = uiCamera.combined
+        renderer.begin(ShapeRenderer.ShapeType.Line)
+
+//        augšējās bultas vertikālā līnija
+        renderer.line(rightTopArrowOutside, rightTopArrowInside)
+//        augšējās līnijas kreisā bulta
+        renderer.line(rightTopArrowInside, rightTopArrowLeftWing)
+//        augšējās līnijas labā bulta
+        renderer.line(rightTopArrowInside, rightTopArrowRightWing)
+//        apakšējās bultas vertikālā līnija
+        renderer.line(rightBottomArrowInside, rightBottomArrowOutside)
+//        apakšējās līnijas kreisā bulta
+        renderer.line(rightBottomArrowOutside, rightBottomArrowLeftWing)
+//        apakšējās līnijas labā bulta
+        renderer.line(rightBottomArrowOutside, rightBottomArrowRightWing)
+
+        renderer.end()
+        renderer.color = oldColor
+    }
+
+    private fun renderRightBeamLoadText(
+        uiViewport: FitViewport,
+        batch: SpriteBatch,
+        rightBeam: Beam,
+        uiCamera: OrthographicCamera,
+        debugUiFont: BitmapFont,
+        layout: GlyphLayout
+    ) {
+        uiViewport.apply()
+        batch.projectionMatrix = uiCamera.combined
+        oldColor = debugUiFont.color
+        batch.begin()
+
+        debugUiFont.color = Color.BLACK
+        debugUiFont.data.setScale(0.5f)
+        layout.setText(debugUiFont, beamLoadText)
+        rightBeamLoadTextPosition.set(
+            (rightBeam.position.x * 100f) + (rightBeam.xSize * 100f) - (layout.width / 2f),
+            ((rightBeam.height * 100f) / 2f) + layout.height
+        )
+        debugUiFont.draw(batch, layout, rightBeamLoadTextPosition.x, rightBeamLoadTextPosition.y)
+
+        debugUiFont.color = oldColor
+        batch.end()
+        updateRightTopArrowPositions(rightBeam, layout)
+    }
+
+    private fun updateRightTopArrowPositions(rightBeam: Beam, layout: GlyphLayout) {
+        arrowAdjustment = layout.height / 2f
+
+        rightTopArrowOutside.set(
+            (rightBeam.position.x * 100f) + (rightBeam.xSize * 100f),
+            (rightBeam.height * 100f) - arrowAdjustment
+        )
+        rightTopArrowInside.set(
+            rightBeamLoadTextPosition.x + (layout.width / 2f),
+            rightBeamLoadTextPosition.y + arrowAdjustment
+        )
+        rightTopArrowLeftWing.set(
+            rightTopArrowInside.x - arrowAdjustment,
+            rightTopArrowInside.y + arrowAdjustment
+        )
+        rightTopArrowRightWing.set(
+            rightTopArrowInside.x + arrowAdjustment,
+            rightTopArrowInside.y + arrowAdjustment
+        )
+    }
+
+    private fun renderRightBeamLoadNumber(
+        uiViewport: FitViewport,
+        batch: SpriteBatch,
+        uiCamera: OrthographicCamera,
+        rightBeam: Beam,
+        debugUiFont: BitmapFont,
+        layout: GlyphLayout
+    ) {
+        uiViewport.apply()
+        batch.projectionMatrix = uiCamera.combined
+        batch.begin()
+        oldColor = debugUiFont.color
+
+        rightBeamLoadNumber = "%.2f".format(
+            Locale.ENGLISH,
+            1000.00
+        )
+        debugUiFont.color = Color.BLACK
+        debugUiFont.data.setScale(0.5f)
+        layout.setText(debugUiFont, rightBeamLoadNumber)
+        rightBeamLoadNumberPosition.set(
+            (rightBeam.position.x * 100f) + (rightBeam.xSize * 100f) - (layout.width / 2f),
+            ((rightBeam.height * 100f) / 2f) - (layout.height / 2f)
+        )
+        debugUiFont.draw(
+            batch,
+            layout,
+            rightBeamLoadNumberPosition.x,
+            rightBeamLoadNumberPosition.y
+        )
+
+        batch.end()
+        debugUiFont.color = oldColor
+        updateRightBottomArrowPositions(layout)
+    }
+
+    private fun updateRightBottomArrowPositions(
+        layout: GlyphLayout
+    ) {
+        arrowAdjustment = layout.height / 2f
+
+        rightBottomArrowInside.set(
+            rightBeamLoadNumberPosition.x + (layout.width / 2f),
+            rightBeamLoadNumberPosition.y - layout.height - arrowAdjustment
+        )
+        rightBottomArrowOutside.set(
+            rightBeamLoadNumberPosition.x + (layout.width / 2f),
+            0f + arrowAdjustment
+        )
+        rightBottomArrowLeftWing.set(
+            rightBottomArrowOutside.x - arrowAdjustment,
+            rightBottomArrowOutside.y + arrowAdjustment
+        )
+        rightBottomArrowRightWing.set(
+            rightBottomArrowOutside.x + arrowAdjustment,
+            rightBottomArrowOutside.y + arrowAdjustment
+        )
     }
 
     private fun renderLeftLoadArrows(
