@@ -55,7 +55,7 @@ class BeamDimensions {
         leftBeamXSize = "%.2f".format(Locale.ENGLISH, leftBeam.xSize)
         layout.setText(debugUiFont, leftBeamXSize)
         leftBeamXSizePos.set(
-            (leftBeam.position.x + (leftBeam.xSize / 2)) * 100f - (layout.width / 2),
+            (leftBeam.position.x * 100f) + ((leftBeam.xSize * 100f) / 2f) - (layout.width / 2f),
             (leftBeam.position.y + leftBeam.ySize) * 100f
         )
         debugUiFont.draw(batch, layout, leftBeamXSizePos.x, leftBeamXSizePos.y)
@@ -64,23 +64,23 @@ class BeamDimensions {
         layout.setText(debugUiFont, leftBeamYSize)
         leftBeamYSizePos.set(
             leftBeam.position.x * 100f,
-            ((leftBeam.position.y + leftBeam.xSize / 2) * 100f) + layout.height / 2
+            (leftBeam.position.y * 100f) + ((leftBeam.xSize * 100f) / 2f) + (layout.height / 2f)
         )
         debugUiFont.draw(batch, layout, leftBeamYSizePos.x, leftBeamYSizePos.y)
 
         rightBeamXSize = "%.2f".format(Locale.ENGLISH, rightBeam.xSize)
         layout.setText(debugUiFont, rightBeamXSize)
         rightBeamXSizePos.set(
-            (rightBeam.position.x + (rightBeam.xSize / 2)) * 100f - (layout.width / 2),
-            (rightBeam.position.y + rightBeam.ySize) * 100f
+            (rightBeam.position.x * 100f) + ((rightBeam.xSize * 100f) / 2f) - (layout.width / 2f),
+            (rightBeam.position.y * 100f) + (rightBeam.ySize * 100f)
         )
         debugUiFont.draw(batch, layout, rightBeamXSizePos.x, rightBeamXSizePos.y)
 
         rightBeamYSize = "%.2f".format(Locale.ENGLISH, rightBeam.ySize)
         layout.setText(debugUiFont, rightBeamYSize)
         rightBeamYSizePos.set(
-            ((rightBeam.position.x + rightBeam.xSize) * 100f) - layout.width,
-            ((rightBeam.position.y + rightBeam.ySize / 2) * 100f) + layout.height / 2
+            (rightBeam.position.x * 100f) + (rightBeam.xSize * 100f) - layout.width,
+            (rightBeam.position.y * 100f) + ((rightBeam.ySize * 100f) / 2f) + (layout.height / 2f)
         )
         debugUiFont.draw(batch, layout, rightBeamYSizePos.x, rightBeamYSizePos.y)
 
