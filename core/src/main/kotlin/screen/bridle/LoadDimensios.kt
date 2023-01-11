@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.FitViewport
-import screen.AppRenderer
-import utils.logger
 import java.util.*
 
 class LoadDimensions {
@@ -21,7 +19,6 @@ class LoadDimensions {
     private lateinit var oldColor: Color
 
 
-
     fun render(
         uiViewport: FitViewport,
         batch: SpriteBatch,
@@ -30,10 +27,10 @@ class LoadDimensions {
         debugUiFont: BitmapFont,
         layout: GlyphLayout
     ) {
-        renderLoadDimensional(uiViewport, batch, uiCamera, load, debugUiFont, layout)
+        renderLoadDimensions(uiViewport, batch, uiCamera, load, debugUiFont, layout)
     }
 
-    private fun renderLoadDimensional(
+    private fun renderLoadDimensions(
         uiViewport: FitViewport,
         batch: SpriteBatch,
         uiCamera: OrthographicCamera,
@@ -52,10 +49,18 @@ class LoadDimensions {
         loadXSize = "%.2f".format(Locale.ENGLISH, load.xSize)
         layout.setText(debugUiFont, loadXSize)
         loadXSizePos.set(
-            load.position.x * 100f,
-            load.position.y * 100f
+            (load.position.x * 100f) + ((load.xSize * 100f) / 2f) - (layout.width / 2f),
+            (load.position.y * 100f) + (load.ySize * 100f)
         )
         debugUiFont.draw(batch, layout, loadXSizePos.x, loadXSizePos.y)
+
+        loadYSize = "%.2f".format(Locale.ENGLISH, load.ySize)
+        layout.setText(debugUiFont, loadYSize)
+        loadYSizePos.set(
+            (load.position.x * 100f) + (load.xSize * 100f) - layout.width,
+            (load.position.y * 100f) + ((load.ySize * 100f) / 2) + (layout.height / 2f)
+        )
+        debugUiFont.draw(batch, layout, loadYSizePos.x, loadYSizePos.y)
 
         debugUiFont.color = oldColor
         batch.end()
