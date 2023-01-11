@@ -85,6 +85,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
 
     val load: Load = Load(Vector2())
     val loadDimensions: LoadDimensions = LoadDimensions()
+    val loadDistances: LoadDistances = LoadDistances()
 
 
     private lateinit var oldColor: Color
@@ -135,6 +136,9 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
                 renderer, batch, debugUiFont, layout, uiViewport, uiCamera, leftBeam, rightBeam
             )
             loadDimensions.render(uiViewport, batch, uiCamera, load, debugUiFont, layout)
+            loadDistances.render(
+                renderer, batch, debugUiFont, layout, uiViewport, uiCamera, load, leftBeam
+            )
         }
         renderDebug(renderer, batch, debugUiFont, layout, camera, viewport, uiViewport, uiCamera)
     }

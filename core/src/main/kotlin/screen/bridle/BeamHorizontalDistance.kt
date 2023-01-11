@@ -62,12 +62,11 @@ class BeamHorizontalDistance {
         uiViewport.apply()
         batch.projectionMatrix = uiCamera.combined
         batch.begin()
-
         oldColor = debugUiFont.color
+
         debugUiFont.color = Color.BLACK
         debugUiFont.data.setScale(0.5f)
             layout.setText(debugUiFont, beamDistanceText)
-        debugUiFont.data.setLineHeight(layout.height * 2f)
         beamDistanceTextPosition.set(
             leftArrowInside.x - (abs(leftArrowInside.x - leftArrowOutside.x) / 2) - (layout.width / 2),
             leftArrowInside.y + layout.height
@@ -79,8 +78,8 @@ class BeamHorizontalDistance {
             rightArrowInside.y + layout.height
         )
         debugUiFont.draw(batch, layout, beamDistanceTextPosition.x, beamDistanceTextPosition.y)
-        debugUiFont.color = oldColor
 
+        debugUiFont.color = oldColor
         batch.end()
     }
 
