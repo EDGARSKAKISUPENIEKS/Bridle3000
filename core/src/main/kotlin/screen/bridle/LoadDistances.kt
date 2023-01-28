@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.FitViewport
+import java.util.*
 import kotlin.math.abs
 
 class LoadDistances {
@@ -23,9 +24,13 @@ class LoadDistances {
     private var heightTextPos: Vector2 = Vector2()
 
     private var distanceArrowOutside: Vector2 = Vector2()
+    private var distanceArrowOutsideMid: Vector2 = Vector2()
+    private var distanceArrowOutsideUpperWing: Vector2 = Vector2()
+    private var distanceArrowOutsideLowerWing: Vector2 = Vector2()
+    private var distanceArrowInsideMid: Vector2 = Vector2()
     private var distanceArrowInside: Vector2 = Vector2()
-    private var distanceArrowUpperWing: Vector2 = Vector2()
-    private var distanceArrowLowerWing: Vector2 = Vector2()
+    private var distanceArrowInsideUpperWing: Vector2 = Vector2()
+    private var distanceArrowInsideLowerWing: Vector2 = Vector2()
     private var heightArrowOutside: Vector2 = Vector2()
     private var heightArrowInside: Vector2 = Vector2()
     private var heightArrowLeftWing: Vector2 = Vector2()
@@ -43,11 +48,12 @@ class LoadDistances {
         load: Load,
         leftBeam: Beam
     ) {
-        renderDistanceText(uiViewport, batch, uiCamera, debugUiFont, layout, load, leftBeam)
+        renderDistanceNumber(uiViewport, batch, uiCamera, debugUiFont, layout, load, leftBeam)
+        renderDistanceArrows(renderer, uiViewport, uiCamera)
     }
 
 
-    private fun renderDistanceText(
+    private fun renderDistanceNumber(
         uiViewport: FitViewport,
         batch: SpriteBatch,
         uiCamera: OrthographicCamera,
@@ -63,26 +69,95 @@ class LoadDistances {
 
         debugUiFont.color = Color.BLACK
         debugUiFont.data.setScale(0.5f)
-        layout.setText(debugUiFont, distanceText)
-        distanceTextPos.set(
+        distanceNumber =
+            "%.2f".format(
+                Locale.ENGLISH, abs(load.position.x - leftBeam.position.x)
+            )
+        layout.setText(debugUiFont, distanceNumber)
+        distanceNumberPos.set(
             loadCenter(load)
                     - halfDistanceBetweenLoadCenterAndLeftBeamInside(leftBeam, load)
                     - (layout.width / 2f),
             (load.position.y * 100f) - ((load.ySize * 100f) / 2f)
         )
-        debugUiFont.draw(batch, layout, distanceTextPos.x, distanceTextPos.y)
+        debugUiFont.draw(batch, layout, distanceNumberPos.x, distanceNumberPos.y)
 
 
         debugUiFont.color = oldColor
         batch.end()
-        updateDistanceArrowPositions(leftBeam, load, layout)
+        updateDistanceArrowPositions(leftBeam, layout, load)
     }
 
     private fun updateDistanceArrowPositions(
         leftBeam: Beam,
-        load: Load,
-        layout: GlyphLayout
+        layout: GlyphLayout,
+        load: Load
     ) {
+        arrowAdjustment = layout.height / 3
+
+        distanceArrowOutside.set(
+            (leftBeam.position.x * 100f) + (leftBeam.xSize * 100f) + arrowAdjustment,
+            distanceNumberPos.y - (layout.height / 2f)
+        )
+        distanceArrowOutsideMid.set(
+            distanceNumberPos.x - arrowAdjustment,
+            distanceNumberPos.y - (layout.height / 2f)
+        )
+        distanceArrowOutsideUpperWing.set(
+            distanceArrowOutside.x + arrowAdjustment,
+            distanceArrowOutside.y + arrowAdjustment
+        )
+        distanceArrowOutsideLowerWing.set(
+            distanceArrowOutside.x + arrowAdjustment,
+            distanceArrowOutside.y - arrowAdjustment
+        )
+        distanceArrowInsideMid.set(
+            distanceNumberPos.x + layout.width + arrowAdjustment,
+            distanceNumberPos.y - (layout.height / 2f)
+        )
+        distanceArrowInside.set(
+            (load.position.x * 100f) + ((load.xSize * 100f) / 2f) - arrowAdjustment,
+            distanceNumberPos.y - (layout.height / 2f)
+        )
+        distanceArrowInsideUpperWing.set(
+            distanceArrowInside.x - arrowAdjustment,
+            distanceArrowInside.y + arrowAdjustment
+        )
+        distanceArrowInsideLowerWing.set(
+            distanceArrowInside.x - arrowAdjustment,
+            distanceArrowInside.y - arrowAdjustment
+        )
+    }
+
+    private fun renderDistanceArrows(
+        renderer: ShapeRenderer,
+        uiViewport: FitViewport,
+        uiCamera: OrthographicCamera
+    ) {
+        oldColor = renderer.color
+        renderer.color = Color.BLACK
+        uiViewport.apply()
+        renderer.projectionMatrix = uiCamera.combined
+        renderer.begin(ShapeRenderer.ShapeType.Line)
+
+//        ārējā horizontālā līnija
+        renderer.line(distanceArrowOutside, distanceArrowOutsideMid)
+//        ārējā augšējā bulta
+        renderer.line(distanceArrowOutside, distanceArrowOutsideUpperWing)
+//        ārējā apakšējā bulta
+        renderer.line(distanceArrowOutside, distanceArrowOutsideLowerWing)
+//        iekšējā horizontālā līnija
+        renderer.line(distanceArrowInsideMid, distanceArrowInside)
+//        iekšējā augšējā bulta
+        renderer.line(distanceArrowInside, distanceArrowInsideUpperWing)
+//        iekšejā apakšējā bulta
+        renderer.line(distanceArrowInside, distanceArrowInsideLowerWing)
+
+        renderer.end()
+    }
+
+    private fun renderOutsideArrow(renderer: ShapeRenderer) {
+
 
     }
 
