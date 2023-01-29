@@ -50,6 +50,7 @@ class LoadDistances {
     ) {
         renderDistanceNumber(uiViewport, batch, uiCamera, debugUiFont, layout, load, leftBeam)
         renderDistanceArrows(renderer, uiViewport, uiCamera)
+        renderDistanceTexts(uiViewport, batch, uiCamera, debugUiFont, layout)
     }
 
 
@@ -87,6 +88,20 @@ class LoadDistances {
         batch.end()
         updateDistanceArrowPositions(leftBeam, layout, load)
     }
+
+    private fun halfDistanceBetweenLoadCenterAndLeftBeamInside(
+        leftBeam: Beam,
+        load: Load
+    ): Float {
+        return abs(
+            (((load.position.x + (load.xSize / 2f)) * 100f)
+                    - (leftBeam.position.x + leftBeam.xSize) * 100f) / 2f
+        )
+    }
+
+    private fun loadCenter(
+        load: Load
+    ) = ((load.position.x + (load.xSize / 2f)) * 100f)
 
     private fun updateDistanceArrowPositions(
         leftBeam: Beam,
@@ -129,6 +144,7 @@ class LoadDistances {
         )
     }
 
+
     private fun renderDistanceArrows(
         renderer: ShapeRenderer,
         uiViewport: FitViewport,
@@ -156,23 +172,35 @@ class LoadDistances {
         renderer.end()
     }
 
-    private fun renderOutsideArrow(renderer: ShapeRenderer) {
+    private fun renderDistanceTexts(
+        uiViewport: FitViewport,
+        batch: SpriteBatch,
+        uiCamera: OrthographicCamera,
+        debugUiFont: BitmapFont,
+        layout: GlyphLayout
+    ) {
+        uiViewport.apply()
+        batch.projectionMatrix = uiCamera.combined
+        batch.begin()
+        oldColor = debugUiFont.color
 
-
-    }
-
-    private fun halfDistanceBetweenLoadCenterAndLeftBeamInside(
-        leftBeam: Beam,
-        load: Load
-    ): Float {
-        return abs(
-            (((load.position.x + (load.xSize / 2f)) * 100f)
-                    - (leftBeam.position.x + leftBeam.xSize) * 100f) / 2f
+        debugUiFont.color = Color.BLACK
+        debugUiFont.data.setScale(0.5f)
+        layout.setText(debugUiFont, distanceText)
+        distanceTextPos.set(
+            distanceArrowOutside.x + ((distanceArrowOutsideMid.x - distanceArrowOutside.x) / 2f) - (layout.width / 2f),
+            distanceArrowOutside.y + layout.height
         )
-    }
+        debugUiFont.draw(batch, layout, distanceTextPos.x, distanceTextPos.y)
+        distanceTextPos.set(
+            distanceArrowInsideMid.x + ((distanceArrowInside.x - distanceArrowInsideMid.x) / 2f) - (layout.width / 2f),
+            distanceArrowInside.y + layout.height
+        )
+        debugUiFont.draw(batch, layout, distanceTextPos.x, distanceTextPos.y)
 
-    private fun loadCenter(
-        load: Load
-    ) = ((load.position.x + (load.xSize / 2f)) * 100f)
+
+        debugUiFont.color = oldColor
+        batch.end()
+    }
 
 }

@@ -195,11 +195,13 @@ class AppInputHandler : InputAdapter(), GestureDetector.GestureListener {
         touchPosition.set(x, y, 0f)
         AppRenderer.camera.unproject(touchPosition)
 
-        when {
-            tappedOnPageRightSide() -> controller.incrementWorldWidth("up")
-            tappedOndPageLeftSide() -> controller.incrementWorldWidth("down")
-            tappedOnPageTopSide() -> controller.incrementWorldHeight("up")
-            tappedOnPageBottomSide() -> controller.incrementWorldHeight("down")
+        if (AppConfig.DEBUG_MODE) {
+            when {
+                tappedOnPageRightSide() -> controller.incrementWorldWidth("up")
+                tappedOndPageLeftSide() -> controller.incrementWorldWidth("down")
+                tappedOnPageTopSide() -> controller.incrementWorldHeight("up")
+                tappedOnPageBottomSide() -> controller.incrementWorldHeight("down")
+            }
         }
 
         log.debug("mans debug tap $touchPosition")
