@@ -31,10 +31,14 @@ class LoadDistances {
     private var distanceArrowInside: Vector2 = Vector2()
     private var distanceArrowInsideUpperWing: Vector2 = Vector2()
     private var distanceArrowInsideLowerWing: Vector2 = Vector2()
-    private var heightArrowOutside: Vector2 = Vector2()
-    private var heightArrowInside: Vector2 = Vector2()
-    private var heightArrowLeftWing: Vector2 = Vector2()
-    private var heightArrowRightWing: Vector2 = Vector2()
+    private var heightArrowLower: Vector2 = Vector2()
+    private var heightArrowLowerInside: Vector2 = Vector2()
+    private var heightArrowLowerRightWing: Vector2 = Vector2()
+    private var heightArrowLowerLeftWing: Vector2 = Vector2()
+    private var heightArrowUpper: Vector2 = Vector2()
+    private var heightArrowUpperInside: Vector2 = Vector2()
+    private var heightArrowUpperLeftWing: Vector2 = Vector2()
+    private var heightArrowUpperRightWing: Vector2 = Vector2()
 
     private var arrowAdjustment = 0f
 
@@ -51,6 +55,9 @@ class LoadDistances {
         renderDistanceNumber(uiViewport, batch, uiCamera, debugUiFont, layout, load, leftBeam)
         renderDistanceArrows(renderer, uiViewport, uiCamera)
         renderDistanceTexts(uiViewport, batch, uiCamera, debugUiFont, layout)
+        renderHeightText(uiViewport, batch, uiCamera, debugUiFont, layout, load)
+        renderHeightNumber(uiViewport, batch, uiCamera, debugUiFont, layout, load)
+        renderHeightArrows(renderer, uiViewport, uiCamera)
     }
 
 
@@ -201,6 +208,141 @@ class LoadDistances {
 
         debugUiFont.color = oldColor
         batch.end()
+    }
+
+    private fun renderHeightText(
+        uiViewport: FitViewport,
+        batch: SpriteBatch,
+        uiCamera: OrthographicCamera,
+        debugUiFont: BitmapFont,
+        layout: GlyphLayout,
+        load: Load
+    ) {
+        uiViewport.apply()
+        batch.projectionMatrix = uiCamera.combined
+        batch.begin()
+        oldColor = debugUiFont.color
+
+        debugUiFont.color = Color.BLACK
+        debugUiFont.data.setScale(0.5f)
+        layout.setText(debugUiFont, heightText)
+        heightTextPos.set(
+            ((load.position.x + load.xSize / 2f) * 100f) - (layout.width / 2f),
+            ((load.position.y / 2f) * 100f) + layout.height
+        )
+        debugUiFont.draw(batch, layout, heightTextPos.x, heightTextPos.y)
+
+
+        debugUiFont.color = oldColor
+        batch.end()
+        updateUpperArrowPositions(load, layout)
+    }
+
+    private fun updateUpperArrowPositions(
+        load: Load,
+        layout: GlyphLayout
+    ) {
+        arrowAdjustment = layout.height / 3
+
+        heightArrowUpper.set(
+            (load.position.x + (load.xSize / 2f)) * 100f,
+            (load.position.y * 100f) - arrowAdjustment
+        )
+        heightArrowUpperInside.set(
+            heightTextPos.x + (layout.width / 2f),
+            heightTextPos.y + arrowAdjustment
+        )
+        heightArrowUpperLeftWing.set(
+            heightArrowUpper.x - arrowAdjustment,
+            heightArrowUpper.y - arrowAdjustment
+        )
+        heightArrowUpperRightWing.set(
+            heightArrowUpper.x + arrowAdjustment,
+            heightArrowUpper.y - arrowAdjustment
+        )
+    }
+
+    private fun renderHeightNumber(
+        uiViewport: FitViewport,
+        batch: SpriteBatch,
+        uiCamera: OrthographicCamera,
+        debugUiFont: BitmapFont,
+        layout: GlyphLayout,
+        load: Load
+    ) {
+        uiViewport.apply()
+        batch.projectionMatrix = uiCamera.combined
+        batch.begin()
+        oldColor = debugUiFont.color
+
+        debugUiFont.color = Color.BLACK
+        debugUiFont.data.setScale(0.5f)
+        heightNumber =
+            "%.2f".format(
+                Locale.ENGLISH,
+                load.position.y
+            )
+        layout.setText(debugUiFont, heightNumber)
+        heightNumberPos.set(
+            ((load.position.x + load.xSize / 2f) * 100f) - (layout.width / 2f),
+            ((load.position.y / 2f) * 100f) - (layout.height / 2f)
+        )
+        debugUiFont.draw(batch, layout, heightNumberPos.x, heightNumberPos.y)
+
+
+        debugUiFont.color = oldColor
+        batch.end()
+        updateLowerArrowPositions(layout)
+    }
+
+    private fun updateLowerArrowPositions(
+        layout: GlyphLayout
+    ) {
+        arrowAdjustment = layout.height / 3
+
+        heightArrowLowerInside.set(
+            heightNumberPos.x + (layout.width / 2f),
+            heightNumberPos.y - layout.height - arrowAdjustment
+        )
+        heightArrowLower.set(
+            heightArrowLowerInside.x,
+            0f + arrowAdjustment
+        )
+        heightArrowLowerLeftWing.set(
+            heightArrowLower.x - arrowAdjustment,
+            heightArrowLower.y + arrowAdjustment
+        )
+        heightArrowLowerRightWing.set(
+            heightArrowLower.x + arrowAdjustment,
+            heightArrowLower.y + arrowAdjustment
+        )
+    }
+
+    private fun renderHeightArrows(
+        renderer: ShapeRenderer,
+        uiViewport: FitViewport,
+        uiCamera: OrthographicCamera
+    ) {
+        oldColor = renderer.color
+        renderer.color = Color.BLACK
+        uiViewport.apply()
+        renderer.projectionMatrix = uiCamera.combined
+        renderer.begin(ShapeRenderer.ShapeType.Line)
+
+//        augšējā līnija
+        renderer.line(heightArrowUpper, heightArrowUpperInside)
+//        augšējā kreisā bulta
+        renderer.line(heightArrowUpper, heightArrowUpperLeftWing)
+//        augšējā labā bulta
+        renderer.line(heightArrowUpper, heightArrowUpperRightWing)
+//        apakšējā līnija
+        renderer.line(heightArrowLowerInside, heightArrowLower)
+//        apakšējā kreisā bulta
+        renderer.line(heightArrowLower, heightArrowLowerLeftWing)
+//        apakšējā labā bulta
+        renderer.line(heightArrowLower, heightArrowLowerRightWing)
+
+        renderer.end()
     }
 
 }
