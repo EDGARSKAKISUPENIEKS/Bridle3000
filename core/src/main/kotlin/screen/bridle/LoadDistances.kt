@@ -164,12 +164,15 @@ class LoadDistances {
     private fun halfDistanceBetweenLoadCenterAndLeftBeamInside(
         leftBeam: Beam,
         load: Load
-    ) = abs(
-        (((leftBeam.position.x * 100f) + (leftBeam.xSize * 100f)) - (load.position.x * 100f) + (load.xSize * 100f)) / 2f
-    )
+    ): Float {
+        return abs(
+            (((load.position.x + (load.xSize / 2f)) * 100f)
+                    - (leftBeam.position.x + leftBeam.xSize) * 100f) / 2f
+        )
+    }
 
     private fun loadCenter(
         load: Load
-    ) = (load.position.x * 100f) + (load.xSize / 2f)
+    ) = ((load.position.x + (load.xSize / 2f)) * 100f)
 
 }
