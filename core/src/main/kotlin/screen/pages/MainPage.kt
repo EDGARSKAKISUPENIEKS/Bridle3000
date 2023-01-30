@@ -134,6 +134,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
             beamVerticalLoad.render(
                 renderer, batch, debugUiFont, layout, uiViewport, uiCamera, leftBeam, rightBeam
             )
+            load.render(renderer, batch, debugUiFont, layout, uiViewport, uiCamera)
             loadDistances.render(
                 renderer, batch, debugUiFont, layout, uiViewport, uiCamera, load, leftBeam
             )
