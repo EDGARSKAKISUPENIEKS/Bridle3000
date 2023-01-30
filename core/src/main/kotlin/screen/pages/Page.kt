@@ -145,7 +145,7 @@ abstract class Page(val id: Int, val position: Vector2) {
                     "Active page id - ${AppController.activePage} \n" +
                     "world size - x ${AppController.worldWidth} y ${AppController.worldHeight}"
         )
-        debugUiFont.draw(batch, layout, innerTopLeft.x * 100f, innerTopLeft.y * 100f)
+        debugUiFont.draw(batch, layout, innerTopLeft.x * 100f, (innerTopLeft.y - 0.5f) * 100f)
         debugUiFont.color = oldColor
         batch.end()
     }

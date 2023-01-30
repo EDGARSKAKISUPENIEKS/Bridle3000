@@ -86,6 +86,8 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
     val load: Load = Load(Vector2())
     val loadDistances: LoadDistances = LoadDistances()
 
+    val leftLeg: LeftLeg = LeftLeg()
+
 
     private lateinit var oldColor: Color
 
@@ -138,6 +140,10 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
             loadDistances.render(
                 renderer, batch, debugUiFont, layout, uiViewport, uiCamera, load, leftBeam
             )
+            leftLeg.render(
+                renderer, batch, debugUiFont, layout, viewport, uiViewport, camera, uiCamera, load,
+                leftBeam
+            )
         }
         renderDebug(renderer, batch, debugUiFont, layout, camera, viewport, uiViewport, uiCamera)
     }
@@ -165,6 +171,7 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         if (AppConfig.DEBUG_MODE) {
             drawDebugBeams(renderer, viewport, camera)
             drawDebugLoad(renderer, viewport, camera)
+            leftLeg.renderLegDebug(renderer, viewport, camera)
         }
     }
 
@@ -178,11 +185,6 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
         renderer.begin(ShapeRenderer.ShapeType.Line)
         oldColor = renderer.color
         renderer.color = Color.CYAN
-
-//        load.updatePosition(
-//            (AppController.worldWidth / 2f) - (load.xSize / 2f),
-//            (AppController.worldHeight / 2f) - (load.ySize / 2f)
-//        )
 
         renderer.rect(load.position.x, load.position.y, load.xSize, load.ySize)
 

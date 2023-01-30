@@ -176,6 +176,7 @@ class LoadDistances {
 //        iekšejā apakšējā bulta
         renderer.line(distanceArrowInside, distanceArrowInsideLowerWing)
 
+        renderer.color = oldColor
         renderer.end()
     }
 
