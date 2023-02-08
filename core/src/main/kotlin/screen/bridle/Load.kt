@@ -77,4 +77,22 @@ class Load(var position: Vector2) {
         debugUiFont.color = oldColor
         batch.end()
     }
+
+    fun renderDebug(
+        renderer: ShapeRenderer,
+        viewport: FitViewport,
+        camera: OrthographicCamera
+    ) {
+        viewport.apply()
+        renderer.projectionMatrix = camera.combined
+        oldColor = renderer.color
+        renderer.begin(ShapeRenderer.ShapeType.Line)
+        renderer.color = Color.CYAN
+
+        renderer.rect(this.position.x, this.position.y, this.xSize, this.ySize)
+
+        renderer.color = oldColor
+        renderer.end()
+    }
+
 }

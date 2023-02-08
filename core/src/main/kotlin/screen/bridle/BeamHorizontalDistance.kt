@@ -139,6 +139,7 @@ class BeamHorizontalDistance {
     ) {
         uiViewport.apply()
         batch.projectionMatrix = uiCamera.combined
+        oldColor = debugUiFont.color
         batch.begin()
         beamDistanceNumber =
             "%.2f".format(
@@ -153,11 +154,12 @@ class BeamHorizontalDistance {
             AppRenderer.mainPage.innerTop * 100f + layout.height
         )
         debugUiFont.draw(batch, layout, beamDistanceNumberPosition.x, beamDistanceNumberPosition.y)
-        updatePositions(leftBeam, rightBeam, layout)
+        updateArrowPositions(leftBeam, rightBeam, layout)
+        debugUiFont.color = oldColor
         batch.end()
     }
 
-    private fun updatePositions(leftBeam: Beam, rightBeam: Beam, layout: GlyphLayout) {
+    private fun updateArrowPositions(leftBeam: Beam, rightBeam: Beam, layout: GlyphLayout) {
         arrowAdjustment = layout.height / 3
 //        beam pozīcijas no galvenā viewport, tāpēc vajag reizināt
         leftArrowOutside.set(

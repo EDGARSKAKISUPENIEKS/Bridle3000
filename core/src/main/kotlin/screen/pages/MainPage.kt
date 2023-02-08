@@ -169,49 +169,11 @@ class MainPage : Page(1, Vector2(vectorX, vectorY)) {
             uiCamera
         )
         if (AppConfig.DEBUG_MODE) {
-            drawDebugBeams(renderer, viewport, camera)
-            drawDebugLoad(renderer, viewport, camera)
+            leftBeam.renderDebug(renderer, viewport, camera)
+            rightBeam.renderDebug(renderer, viewport, camera)
+            load.renderDebug(renderer, viewport, camera)
             leftLeg.renderLegDebug(renderer, viewport, camera)
         }
-    }
-
-    private fun drawDebugLoad(
-        renderer: ShapeRenderer,
-        viewport: FitViewport,
-        camera: OrthographicCamera
-    ) {
-        viewport.apply()
-        renderer.projectionMatrix = camera.combined
-        renderer.begin(ShapeRenderer.ShapeType.Line)
-        oldColor = renderer.color
-        renderer.color = Color.CYAN
-
-        renderer.rect(load.position.x, load.position.y, load.xSize, load.ySize)
-
-        renderer.color = oldColor
-        renderer.end()
-    }
-
-
-    private fun drawDebugBeams(
-        renderer: ShapeRenderer,
-        viewport: FitViewport,
-        camera: OrthographicCamera
-    ) {
-        viewport.apply()
-        renderer.projectionMatrix = camera.combined
-        renderer.begin(ShapeRenderer.ShapeType.Line)
-        oldColor = renderer.color
-        renderer.color = Color.CYAN
-
-//        leftBeam.updatePosition(innerTopLeft)
-//        rightBeam.updatePosition(innerTopRight.x - rightBeam.xSize, innerTopRight.y)
-
-        renderer.rect(leftBeam.position.x, leftBeam.position.y, leftBeam.xSize, leftBeam.ySize)
-        renderer.rect(rightBeam.position.x, rightBeam.position.y, rightBeam.xSize, rightBeam.ySize)
-
-        renderer.color = oldColor
-        renderer.end()
     }
 
     override fun update() {
