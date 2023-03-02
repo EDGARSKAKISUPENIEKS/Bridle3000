@@ -19,7 +19,7 @@ class LeftLeg {
     private var beamEnd: Vector2 = Vector2()
     private var pointEnd: Vector2 = Vector2()
     private var legLengthNumberPos: Vector2 = Vector2()
-    private lateinit var legLengthSting: String
+    private lateinit var legLengthString: String
 
     var legL1: Float = 0f
     var legV1: Float = 0f
@@ -40,7 +40,15 @@ class LeftLeg {
     ) {
         updatePositions(leftBeam, load)
         calculateLegLength(load, leftBeam)
-        renderLegLengthNumber(uiViewport, batch, uiCamera, leftBeam, load, debugUiFont, layout)
+        renderLegLengthNumber(
+            uiViewport,
+            batch,
+            uiCamera,
+            leftBeam,
+            load,
+            debugUiFont,
+            layout
+        )
     }
 
     private fun updatePositions(leftBeam: Beam, load: Load) {
@@ -89,27 +97,25 @@ class LeftLeg {
         batch.projectionMatrix = uiCamera.combined
         oldColor = debugUiFont.color
         batch.begin()
-
-        legLengthSting =
+        legLengthString =
             "%.2f".format(
                 Locale.ENGLISH,
                 legL1
             )
         debugUiFont.color = Color.BLACK
         debugUiFont.data.setScale(0.5f)
-        layout.setText(debugUiFont, legLengthSting)
+        layout.setText(debugUiFont, legLengthString)
         legLengthNumberPos.set(
             ((load.position.x + (load.xSize / 2f)) - ((load.position.x + (load.xSize / 2f) - (leftBeam.position.x + leftBeam.xSize)) / 2f)) * 100f,
             (leftBeam.position.y - ((leftBeam.position.y - (load.position.y + load.xSize)) / 2f)) * 100f
         )
+
         debugUiFont.draw(batch, layout, legLengthNumberPos.x, legLengthNumberPos.y)
-
-
-
 
         debugUiFont.color = oldColor
         batch.end()
     }
+
 
     private fun calculateLegLength(
         load: Load,
@@ -127,6 +133,8 @@ class LeftLeg {
     }
 
     private fun calculateH1(load: Load, leftBeam: Beam) {
-       legH1 = load.position.x - (leftBeam.position.x + leftBeam.xSize)
+        legH1 = load.position.x - (leftBeam.position.x + leftBeam.xSize)
     }
+
+
 }

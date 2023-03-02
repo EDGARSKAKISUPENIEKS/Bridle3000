@@ -12,5 +12,9 @@ dependencies {
     api "io.github.libktx:ktx-json:$ktxVersion"
     api "io.github.libktx:ktx-math:$ktxVersion"
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    api "io.github.libktx:ktx-style:$ktxVersion"
+    api "io.github.libktx:ktx-scene2d:$ktxVersion"
+    api "io.github.libktx:ktx-actors:$ktxVersion"
+    implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     implementation 'junit:junit:4.12'
 }

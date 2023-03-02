@@ -1,8 +1,10 @@
 package screen
 
 
+import Bridle3000Main
 import Bridle3000Main.Companion.appInputHandler
 import Bridle3000Main.Companion.assetManager
+import Bridle3000Main.Companion.inputPlexer
 import assets.AssetDescriptors
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
@@ -12,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.Viewport
@@ -25,9 +28,6 @@ import screen.pages.ThirdPage
 import utils.clearScreen
 import utils.drawDebugGrid
 import utils.logger
-
-//iznests pirms klases, jo klasei inicializējoties vēl nav gatavs, vai kas tāds un met FATAL ERROR
-private val uiFont: BitmapFont = assetManager[AssetDescriptors.UI_FONT]
 
 
 class AppRenderer() : Disposable {
@@ -48,14 +48,19 @@ class AppRenderer() : Disposable {
 
     //    PRIVATE PROPERTIES
 
+    private val uiFont: BitmapFont by lazy { //vajadzīgs lazy, jo savādāk jāness ārpus klases, jo kautkas piekļūst pirms inicializācija ir pabeigta
+        assetManager[AssetDescriptors.UI_FONT]
+    }
+
+    private val uiCamera: OrthographicCamera = OrthographicCamera()
     private val viewport: FitViewport =
         FitViewport(AppController.worldWidth, AppController.worldHeight, camera)
-    private val uiCamera: OrthographicCamera = OrthographicCamera()
     private val uiViewport: FitViewport =
         FitViewport(viewport.worldWidth * 100f, viewport.worldHeight * 100f, uiCamera)
     private val renderer: ShapeRenderer = ShapeRenderer()
     private val batch: SpriteBatch = SpriteBatch()
     private val layout: GlyphLayout = GlyphLayout()
+    private val stage: Stage = Stage(uiViewport, batch)
 
 
     init {
@@ -63,6 +68,7 @@ class AppRenderer() : Disposable {
         camera.zoom = 1f
 //        pagaidu. Vajag globālu pasaules platumu un ekrānu pozīcijas izritēs no tā
         appInputHandler.setCameraToStartPosition()
+        inputPlexer.addProcessor(stage)
     }
 
     fun render() {

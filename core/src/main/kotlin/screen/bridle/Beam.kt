@@ -1,12 +1,10 @@
 package screen.bridle
 
-import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.viewport.FitViewport
-import javax.swing.Renderer
 
 class Beam(var xSize: Float, var ySize: Float) {
     private lateinit var oldColor: Color

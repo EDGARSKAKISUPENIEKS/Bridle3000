@@ -1,6 +1,7 @@
 import com.badlogic.gdx.*
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.input.GestureDetector
+import com.badlogic.gdx.scenes.scene2d.Stage
 import screen.AppScreen
 import utils.AppInputHandler
 
@@ -11,9 +12,8 @@ class Bridle3000Main : Game() {
     companion object {
         val appInputHandler = AppInputHandler()
         val assetManager = AssetManager()
+        val inputPlexer = InputMultiplexer()
     }
-
-    private val inputPlexer = InputMultiplexer()
 
 
     override fun create() {
